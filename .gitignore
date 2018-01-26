@@ -1,5 +1,9 @@
 #### Django ####
 devSettings.py
-__pycache__
-*.py[co]
+__pycache__/
+*.py[cod]
 db.sqlite3
+*.log
+.static_storage/
+.media/
+local_settings.py

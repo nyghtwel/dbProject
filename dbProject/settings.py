@@ -115,7 +115,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 try: 
-    from dbProject.devSettings import *
+    from dbProject.local_settings import *
 except:
     print("No dev settings detected")
 
