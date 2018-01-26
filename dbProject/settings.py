@@ -73,21 +73,15 @@ WSGI_APPLICATION = 'dbProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-# Need to connect to Oracle database in class
+# Need to connect to DB in class
 DATABASES = {
     'default': {
-        'ENGINE': 'oracle'
-        'NAME': 'name'
-        'PASSWORD': 'password'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# Need to connect to Oracle database in class
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
