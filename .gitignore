@@ -1,4 +1,5 @@
 #### Django ####
-local_settings.py
-
+devSettings.py
+__pycache__
+*.py[co]
 db.sqlite3

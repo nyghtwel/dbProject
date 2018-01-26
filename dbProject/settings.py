@@ -1,7 +1,6 @@
-try:
-    from dbProject.devSettings import *
-
 import os
+
+
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -114,3 +113,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+try: 
+    from dbProject.devSettings import *
+except:
+    print("No dev settings detected")
+
+
