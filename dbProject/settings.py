@@ -117,6 +117,6 @@ STATIC_URL = '/static/'
 try: 
     from dbProject.local_settings import *
 except:
-    print("No dev settings detected")
+    print("local_settings.py file not detected")
 
 
