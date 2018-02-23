@@ -3,22 +3,51 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Home</title>
 </head>
 
 <body>
+    <header>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url 'index' %}">U.S. Chronic Illness</a>
+                </div>
+                <ul class="nav navbar-nav ">
+                    <li class="active">
+                        <a href="{% url 'index' %}">Home</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'data_set' %}">Data Set</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'query1' %}">Query 1</a>
+                    </li>
+                    <li>
+                        <a href="#">Query 2</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'about' %}">About</a>
+                    </li>
+                </ul>
 
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
 
 
 </body>
-<footer>
-    <div class="div2">
-        <div class="HeaderStyle">
-            Information and Database Management Systems I
-        </div>
-    </div>
-</footer>
+
 </html>

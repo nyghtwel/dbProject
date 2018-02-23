@@ -1,13 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'home/layout.html' %}
 
-<head>
-    <meta charset="UTF-8" />
-    <title>Home</title>
-</head>
+{% block content %}
+<div class="container">
+    <h1 class="mt-5">Hello from index</h3>
+    <p class="lead"> 
+        Info about US Chronic Illness data set
+    </p>
+</div>
 
-<body>
-
-</body>
-
-</html>
+    <div class="form-group">
+        <label for="sel1">Select list:</label>
+        <select class="form-control" id="sel1">
+            <option>temp </option>
+            <option>foo</option>
+            <option>dummy</option>
+            <option>dummy3</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="sel1">Select list:</label>
+        <select class="form-control" id="sel1">
+            <option>temp </option>
+            <option>foo</option>
+            <option>dummy</option>
+            <option>dummy3</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="sel1">Select list:</label>
+        <select class="form-control" id="sel1">
+            <option>temp </option>
+            <option>foo</option>
+            <option>dummy</option>
+            <option>dummy3</option> 
+        </select>
+    </div>
+<button type="button" class="btn">Search</button>
+{% endblock %}
