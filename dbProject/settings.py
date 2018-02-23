@@ -22,7 +22,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'profiles',
+    'home',
     # 'analytics',
     'django.contrib.admin',
     'django.contrib.auth',

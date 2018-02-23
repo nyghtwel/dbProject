@@ -19,4 +19,7 @@ TBD
 [ ] Phase V: Project Software Demonstration 
 
 ### Instructions 
-TBD
+- Install python3
+- Install django
+- Install Oracle Client libraries 
+- Create local_settings.py in dbProject/ for environment variables and database connections
