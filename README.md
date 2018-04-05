@@ -23,3 +23,8 @@ TBD
 - Install django
 - Install Oracle Client libraries 
 - Create local_settings.py in dbProject/ for environment variables and database connections
+
+### TODO
+
+- Setup queries 
+
