@@ -4,7 +4,6 @@
 <div class="container">
     <h1 class="mt-5">U.S. Chronic Disease Indicator</h3>
     <p class="lead"> 
-
          CDC's Division of Population Health provides cross-cutting set of 124 indicators that were developed by consensus and that
         allows states and territories and large metropolitan areas to uniformly define, collect, and report chronic disease data
         that are important to public health practice and available for states, territories and large metropolitan areas. In addition
@@ -12,7 +11,7 @@
         data resources.
     </p>
 </div>
-<form action="#" method="post">
+<form action="" method="post">
     {% csrf_token %}
     <div class="form-group">
         <label for="sel1">Select list:</label>
@@ -41,10 +40,22 @@
             <option>dummy3</option> 
         </select>
     </div>
-    <button type="sumbit" class="btn btn-success" id="submit" value="submit" name="search_btn" >Search</button>
+    <button type="sumbit" class="btn btn-success" value="submit" name="search_btn" >Search</button>
 </form>
 
-<h1>{{result}}</h1>
+<h1>{{title}}</h1>
+<p>{{result}}</p>
 
+<table>
+    <tr>
+        <th>test lake</th>
+        
+    </tr>
+    {% for row in rows %}
+    <tr>
+        <td>{{ row }}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}

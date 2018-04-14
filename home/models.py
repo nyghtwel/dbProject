@@ -107,4 +107,10 @@ class Indicator_Estimate(models.Model):
         managed = True 
         db_table = 'indicator_estimate'
 
+class GEO_LAKE(models.Model):
+    lake = models.CharField(blank=True, null=False, max_length=50)
+    country = models.CharField(blank=True, null=False, max_length=50)
+    province = models.CharField(blank=True, null=False, max_length=50)
+    
+
 
