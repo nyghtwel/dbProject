@@ -25,6 +25,13 @@
 <br> 
 {% endfor %}
 <p>{{query_title}}</p>
-<p>{{ans}}</p>
+<table>
+    </tr>
+    {% for row in ans %}
+    <tr>
+        <td>{{ row}}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}
