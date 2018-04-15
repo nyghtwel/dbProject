@@ -6,97 +6,24 @@
         </p>
 </div>
 <br>
+{% for row in query2_content %}
 <div>
     <form action="" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label for="sel1">Topic:</label>
-            <select class="form-control" id="topics" name="topics">
-                {% for name in health_domain %}
-                <option> {{name}} </option>
+            <label for="sel">{{row.title}}: {{row.save}}</label>
+            <select class="form-control" id="{{row.title}}" name="{{row.title}}">
+                {% for row2 in row.fields %}
+                <option>{{row2}}</option>
                 {% endfor %}
             </select>
+
         </div>
-        <button type="sumbit" class="btn btn-success" value="submit" name="search_btn">Next</button>
+        <button type="submit" class="{{row.button_class}}" value="submit" name="search_btn">{{row.button_title}}</button>
     </form>
 </div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Question</label>
-            <select class="form-control" id="questions" name="questions">
-                {% for question in questions %}
-                <option> {{question}} </option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="{{question_button}}" value="submit" name="search_btn">Next</button>
-    </form>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Indicator</label>
-            <select class="form-control" id="indicator" name="indicator">
-                {% for row in indicator %}
-                <option>{{row}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="{{indicator_button}}" value="submit" name="search_btn">Next</button>
-    </form>
-    <h3>{{ans3}}</h3>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Year Start</label>
-            <select class="form-control" id="years_start" name="years_start">
-                {% for year in years_start %}
-                <option>{{year}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="{{year_start_button}}" value="submit" name="search_btn">Next</button>
-    </form>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Year End</label>
-            <select class="form-control" id="years_end" name="years_end">
-                {% for year in years_end %}
-                <option>{{year}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="{{year_end_button}}" value="submit" name="search_btn">Next</button>
-    </form>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Increase/Descrease</label>
-            <select class="form-control" id="final" name="final">
-                {% for row in increase_decrease %}
-                <option>{{row}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="{{increase_decrease_button}}" value="submit" name="search_btn">Search</button>
-    </form>
-</div>
-<br>
+<br> 
+{% endfor %}
 <p>{{query_title}}</p>
 <table>
     </tr>
