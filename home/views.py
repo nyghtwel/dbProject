@@ -41,55 +41,48 @@ def populate_form(id, query):
 
 	return (table, "btn btn-success")
 
-health_domain, questions_1, years_1, above_below_1, indicator_1= [], [], [], [], []
-indicator_button_1 = question_button_1 = year_button_1  = above_below_button_1 = increase_decrease_button_1 = "btn btn-success disabled"
+query1_content = [ 
+	{'title': 'Topics', 'fields': [], 'button_class':'btn btn-success disabled', 'button_title':'Next', 'save': ''},
+	{'title': 'Questions', 'fields': [], 'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save':''},
+	{'title': 'Indicator', 'fields': [], 'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save':''},
+	{'title': 'Year', 'fields': [], 'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save':''},
+	{ 'title': 'Above/Below', 'fields':[], 'button_class': 'btn btn-success disabled', 'button_title': 'Search', 'save':''}
+
+]
 def query1(request):
-	global health_domain
-	global questions_1
-	global years_1
-	global above_below_1
-	global question_button_1
-	global year_button_1
-	global above_below_button_1
-	global indicator_1
-	global indicator_button_1
+	global query1_content
 	global ans1
 	global ans2 
 	global ans3
 	global ans4
 	global ans5
 	ans, query_title = [], ""
-
 	if ans1 == "":
-		ans1 = request.POST.get("topics")
-		print(ans1)
-		health_domain, temp = populate_form('NAME', "Select distinct name from health_domain")
-	
-	if request.method == 'POST' and request.POST.get("topics"):
-		ans1 = request.POST.get("topics")
-		ans2 = request.POST.get("questions")
+		ans1 = "temp"
+		query1_content[0]['fields'], query1_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
+
+	if request.method == 'POST' and request.POST.get("Topics"):
+		query1_content[0]['save'] = ans1 = request.POST.get("Topics")
 		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
-		questions_1, question_button_1 = populate_form('NAME', query)
+		query1_content[1]['fields'], query1_content[1]['button_class'] = populate_form('NAME', query)
 	
-	if request.method == 'POST' and request.POST.get("questions"):
-		ans2 = request.POST.get("questions")
+	if request.method == 'POST' and request.POST.get("Questions"):
+		query1_content[1]['save'] = ans2 = request.POST.get("Questions")
 		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
-		indicator_1, indicator_button_1 = populate_form('DATA_VALUE_TYPE', query)
+		query1_content[2]['fields'], query1_content[2]['button_class'] = populate_form('DATA_VALUE_TYPE', query)
 
-	if request.method == 'POST' and request.POST.get("indicator"):
-		ans3 = request.POST.get("indicator")
+	if request.method == 'POST' and request.POST.get("Indicator"):
+		query1_content[2]['save'] = ans3 = request.POST.get("Indicator")
 		query = "select year_start from chronic_disease_indicator where name = '{}' order by year_start ASC".format(ans2)
-		years_1, year_button_1 = populate_form('YEAR_START', query)
+		query1_content[3]['fields'], query1_content[3]['button_class'] = populate_form('YEAR_START', query)
 
 
-	if request.method == 'POST' and request.POST.get("years"):
-		ans4 = request.POST.get("years")
-		above_below_1 = ["above", "below"]
-		above_below_button_1 = "btn btn-success"
+	if request.method == 'POST' and request.POST.get("Year"):
+		query1_content[3]['save'] = ans4 = request.POST.get("Year")
+		query1_content[4]['fields'], query1_content[4]['button_class'] = ['above', 'below'], 'btn btn-success'
 
-
-	if request.method == 'POST' and request.POST.get("final"):
-		ans.extend([ans1, ans2, ans3, ans4, request.POST.get("final")])
+	if request.method == 'POST' and request.POST.get("Above/Below"):
+		ans.extend([ans1, ans2, ans3, ans4, request.POST.get("Above/Below")])
 		print(query_title)
 		temp = ">" if request.POST.get("final") == "above" else "<"		
 
@@ -108,22 +101,15 @@ def query1(request):
 			cursor.execute(query)
 			ans = dictfetchall(cursor)
 
-		questions_1, years_1, above_below_1, indicator_1 = [], [], [], []
-		question_button_1 = year_button_1 = above_below_button_1 = indicator_button_1 = "btn btn-success disabled"
+		for i in query1_content:
+			i['fields'], i['button_class'] = [], "btn btn-success disabled"
+
 		ans1 = ans2 = ans3 = ans4 = ans5 = ""
 
 	context = {
-		'health_domain': health_domain,
-		'questions' : questions_1,
-		'years' : years_1,
-		'above_below' : above_below_1,
+		'query1_content':query1_content,
 		'ans' : (ans if ans else ""),
 		'query_title' : query_title,
-		'question_button' : question_button_1,
-		'year_button' : year_button_1,
-		'above_below_button' : above_below_button_1,
-		'indicator' : indicator_1,
-		'indicator_button' : indicator_button_1,
 		'query_title': query_title,
 		'ans1': (ans1 if ans1 else ""),
 		'ans2': (ans2 if ans2 else ""),

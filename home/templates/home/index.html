@@ -10,54 +10,7 @@
         to providing access to state-specific indicator data, the CDI web site serves as a gateway to additional information and
         data resources.
         <br><br>
-        Data set has 255,633 tuples
+        Data set has 255,688 tuples
     </p>
 </div>
-<form action="" method="post">
-    {% csrf_token %}
-    <div class="form-group">
-        <label for="sel1">Select list:</label>
-        <select class="form-control" id="sel1" name="sel1">
-            <option>temp </option>
-            <option>foo</option>
-            <option>dummy</option>
-            <option>dummy3</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="sel2">Select list:</label>
-        <select class="form-control" id="sel3" name="sel2">
-            <option>temp </option>
-            <option>foo</option>
-            <option>dummy</option>
-            <option>dummy3</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="sel3">Select list:</label>
-        <select class="form-control" id="sel3" name="sel3">
-            <option>temp </option>
-            <option>foo</option>
-            <option>dummy</option>
-            <option>dummy3</option> 
-        </select>
-    </div>
-    <button type="sumbit" class="btn btn-success" value="submit" name="search_btn" >Search</button>
-</form>
-
-<h1>{{title}}</h1>
-<p>{{result}}</p>
-
-<table>
-    <tr>
-        <th>test lake</th>
-        
-    </tr>
-    {% for row in rows %}
-    <tr>
-        <td>{{ row }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
 {% endblock %}
