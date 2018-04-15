@@ -32,10 +32,16 @@
                         <a href="{% url 'query1' %}">Query 1</a>
                     </li>
                     <li>
-                        <a href="#">Query 2</a>
+                        <a href="{% url 'query2' %}">Query 2</a>
                     </li>
                     <li>
-                        <a href="{% url 'data_set' %}">Data Set</a>
+                        <a href="{% url 'query3' %}">Query 3</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'query4' %}">Query 4</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'query5' %}">Query 5</a>
                     </li>
                     <li>
                         <a href="{% url 'about' %}">About</a>
@@ -129,6 +135,13 @@
         {% block content %}
         {% endblock %}
     </div>
+    <footer>
+        <div class="container-fluid text-center text-md-left">
+        <p class="lead">
+            Plug in info about dataset https://www.healthdata.gov/dataset/us-chronic-disease-indicators-cdi
+        </p>
+        </div>
+    </footer>
 
 
 </body>

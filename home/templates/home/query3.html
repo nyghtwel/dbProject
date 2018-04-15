@@ -1,8 +1,8 @@
 {% extends 'home/layout.html' %} {% block content %}
 <div class="container">
-    <h1 class="mt-5">Query 2</h3>
+    <h1 class="mt-5">Query 3</h3>
         <p class="lead">
-            States that have an increase/decrease given a topic
+            Top 10 states that have an highest/lowest topic
         </p>
 </div>
 <br>
@@ -40,44 +40,14 @@
     <form action="" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label for="sel1">Year Start</label>
-            <select class="form-control" id="years_start" name="years_start">
-                {% for year in years_start %}
-                <option>{{year}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="{{year_start_button}}" value="submit" name="search_btn">Next</button>
-    </form>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Year End</label>
-            <select class="form-control" id="years_end" name="years_end">
-                {% for year in years_end %}
-                <option>{{year}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="{{year_end_button}}" value="submit" name="search_btn">Next</button>
-    </form>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Increase/Descrease</label>
+            <label for="sel1">Highest/Lowest</label>
             <select class="form-control" id="final" name="final">
-                {% for row in increase_decrease %}
+                {% for row in highest_lowest %}
                 <option>{{row}}</option>
                 {% endfor %}
             </select>
         </div>
-        <button type="sumbit" class="{{increase_decrease_button}}" value="submit" name="search_btn">Search</button>
+        <button type="sumbit" class="{{highest_lowest_button}}" value="submit" name="search_btn">Search</button>
     </form>
 </div>
 <br>

@@ -1,39 +1,9 @@
 {% extends 'home/layout.html' %} {% block content %}
 <div class="container">
-    <h1 class="mt-5">Query 2</h3>
+    <h1 class="mt-5">Query 4</h3>
         <p class="lead">
-            States that have an increase/decrease given a topic
+            List all diseases that had an increase/decrease in the national average from year {} to year {}
         </p>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Topic:</label>
-            <select class="form-control" id="topics" name="topics">
-                {% for name in health_domain %}
-                <option> {{name}} </option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="btn btn-success" value="submit" name="search_btn">Next</button>
-    </form>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Question</label>
-            <select class="form-control" id="questions" name="questions">
-                {% for question in questions %}
-                <option> {{question}} </option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="{{question_button}}" value="submit" name="search_btn">Next</button>
-    </form>
 </div>
 <br>
 <div>
@@ -70,7 +40,7 @@
     <form action="" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label for="sel1">Increase/Descrease</label>
+            <label for="sel1">Increase/Decrease</label>
             <select class="form-control" id="final" name="final">
                 {% for row in increase_decrease %}
                 <option>{{row}}</option>
