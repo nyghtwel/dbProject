@@ -40,6 +40,22 @@
     <form action="" method="post">
         {% csrf_token %}
         <div class="form-group">
+            <label for="sel1">Indicator</label>
+            <select class="form-control" id="indicator" name="indicator">
+                {% for row in indicator %}
+                <option>{{row}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="sumbit" class="{{indicator_button}}" value="submit" name="search_btn">Next</button>
+    </form>
+    <h3>{{ans3}}</h3>
+</div>
+<br>
+<div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
             <label for="sel1">Year Start</label>
             <select class="form-control" id="years_start" name="years_start">
                 {% for year in years_start %}
@@ -81,7 +97,14 @@
     </form>
 </div>
 <br>
-<h1>{{query_title}}</h1>
-<p>{{ans}}</p>
+<p>{{query_title}}</p>
+<table>
+    </tr>
+    {% for row in ans %}
+    <tr>
+        <td>{{ row}}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}

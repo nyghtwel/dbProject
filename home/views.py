@@ -93,7 +93,16 @@ def query1(request):
 		print(query_title)
 		temp = ">" if request.POST.get("final") == "above" else "<"		
 
-		query = "with temp_nat as (select * from indicator_estimate where DATA_VALUE_TYPE = '{}' and year_start = {} and strat_id = 'OVR' and indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')) select location.name, temp_nat.year_start as year, concat(round((select avg(data_value) from temp_nat), 1), '%') as national_avg, concat(temp_nat.data_value, temp_nat.data_unit) as location_data_value from temp_nat, location where temp_nat.location_id = location.location_ID and temp_nat.data_value {} (select avg(data_value) from temp_nat)".format(ans3, ans4, ans2, temp)
+		query = """with temp_nat as (select * from indicator_estimate 
+						where DATA_VALUE_TYPE = '{}' 
+						and year_start = {} 
+						and strat_id = 'OVR' 
+						and indicator_id in (select indicator_id 
+							from chronic_disease_indicator 
+							where name = '{}')) select location.name, temp_nat.year_start as year, concat(round((select avg(data_value) 
+								from temp_nat), 1), '%') as national_avg, 
+								concat(temp_nat.data_value, temp_nat.data_unit) as location_data_value from temp_nat, location 
+									where temp_nat.location_id = location.location_ID and temp_nat.data_value {} (select avg(data_value) from temp_nat)""".format(ans3, ans4, ans2, temp)
 		query_title = query
 		with connection.cursor() as cursor:
 			cursor.execute(query)
@@ -124,8 +133,8 @@ def query1(request):
 	}
 	return render(request, 'home/query1.html', context)
 	
-questions_2, years_start_2, years_end_2, increase_decrease_2 = [], [], [], []
-question_button_2 = year_start_button_2 = year_end_button_2 = increase_decrease_button_2 = "btn btn-success disabled"
+questions_2, years_start_2, years_end_2, increase_decrease_2, indicator_2= [], [], [], [], []
+question_button_2 = year_start_button_2 = year_end_button_2 = increase_decrease_button_2 = indicator_button_2= "btn btn-success disabled"
 def query2(request):
 	global health_domain
 	global questions_2
@@ -136,6 +145,8 @@ def query2(request):
 	global year_end_button_2
 	global increase_decrease_2
 	global increase_decrease_button_2
+	global indicator_2
+	global indicator_button_2
 	global ans1
 	global ans2
 	global ans3
@@ -153,24 +164,50 @@ def query2(request):
 
 	if request.method == 'POST' and request.POST.get("questions"):
 		ans2 = request.POST.get("questions")
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
+		indicator_2, indicator_button_2 = populate_form('DATA_VALUE_TYPE', query)
+
+	if request.method == 'POST' and request.POST.get("indicator"):
+		ans3 = request.POST.get("indicator")
 		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
 		years_start_2, year_start_button_2 = populate_form('YEAR_START', query)
 
 	if request.method == 'POST' and request.POST.get("years_start"):
-		ans3 = request.POST.get("years_start")
-		query = "select distinct year_end from chronic_disease_indicator where name = '{}' and year_end > {} order by year_end ASC".format(ans2, ans3)
+		ans4 = request.POST.get("years_start")
+		query = "select distinct year_end from chronic_disease_indicator where name = '{}' and year_end > {} order by year_end ASC".format(ans2, ans4)
 		years_end_2, year_end_button_2 = populate_form('YEAR_END', query)
 
 	if request.method == 'POST' and request.POST.get("years_end"):
-		ans4 = request.POST.get("years_end")
+		ans5 = request.POST.get("years_end")
 		increase_decrease_2 = ["increase", "decrease"]
 		increase_decrease_button_2 = "btn btn-success"
 	
 	if request.method == 'POST' and request.POST.get("final"):
-		ans.extend([ans1, ans2, ans3, ans4, request.POST.get("final")])
-		questions_2, years_start_2, years_end_2, increase_decrease_2 = [], [], [], []
-		question_button_2 = years_start_button_2 = years_end_button_2 = increase_decrease_button_2 = "btn btn-success disabled"
-		ans1 = ans2 = ans3 = ans3 = ""
+		ans6 = request.POST.get("final")
+		ans.extend([ans1, ans2, ans3, ans4, ans5, request.POST.get("final")])
+		temp = "<" if ans6 == "increase" else ">"
+		query = """With temp_nat as (select * from indicator_estimate 
+					where DATA_VALUE_TYPE= '{}'
+    		            and strat_id='OVR'
+						and indicator_id in (select indicator_id from CHRONIC_DISEASE_INDICATOR
+							where name='{}'))
+							select location.name, t1.year_start as first_year, t1.data_value as first_value,
+    				   			t2.year_start as second_year, t2.data_value as second_value
+								from temp_nat t1,  temp_nat t2, location
+									where t1.location_id = location.location_ID
+										and t2.location_id = t1.location_id
+    						  			and t1.year_start = {}
+    						  			and t2.year_start = {}
+    						  			and t1.data_value {} t2.data_value""".format(ans3, ans2, ans4, ans5, temp)
+
+		query_title = query
+		with connection.cursor() as cursor:
+			cursor.execute(query)
+			ans = dictfetchall(cursor)
+
+		questions_2, years_start_2, years_end_2, increase_decrease_2, indicator_2 = [], [], [], [], []
+		question_button_2 = years_start_button_2 = years_end_button_2 = increase_decrease_button_2 = indicator_button_2= "btn btn-success disabled"
+		ans1 = ans2 = ans3 = ans3 = ans4 = ans5 = ans6 = ""
 	
 	context = {
 		'health_domain': health_domain,
@@ -184,6 +221,8 @@ def query2(request):
 		'year_end_button' : year_end_button_2,
 		'increase_decrease' : increase_decrease_2,
 		'increase_decrease_button': increase_decrease_button_2,
+		'indicator' : indicator_2,
+		'indicator_button': indicator_button_2
 		
 	}
 	return render(request, 'home/query2.html', context)
