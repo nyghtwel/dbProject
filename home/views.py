@@ -274,55 +274,111 @@ def query3(request):
 	
 	context = {
 		'query3_content': query3_content,
-		'questions': questions_3,
 		'ans': (ans if ans else ""),
 		'query_title': query_title,
 	}
 	return render(request, 'home/query3.html', context)
 
-years_start_4, years_end_4, increase_decrease_4 = [], [], []
-year_start_button_4 = year_end_button_4 = increase_decrease_button_4 = "btn btn-success disabled"
+query4_content = [
+    {'title': 'Topics', 'fields': [], 'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save': ''},
+   	{'title': 'Questions', 'fields': [], 'button_class': 'btn btn-success disabled','button_title': 'Next', 'save': ''},
+   	{'title': 'Indicator', 'fields': [], 'button_class': 'btn btn-success disabled','button_title': 'Next', 'save': ''},
+   	{'title': 'Year Start', 'fields': [],'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save': ''},
+   	{'title': 'Year End', 'fields': [], 'button_class': 'btn btn-success disabled','button_title': 'Next', 'save': ''},
+   	{'title': 'Increase/Decrease', 'fields': [],'button_class': 'btn btn-success disabled', 'button_title': 'Search', 'save': ''}
+]
 def query4(request):
-	global years_start_4
-	global years_end_4 
-	global year_start_button_4
-	global year_end_button_4
-	global increase_decrease_4
-	global increase_decrease_button_4
+	global query4_content
 	global ans1 
 	global ans2
 	global ans3
-
+	global ans4 
+	global ans5
 	ans, query_title = [], ""
 
-	if not request.POST.get("years_end") or not request.POST.get("final"):
-		years_start_4, year_start_button_4 = populate_form('YEAR_START', "select distinct year_start from chronic_disease_indicator where year_start >= 2007 order by year_start ASC")
-
-	if request.method == 'POST' and request.POST.get("years_start"):
-		ans1 = request.POST.get("years_start")
-		query = "select distinct year_end from chronic_disease_indicator where year_end > {} order by year_end ASC".format(ans1)
-		years_end_4, year_end_button_4 = populate_form('YEAR_END', query)
+	if ans1 == "":
+		ans1 == "temp"
+		query4_content[0]['fields'], query4_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
 	
-	if request.method == 'POST' and request.POST.get("years_end"):
-		ans2 = request.POST.get("years_end")
-		increase_decrease_4 = ["increase", "decrease"]
-		increase_decrease_button_4 = "btn btn-success"
+	if request.method == 'POST' and request.POST.get("Topics"):
+		query4_content[0]['save'] = ans1 = request.POST.get("Topics")
+		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
+		query4_content[1]['fields'], query4_content[1]['button_class'] = populate_form('NAME', query)
 
-	if request.method == 'POST' and request.POST.get("final"):
-		ans.extend([ans1,ans2,request.POST.get("final")])
-		years_end_4, increase_decrease_4 = [], []
-		year_start_button_4 = year_end_button_4 = increase_decrease_button_4 = "btn btn-success disabled"
-		ans1 = ans2 = ""
+	if request.method == 'POST' and request.POST.get("Questions"):
+		query4_content[1]['save'] = ans2 = request.POST.get("Questions")
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
+		query4_content[2]['fields'], query4_content[2]['button_class'] = populate_form('DATA_VALUE_TYPE', query)
+
+	if request.method == 'POST' and request.POST.get("Indicator"):
+		query4_content[2]['save'] = ans3 = request.POST.get("Indicator")
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		query4_content[3]['fields'], query4_content[3]['button_class'] = populate_form('YEAR_START', query)
+
+	if request.method == 'POST' and request.POST.get("Year Start"):
+		query4_content[3]['save'] = ans4 = request.POST.get("Year Start")
+		query = "select distinct year_end from chronic_disease_indicator where year_end > {} order by year_end ASC".format(ans4)
+		query4_content[4]['fields'], query4_content[4]['button_class'] = populate_form('YEAR_END', query)
+	
+	if request.method == 'POST' and request.POST.get("Year End"):
+		query4_content[4]['save'] = ans5 = request.POST.get("Year End")
+		query4_content[5]['fields'], query4_content[5]['button_class'] = ["increase", "decrease"], "btn btn-success"
+
+	if request.method == 'POST' and request.POST.get("Increase/Decrease"):
+		query4_content[5]['save'] = request.POST.get("Increase/Decrease")
+		topic, question, indicator, y1, y2 = ans1, ans2, ans3, ans4, ans5
+		temp = "<" if query4_content[5]['save'] == "increase" else ">"
+		query = """
+			select id1 as question, round(dat_val1 , 3)as avg_val_year1, round(dat_val2 , 3) as avg_val_year2 from (
+					select health_domain.name as name1,
+					chronic_disease_indicator.name as id1, 
+					indicator_estimate.DATA_VALUE_TYPE as type1,
+					avg(INDICATOR_ESTIMATE.data_value) as dat_val1
+					from indicator_estimate, chronic_disease_indicator, health_domain where 
+					indicator_estimate.indicator_id = chronic_disease_indicator.indicator_id and
+					health_domain.domain_id = chronic_disease_indicator.domain_id and 
+					health_domain.name = '{}' and
+					indicator_estimate.year_start = '{}' and
+					data_value_type = '{}' and
+					data_value is not null and
+					strat_id = 'OVR'
+					group by health_domain.name, chronic_disease_indicator.name, indicator_estimate.DATA_VALUE_TYPE
+					),
+					(select health_domain.name as name2,
+					chronic_disease_indicator.name as id2, 
+					indicator_estimate.DATA_VALUE_TYPE as type2,
+					avg(INDICATOR_ESTIMATE.data_value) as dat_val2
+					from indicator_estimate, chronic_disease_indicator, health_domain where 
+					indicator_estimate.indicator_id = chronic_disease_indicator.indicator_id and
+					health_domain.domain_id = chronic_disease_indicator.domain_id and 
+					health_domain.name = '{}' and
+					indicator_estimate.year_start = '{}' and
+					data_value_type = '{}' and
+					data_value is not null and
+					strat_id = 'OVR'
+					group by health_domain.name, chronic_disease_indicator.name, indicator_estimate.DATA_VALUE_TYPE)
+					
+			where  name1 = name2 and
+			id1 = id2 and
+			type1 = type2 and
+			dat_val2 {} dat_val1
+			""".format(topic, y1, indicator, topic, y2, indicator, temp)
+		
+		query_title = query
+		with connection.cursor() as cursor:
+			cursor.execute(query)
+			ans = dictfetchall(cursor)
+
+		for i in query4_content:
+			i['fields'], i['button_class'] = [], "btn btn-success disabled"
+
+		query4_content[0]['fields'], query4_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
+		ans1 = ans2 = asn3 = ans4 = ans5 = ""
 
 	context = {
-		'years_start' : years_start_4,
-		'years_end' : years_end_4,
-		'year_start_button' : year_start_button_4,
-		'year_end_button' : year_end_button_4,
+		'query4_content' : query4_content,
 		'ans' : (ans if ans else ""),
 		'query_title': query_title,
-		'increase_decrease' : increase_decrease_4,
-		'increase_decrease_button' : increase_decrease_button_4
 	}
 	return render(request, 'home/query4.html', context)
 

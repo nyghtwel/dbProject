@@ -2,56 +2,29 @@
 <div class="container">
     <h1 class="mt-5">Query 4</h3>
         <p class="lead">
-            List all diseases that had an increase/decrease in the national average from year {} to year {}
+             List all {} that had an decrease in the national average from year 1 to year 2.
         </p>
 </div>
 <br>
+{% for row in query4_content %}
 <div>
     <form action="" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label for="sel1">Year Start</label>
-            <select class="form-control" id="years_start" name="years_start">
-                {% for year in years_start %}
-                <option>{{year}}</option>
+            <label for="sel">{{row.title}}: {{row.save}}</label>
+            <select class="form-control" id="{{row.title}}" name="{{row.title}}">
+                {% for row2 in row.fields %}
+                <option>{{row2}}</option>
                 {% endfor %}
             </select>
+
         </div>
-        <button type="sumbit" class="{{year_start_button}}" value="submit" name="search_btn">Next</button>
+        <button type="submit" class="{{row.button_class}}" value="submit" name="search_btn">{{row.button_title}}</button>
     </form>
 </div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Year End</label>
-            <select class="form-control" id="years_end" name="years_end">
-                {% for year in years_end %}
-                <option>{{year}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="{{year_end_button}}" value="submit" name="search_btn">Next</button>
-    </form>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Increase/Decrease</label>
-            <select class="form-control" id="final" name="final">
-                {% for row in increase_decrease %}
-                <option>{{row}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="sumbit" class="{{increase_decrease_button}}" value="submit" name="search_btn">Search</button>
-    </form>
-</div>
-<br>
-<h1>{{query_title}}</h1>
+<br> 
+{% endfor %}
+<p>{{query_title}}</p>
 <p>{{ans}}</p>
 
 {% endblock %}
