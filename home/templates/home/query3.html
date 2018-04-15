@@ -40,6 +40,51 @@
     <form action="" method="post">
         {% csrf_token %}
         <div class="form-group">
+            <label for="sel1">Indicator</label>
+            <select class="form-control" id="indicator" name="indicator">
+                {% for row in indicator %}
+                <option> {{row}} </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="sumbit" class="{{indicator_button}}" value="submit" name="search_btn">Next</button>
+    </form>
+</div>
+<br>
+<div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="sel1">Year</label>
+            <select class="form-control" id="years" name="years">
+                {% for row in years %}
+                <option> {{row}} </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="sumbit" class="{{year_button}}" value="submit" name="search_btn">Next</button>
+    </form>
+</div>
+<br>
+<div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="sel1">Population</label>
+            <select class="form-control" id="population" name="population">
+                {% for row in population %}
+                <option> {{row}} </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="sumbit" class="{{population_button}}" value="submit" name="search_btn">Next</button>
+    </form>
+</div>
+<br>
+<div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
             <label for="sel1">Highest/Lowest</label>
             <select class="form-control" id="final" name="final">
                 {% for row in highest_lowest %}

@@ -227,22 +227,30 @@ def query2(request):
 	}
 	return render(request, 'home/query2.html', context)
 
-questions_3, highest_lowest_3 = [], []
-question_button_3 = highest_lowest_button_3 = "btn btn-success disabled"
+questions_3, highest_lowest_3, population_3, indicator_3, years_3 = [], [], [], [], []
+question_button_3 = highest_lowest_button_3 = population_button_3 = years_button_3 = indicator_button_3 = "btn btn-success disabled"
 def query3(request):
 	global health_domain
 	global questions_3 
 	global highest_lowest_3
 	global question_button_3
 	global highest_lowest_button_3
+	global population_3
+	global population_button_3
 	global ans1
 	global ans2 
-
+	global ans3
+	global ans4
+	global ans5
+	global ans6
+	global years_3
+	global years_button_3
+	global indicator_3
+	global indicator_button_3
 
 	ans, query_title = [], ""
-
+	
 	health_domain, temp = populate_form('NAME', "Select distinct name from health_domain")
-
 	if request.method == 'POST' and request.POST.get("topics"):
 		ans1 = request.POST.get("topics")
 		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
@@ -250,13 +258,65 @@ def query3(request):
 
 	if request.method == 'POST' and request.POST.get("questions"):
 		ans2 = request.POST.get("questions")
-		highest_lowest_3 = ["highest", "lowest"]	
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(
+			ans2)
+		indicator_3, indicator_button_3 = populate_form('DATA_VALUE_TYPE', query)
+
+	if request.method == 'POST' and request.POST.get("indicator"):
+		ans3 = request.POST.get("indicator")
+		print(ans3)
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		years_3, years_button_3 = populate_form('YEAR_START', query)
+
+	if request.method == 'POST' and request.POST.get("years"):
+		ans4 = request.POST.get("years")
+		query = """ 
+			select race as population from (
+				(select distinct race, stratid from populationid)
+				union (select distinct gender, stratid from populationid)
+				union (select distinct overall, stratid from populationid))
+			where race is not null and stratid in ( select stratid from indicator_estimate
+													where data_value_type = '{}'
+													and year_start = {}
+													and indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}'))
+		""".format(ans3, ans4, ans2)
+		population_3, population_button_3 = populate_form('POPULATION', query)
+
+	if request.method == 'POST' and request.POST.get("population"):
+		ans5 = request.POST.get("population")
+		highest_lowest_3 = ["highest", "lowest"]
 		highest_lowest_button_3 = "btn btn-success"
-	
+
 	if request.method == 'POST' and request.POST.get("final"):
-		ans.extend([ans1,ans2, request.POST.get("final")])		
-		questions_3, highest_lowest_3 = [], []
-		question_button_3 = highest_lowest_button_3 = "btn btn-success disabled"
+		ans6 = request.POST.get("final")
+		ans.extend([ans1,ans2, ans3, request.POST.get("final")])
+		temp = "desc" if ans6 == "highest" else "asc" 		
+		query = """
+			select * from (
+			select location.name, temp_nat.data_value || temp_nat.data_unit as data_value
+			from (select * from indicator_estimate  
+						where DATA_VALUE_TYPE = '{}' 
+								and strat_id in 
+								(select STRATID from populationid where
+										race = '{}' or 
+										GENDER= '{}' or 
+										OVERALL= '{}')
+								and year_start = {}
+								and indicator_id in (select indicator_id from CHRONIC_DISEASE_INDICATOR 
+													where name = '{}')) temp_nat, location
+						where temp_nat.location_id = location.location_ID
+								and temp_nat.data_value is not null
+						order by temp_nat.data_value {})
+						where rownum < 11
+		""".format(ans3, ans5, ans5, ans5, ans4, ans2, temp)
+		
+		with connection.cursor() as cursor:
+			cursor.execute(query)
+			ans = dictfetchall(cursor)
+
+		questions_3, highest_lowest_3, years_3, indicator_3, population_3 = [], [], [], [], []
+		ans1 = ans2 = asn3 = ans4 = ans5 = ans6 = ""
+		question_button_3 = highest_lowest_button_3 = years_button_3 = indicator_button_3 = population_button_3 = "btn btn-success disabled"
 	
 	context = {
 		'health_domain': health_domain,
@@ -265,7 +325,13 @@ def query3(request):
 		'query_title': query_title,
 		'question_button': question_button_3,
 		'highest_lowest': highest_lowest_3,
-		'highest_lowest_button': highest_lowest_button_3
+		'highest_lowest_button': highest_lowest_button_3,
+		'population_button' : population_button_3,
+		'population' : population_3,
+		'years': years_3,
+		'year_button' : years_button_3,
+		'indicator' : indicator_3,
+		'indicator_button' : indicator_button_3
 	}
 	return render(request, 'home/query3.html', context)
 
