@@ -23,7 +23,7 @@ query1_content = [
 	{'title': 'Questions', 'fields': [], 'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save':''},
 	{'title': 'Indicator', 'fields': [], 'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save':''},
 	{'title': 'Year', 'fields': [], 'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save':''},
-	{ 'title': 'Above/Below', 'fields':[], 'button_class': 'btn btn-success disabled', 'button_title': 'Search', 'save':''}
+	{'title': 'Above/Below', 'fields':[], 'button_class': 'btn btn-success disabled', 'button_title': 'Search', 'save':''}
 ]
 def query1(request):
 	global query1_content
@@ -32,7 +32,7 @@ def query1(request):
 	global ans3
 	global ans4
 	global ans5
-	ans, query_title = [], ""
+	ans, query_title, query = [], "", ""
 	if ans1 == "":
 		ans1 = "temp"
 		query1_content[0]['fields'], query1_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
@@ -62,7 +62,7 @@ def query1(request):
 		print(query_title)
 		temp = ">" if request.POST.get("final") == "above" else "<"		
 
-		query = """with temp_nat as (select * from indicator_estimate 
+		query_title = """with temp_nat as (select * from indicator_estimate 
 						where DATA_VALUE_TYPE = '{}' 
 						and year_start = {} 
 						and strat_id = 'OVR' 
@@ -73,9 +73,9 @@ def query1(request):
 								concat(temp_nat.data_value, temp_nat.data_unit) as location_data_value from temp_nat, location 
 									where temp_nat.location_id = location.location_ID and temp_nat.data_value {} (select avg(data_value) from temp_nat)
 				""".format(ans3, ans4, ans2, temp)
-		query_title = query
+		
 		with connection.cursor() as cursor:
-			cursor.execute(query)
+			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 
 		for i in query1_content:
@@ -92,7 +92,8 @@ def query1(request):
 		'ans1': (ans1 if ans1 else ""),
 		'ans2': (ans2 if ans2 else ""),
 		'ans3': (ans3 if ans3 else ""),
-		'ans4': (ans4 if ans4 else "")
+		'ans4': (ans4 if ans4 else ""), 
+		'query': query
 		
 	}
 	return render(request, 'home/query1.html', context)
@@ -113,7 +114,7 @@ def query2(request):
 	global ans4
 	global ans5
 
-	ans, query_title = [], ""
+	ans, query_title, query = [], "", ""
 
 	if ans1 == "":
 		ans1 == "temp"
@@ -147,7 +148,7 @@ def query2(request):
 		ans6 = request.POST.get("final")
 		ans.extend([ans1, ans2, ans3, ans4, ans5, request.POST.get("final")])
 		temp = "<" if ans6 == "increase" else ">"
-		query = """With temp_nat as (select * from indicator_estimate 
+		query_title = """With temp_nat as (select * from indicator_estimate 
 					where DATA_VALUE_TYPE= '{}'
     		            and strat_id='OVR'
 						and indicator_id in (select indicator_id from CHRONIC_DISEASE_INDICATOR
@@ -162,9 +163,9 @@ def query2(request):
     						  			and t1.data_value {} t2.data_value
 				""".format(ans3, ans2, ans4, ans5, temp)
 
-		query_title = query
+		
 		with connection.cursor() as cursor:
-			cursor.execute(query)
+			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 
 		for i in query2_content:
@@ -177,7 +178,8 @@ def query2(request):
 	context = {
 		'query2_content': query2_content,
 		'ans': (ans if ans else ""),
-		'query_title': query_title
+		'query_title': query_title,
+		'query' : query
 		
 	}
 	return render(request, 'home/query2.html', context)
@@ -199,7 +201,7 @@ def query3(request):
 	global ans5
 	global ans6
 
-	ans, query_title = [], ""
+	ans, query_title, query = [], "", ""
 	
 	if ans1 == "":
 		ans1 == "temp"
@@ -243,7 +245,7 @@ def query3(request):
 	if request.method == 'POST' and request.POST.get("Highest/Lowest"):
 		query3_content[5]['save'] =	ans6 = request.POST.get("Highest/Lowest")
 		temp = "desc" if ans6 == "highest" else "asc" 		
-		query = """
+		query_title = """
 			select * from (
 			select location.name, temp_nat.data_value || temp_nat.data_unit as data_value
 			from (select * from indicator_estimate  
@@ -261,9 +263,9 @@ def query3(request):
 						order by temp_nat.data_value {})
 						where rownum < 11
 			""".format(ans3, ans5, ans5, ans5, ans4, ans2, temp)
-		query_title = query
+		
 		with connection.cursor() as cursor:
-			cursor.execute(query)
+			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 
 		for i in query3_content:
@@ -276,6 +278,7 @@ def query3(request):
 		'query3_content': query3_content,
 		'ans': (ans if ans else ""),
 		'query_title': query_title,
+		'query' : query
 	}
 	return render(request, 'home/query3.html', context)
 
@@ -294,7 +297,7 @@ def query4(request):
 	global ans3
 	global ans4 
 	global ans5
-	ans, query_title = [], ""
+	ans, query_title, query = [], "", ""
 
 	if ans1 == "":
 		ans1 == "temp"
@@ -328,7 +331,7 @@ def query4(request):
 		query4_content[5]['save'] = request.POST.get("Increase/Decrease")
 		topic, question, indicator, y1, y2 = ans1, ans2, ans3, ans4, ans5
 		temp = "<" if query4_content[5]['save'] == "increase" else ">"
-		query = """
+		query_title = """
 			select id1 as question, round(dat_val1 , 3)as avg_val_year1, round(dat_val2 , 3) as avg_val_year2 from (
 					select health_domain.name as name1,
 					chronic_disease_indicator.name as id1, 
@@ -364,9 +367,9 @@ def query4(request):
 			dat_val2 {} dat_val1
 			""".format(topic, y1, indicator, topic, y2, indicator, temp)
 		
-		query_title = query
+		
 		with connection.cursor() as cursor:
-			cursor.execute(query)
+			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 
 		for i in query4_content:
