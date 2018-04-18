@@ -33,9 +33,9 @@ def query1(request):
 	global ans4
 	global ans5
 	ans, query_title, query = [], "", ""
-	if ans1 == "":
-		ans1 = "temp"
-		query1_content[0]['fields'], query1_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
+	# if ans1 == "":
+	ans1 = "temp"
+	query1_content[0]['fields'], query1_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		query1_content[0]['save'] = ans1 = request.POST.get("Topics")
@@ -84,6 +84,7 @@ def query1(request):
 		ans1 = ans2 = ans3 = ans4 = ans5 = ""
 		query1_content[0]['fields'], query1_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
 
+	
 	context = {
 		'query1_content':query1_content,
 		'ans' : (ans if ans else ""),
@@ -116,9 +117,9 @@ def query2(request):
 
 	ans, query_title, query = [], "", ""
 
-	if ans1 == "":
-		ans1 == "temp"
-		query2_content[0]['fields'], query2_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
+	# if ans1 == "":
+	ans1 == "temp"
+	query2_content[0]['fields'], query2_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		query2_content[0]['save'] = ans1 = request.POST.get("Topics")
@@ -203,9 +204,9 @@ def query3(request):
 
 	ans, query_title, query = [], "", ""
 	
-	if ans1 == "":
-		ans1 == "temp"
-		query3_content[0]['fields'], query3_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
+	# if ans1 == "":
+	ans1 == "temp"
+	query3_content[0]['fields'], query3_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
 	
 	if request.method == 'POST' and request.POST.get("Topics"):
 		query3_content[0]['save'] = ans1 = request.POST.get("Topics")
@@ -299,9 +300,9 @@ def query4(request):
 	global ans5
 	ans, query_title, query = [], "", ""
 
-	if ans1 == "":
-		ans1 == "temp"
-		query4_content[0]['fields'], query4_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
+	# if ans1 == "":
+	ans1 == "temp"
+	query4_content[0]['fields'], query4_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
 	
 	if request.method == 'POST' and request.POST.get("Topics"):
 		query4_content[0]['save'] = ans1 = request.POST.get("Topics")
