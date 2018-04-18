@@ -16,14 +16,14 @@ def populate_form(id, query):
 			# print(table)
 			table = [row[id] for row in table]
 
-	return (table, "btn btn-success")
+	return (table, "")
 
 query1_content = [ 
-	{'title': 'Topics', 'fields': [], 'button_class':'btn btn-success disabled', 'button_title':'Next', 'save': ''},
-	{'title': 'Questions', 'fields': [], 'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save':''},
-	{'title': 'Indicator', 'fields': [], 'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save':''},
-	{'title': 'Year', 'fields': [], 'button_class': 'btn btn-success disabled', 'button_title': 'Next', 'save':''},
-	{'title': 'Above/Below', 'fields':[], 'button_class': 'btn btn-success disabled', 'button_title': 'Search', 'save':''}
+	{'title': 'Topics', 'fields': [], 'button_class':'disabled', 'button_title':'Next', 'save': ''},
+	{'title': 'Questions', 'fields': [], 'button_class': 'disabled', 'button_title': 'Next', 'save':''},
+	{'title': 'Indicator', 'fields': [], 'button_class': 'disabled', 'button_title': 'Next', 'save':''},
+	{'title': 'Year', 'fields': [], 'button_class': 'disabled', 'button_title': 'Next', 'save':''},
+	{'title': 'Above/Below', 'fields':[], 'button_class': 'disabled', 'button_title': 'Search', 'save':''}
 ]
 def query1(request):
 	global query1_content
@@ -33,35 +33,42 @@ def query1(request):
 	global ans4
 	global ans5
 	ans, query_title, query = [], "", ""
-	# if ans1 == "":
-	ans1 = "temp"
-	query1_content[0]['fields'], query1_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
+	btn_class = "btn btn-success disabled"
 
+	# if ans1 == "":
+		# ans1 = "temp"
+	query1_content[0]['fields'], query1_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
+	
 	if request.method == 'POST' and request.POST.get("Topics"):
 		query1_content[0]['save'] = ans1 = request.POST.get("Topics")
 		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
+		for i in query1_content[1:]:
+			i['fields'], i['button_class'], i['save'] = [], "disabled", ""
 		query1_content[1]['fields'], query1_content[1]['button_class'] = populate_form('NAME', query)
-	
+
 	if request.method == 'POST' and request.POST.get("Questions"):
 		query1_content[1]['save'] = ans2 = request.POST.get("Questions")
 		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
+		for i in query1_content[2:]:
+			i['fields'], i['button_class'], i['save'] = [], "disabled", ""
 		query1_content[2]['fields'], query1_content[2]['button_class'] = populate_form('DATA_VALUE_TYPE', query)
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		query1_content[2]['save'] = ans3 = request.POST.get("Indicator")
 		query = "select year_start from chronic_disease_indicator where name = '{}' order by year_start ASC".format(ans2)
-		query1_content[3]['fields'], query1_content[3]['button_class'] = populate_form('YEAR_START', query)
-
+		for i in query1_content[3:]:
+			i['fields'], i['button_class'], i['save'] = [], "disabled", ""
+		query1_content[3]['fields'], query1_content[3]['button_class'] = populate_form('YEAR_START', query)		
 
 	if request.method == 'POST' and request.POST.get("Year"):
 		query1_content[3]['save'] = ans4 = request.POST.get("Year")
-		query1_content[4]['fields'], query1_content[4]['button_class'] = ['above', 'below'], 'btn btn-success'
+		for i in query1_content[4:]:
+			i['fields'], i['button_class'], i['save'] = [], "disabled", ""
+		query1_content[4]['fields'], query1_content[4]['button_class'] = ['above', 'below'], ''
 
 	if request.method == 'POST' and request.POST.get("Above/Below"):
-		ans.extend([ans1, ans2, ans3, ans4, request.POST.get("Above/Below")])
-		print(query_title)
+		query1_content[4]['save'] = request.POST.get("Above/Below")
 		temp = ">" if request.POST.get("final") == "above" else "<"		
-
 		query_title = """with temp_nat as (select * from indicator_estimate 
 						where DATA_VALUE_TYPE = '{}' 
 						and year_start = {} 
@@ -79,12 +86,12 @@ def query1(request):
 			ans = dictfetchall(cursor)
 
 		for i in query1_content:
-			i['fields'], i['button_class'] = [], "btn btn-success disabled"
+			i['fields'], i['button_class'], i['save'] = [], "disabled", ""
 
 		ans1 = ans2 = ans3 = ans4 = ans5 = ""
 		query1_content[0]['fields'], query1_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
 
-	
+	# print(request.session.get('topic'))	
 	context = {
 		'query1_content':query1_content,
 		'ans' : (ans if ans else ""),
@@ -94,7 +101,8 @@ def query1(request):
 		'ans2': (ans2 if ans2 else ""),
 		'ans3': (ans3 if ans3 else ""),
 		'ans4': (ans4 if ans4 else ""), 
-		'query': query
+		'query': query,
+		'btn_class' : btn_class
 		
 	}
 	return render(request, 'home/query1.html', context)
@@ -116,9 +124,10 @@ def query2(request):
 	global ans5
 
 	ans, query_title, query = [], "", ""
+	btn_class = "btn btn-success disabled"
 
 	# if ans1 == "":
-	ans1 == "temp"
+	ans1 == ""
 	query2_content[0]['fields'], query2_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
 
 	if request.method == 'POST' and request.POST.get("Topics"):
@@ -144,7 +153,8 @@ def query2(request):
 	if request.method == 'POST' and request.POST.get("Year_End"):
 		query2_content[4]['save'] = ans5 = request.POST.get("Year_End")
 		query2_content[5]['fields'], query2_content[5]['button_class'] = ['increase', 'decrease'], 'btn btn-success'
-	
+		btn_class = "btn btn-success"
+
 	if request.method == 'POST' and request.POST.get("Increase/Decrease"):
 		ans6 = request.POST.get("final")
 		ans.extend([ans1, ans2, ans3, ans4, ans5, request.POST.get("final")])
@@ -180,7 +190,8 @@ def query2(request):
 		'query2_content': query2_content,
 		'ans': (ans if ans else ""),
 		'query_title': query_title,
-		'query' : query
+		'query' : query,
+		'btn_class' : btn_class
 		
 	}
 	return render(request, 'home/query2.html', context)
@@ -203,9 +214,9 @@ def query3(request):
 	global ans6
 
 	ans, query_title, query = [], "", ""
-	
+	btn_class = "btn btn-success disabled"
 	# if ans1 == "":
-	ans1 == "temp"
+	ans1 == ""
 	query3_content[0]['fields'], query3_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
 	
 	if request.method == 'POST' and request.POST.get("Topics"):
@@ -242,6 +253,7 @@ def query3(request):
 	if request.method == 'POST' and request.POST.get("Population"):
 		query3_content[4]['save'] = ans5 = request.POST.get("Population")
 		query3_content[5]['fields'], query3_content[5]['button_class'] = ["highest", "lowest"], "btn btn-success"
+		btn_class = 'btn btn-success'
 
 	if request.method == 'POST' and request.POST.get("Highest/Lowest"):
 		query3_content[5]['save'] =	ans6 = request.POST.get("Highest/Lowest")
@@ -279,7 +291,8 @@ def query3(request):
 		'query3_content': query3_content,
 		'ans': (ans if ans else ""),
 		'query_title': query_title,
-		'query' : query
+		'query' : query,
+		'btn_class' : btn_class
 	}
 	return render(request, 'home/query3.html', context)
 
@@ -299,9 +312,10 @@ def query4(request):
 	global ans4 
 	global ans5
 	ans, query_title, query = [], "", ""
+	btn_class = 'btn btn-success disabled'
 
-	# if ans1 == "":
-	ans1 == "temp"
+	ans1 == ""
+
 	query4_content[0]['fields'], query4_content[0]['button_class'] = populate_form('NAME', "Select distinct name from health_domain")
 	
 	if request.method == 'POST' and request.POST.get("Topics"):
@@ -327,6 +341,7 @@ def query4(request):
 	if request.method == 'POST' and request.POST.get("Year End"):
 		query4_content[4]['save'] = ans5 = request.POST.get("Year End")
 		query4_content[5]['fields'], query4_content[5]['button_class'] = ["increase", "decrease"], "btn btn-success"
+		btn_class = 'btn btn-success'
 
 	if request.method == 'POST' and request.POST.get("Increase/Decrease"):
 		query4_content[5]['save'] = request.POST.get("Increase/Decrease")
@@ -383,6 +398,7 @@ def query4(request):
 		'query4_content' : query4_content,
 		'ans' : (ans if ans else ""),
 		'query_title': query_title,
+		'btn_class': btn_class
 	}
 	return render(request, 'home/query4.html', context)
 
