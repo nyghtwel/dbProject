@@ -5,7 +5,6 @@
             Which states’s have a &ltdata value type&gt for &ltindicator ID&gt in a certain year that is *above/below* the national average?
         </p>
 </div>
-<h4>{{query}}</h4>
 <br>
 {% for row in query1_content %}
 <div>
@@ -26,7 +25,7 @@
     {% csrf_token %}
     <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
 </form>
-<p>{{query_title}}</p>
+
 <table>
     </tr>
     {% for row in ans %}

@@ -132,6 +132,13 @@
         </div>
     </div>                      
     <div class="container">
+        {% if messages %}
+        <ul class="list-unstyled">
+        {% for message in messages %}
+        <li{% if message.tags %} class="alert alert-success" {% endif %}>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
         {% block content %}
         {% endblock %}
     </div>
