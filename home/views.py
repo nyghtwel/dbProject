@@ -15,7 +15,7 @@ def populate_form(id, query):
 			table = dictfetchall(cursor)
 			# print(table)
 			table = [row[id] for row in table]
-	print(table)
+
 	return (table, "")
 
 query1_content = [ 
