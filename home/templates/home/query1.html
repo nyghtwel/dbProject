@@ -13,7 +13,7 @@
         {% csrf_token %}
         <div class="form-group">
             <label for="sel">{{row.title}}: {{row.save}}</label>
-            <select class="form-control" id="{{row.title}}" name="{{row.title}}" onclick="form.submit()" {{row.button_class}}>
+            <select class="form-control" id="{{row.title}}" name="{{row.title}}" onclick="form.submit()" {{row.disabled}}>
                 {% for row2 in row.fields %}
                 <option>{{row2}}</option>
                 {% endfor %}
