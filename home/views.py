@@ -35,6 +35,9 @@ def query1(request):
 	ans, query_title, query = [], "", ""
 	# if ans1 == "":
 		# ans1 = "temp"
+	for i in query1_content:
+		if i['fields']: i['fields'].pop(0)
+
 	query1_content[0]['fields'], query1_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 	
 	if request.method == 'POST' and request.POST.get("Topics"):
@@ -98,8 +101,8 @@ def query1(request):
 		ans1 = ans2 = ans3 = ans4 = ans5 = ""
 		query1_content[0]['fields'], query1_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 
-	# for i in query1_content:
-	# 	i['fields'].insert(0, i['save'])
+	for i in query1_content:
+		i['fields'].insert(0, i['save'])
 
 	# print(request.session.get('topic'))	
 	context = {
