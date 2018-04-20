@@ -9,8 +9,15 @@
         that are important to public health practice and available for states, territories and large metropolitan areas. In addition
         to providing access to state-specific indicator data, the CDI web site serves as a gateway to additional information and
         data resources.
-        <br><br>
-        Data set has 255,688 tuples
+        <br>
     </p>
+    <div style='display:inline;'>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p><button type="submit" class="btn btn-primary" name="submit" value="submit" onclick="form.submit()">Data set has: {{total}} tuples</button></p>
+    </form>
+    
+    </div>
+    
 </div>
 {% endblock %}
