@@ -24,7 +24,7 @@
 {% endfor %}
 <form action="" method="post">
     {% csrf_token %}
-        <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
+    <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
 </form>
 <p>{{query_title}}</p>
 <table>

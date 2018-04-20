@@ -134,9 +134,12 @@ def query2(request):
 	global ans3 
 	global ans4 
 	global ans5 
+	btn_class = 'btn btn-success disabled'
+
+	for i in query2_content:
+		if i['fields']: i['fields'].pop(0)
 
 	ans, query_title, query = [], "", ""
-	
 
 	# if ans1 == "":
 	ans1 == ""
@@ -169,8 +172,10 @@ def query2(request):
 
 	if request.method == 'POST' and request.POST.get("Increase/Decrease"):
 		query2_content[5]['save'] = ans6 = request.POST.get("final")
+		btn_class = 'btn btn-success'
 		
-		temp = "<" if ans6 == "increase" else ">"
+	if request.method == 'POST' and request.POST.get("Submit"):
+		temp = "<" if query2_content[5]['save'] == "increase" else ">"
 		query_title = """With temp_nat as (select * from indicator_estimate 
 					where DATA_VALUE_TYPE= '{}'
     		            and strat_id='OVR'
@@ -196,12 +201,16 @@ def query2(request):
 
 		ans1 = ans2 = ans3 = ans3 = ans4 = ans5 = ans6 = ""
 		query2_content[0]['fields'], query2_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
-	
+
+	for i in query2_content:
+		i['fields'].insert(0, i['save'])
+
 	context = {
 		'query2_content': query2_content,
 		'ans': (ans if ans else ""),
 		'query_title': query_title,
-		'query' : query
+		'query' : query,
+		'btn_class' : btn_class
 	}
 	return render(request, 'home/query2.html', context)
 
@@ -221,9 +230,12 @@ def query3(request):
 	global ans4 
 	global ans5 
 	global ans6
-	
+	btn_class = 'btn btn-success disabled'
 	ans, query_title, query = [], "", ""
-	
+
+	for i in query3_content:
+		if i['fields']: i['fields'].pop(0)
+
 	query3_content[0]['fields'], query3_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 	
 	if request.method == 'POST' and request.POST.get("Topics"):
@@ -262,7 +274,10 @@ def query3(request):
 
 	if request.method == 'POST' and request.POST.get("Highest/Lowest"):
 		query3_content[5]['save'] =	ans6 = request.POST.get("Highest/Lowest")
-		temp = "desc" if ans6 == "highest" else "asc" 		
+		btn_class = 'btn btn-success'
+
+	if request.method == 'POST' and request.POST.get('submit'):
+		temp = "desc" if query3_content[5]['save'] == "highest" else "asc" 		
 		query_title = """
 			select * from (
 			select location.name, temp_nat.data_value || temp_nat.data_unit as data_value
@@ -291,12 +306,16 @@ def query3(request):
 
 		query3_content[0]['fields'], query3_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 		ans1 = ans2 = asn3 = ans4 = ans5 = ans6 = ""
-	
+
+	for i in query3_content:
+		i['fields'].insert(0, i['save'])
+
 	context = {
 		'query3_content': query3_content,
 		'ans': (ans if ans else ""),
 		'query_title': query_title,
 		'query' : query,
+		'btn_class' : btn_class
 	}
 	return render(request, 'home/query3.html', context)
 
