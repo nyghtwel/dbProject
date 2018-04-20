@@ -181,7 +181,7 @@ def query2(request):
 	if request.method == 'POST' and request.POST.get("Year_End"):
 		query2_content[4]['save'] = ans5 = request.POST.get("Year_End")
 		query2_content[5]['fields'], query2_content[5]['disabled'] = ['increase', 'decrease'], ''
-		for i in query1_content[6:]:
+		for i in query2_content[6:]:
 			i['disabled'] = 'disabled'
 
 	if request.method == 'POST' and request.POST.get("Increase/Decrease"):
@@ -257,16 +257,21 @@ def query3(request):
 		query3_content[0]['save'] = ans1 = request.POST.get("Topics")
 		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
 		query3_content[1]['fields'], query3_content[1]['disabled'] = populate_form('NAME', query)
-
+		for i in query3_content[2:]:
+			i['disabled'] = 'disabled'
 	if request.method == 'POST' and request.POST.get("Questions"):
 		query3_content[1]['save'] = ans2 = request.POST.get("Questions")
 		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
 		query3_content[2]['fields'], query3_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
+		for i in query3_content[3:]:
+			i['disabled'] = 'disabled'
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		query3_content[2]['save'] = ans3 = request.POST.get("Indicator")
 		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
 		query3_content[3]['fields'], query3_content[3]['disabled'] = populate_form('YEAR_START', query)
+		for i in query3_content[4:]:
+			i['disabled'] = 'disabled'
 
 	if request.method == 'POST' and request.POST.get("Year"):
 		query3_content[3]['save'] = ans4 = request.POST.get("Year")
@@ -363,26 +368,35 @@ def query4(request):
 		query4_content[0]['save'] = ans1 = request.POST.get("Topics")
 		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
 		query4_content[1]['fields'], query4_content[1]['disabled'] = populate_form('NAME', query)
+		for i in query4_content[2:]:
+			i['disabled'] = 'disabled'
 
 	if request.method == 'POST' and request.POST.get("Questions"):
 		query4_content[1]['save'] = ans2 = request.POST.get("Questions")
 		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
 		query4_content[2]['fields'], query4_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
+		for i in query4_content[3:]:
+			i['disabled'] = 'disabled'
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		query4_content[2]['save'] = ans3 = request.POST.get("Indicator")
 		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
 		query4_content[3]['fields'], query4_content[3]['disabled'] = populate_form('YEAR_START', query)
+		for i in query4_content[4:]:
+			i['disabled'] = 'disabled'
 
 	if request.method == 'POST' and request.POST.get("Year Start"):
 		query4_content[3]['save'] = ans4 = request.POST.get("Year Start")
 		query = "select distinct year_end from chronic_disease_indicator where year_end > {} order by year_end ASC".format(ans4)
 		query4_content[4]['fields'], query4_content[4]['disabled'] = populate_form('YEAR_END', query)
-	
+		for i in query4_content[5:]:
+			i['disabled'] = 'disabled'
+
 	if request.method == 'POST' and request.POST.get("Year End"):
 		query4_content[4]['save'] = ans5 = request.POST.get("Year End")
 		query4_content[5]['fields'], query4_content[5]['disabled'] = ["increase", "decrease"], "btn btn-success"
-		
+		for i in query4_content[6:]:
+			i['disabled'] = 'disabled'
 
 	if request.method == 'POST' and request.POST.get("Increase/Decrease"):
 		query4_content[5]['save'] = request.POST.get("Increase/Decrease")
