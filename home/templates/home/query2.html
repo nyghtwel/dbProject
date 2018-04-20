@@ -5,7 +5,7 @@
             Which states had an increase/decrease in &ltdata value type&gt for *ltindicator ID&gt from year 1 to year 2?
         </p>
 </div>
-<h4>{{query}}</h4>
+
 <br>
 {% for row in query2_content %}
 <div>
@@ -27,7 +27,7 @@
     {% csrf_token %}
     <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
 </form>
-<p>{{query_title}}</p>
+
 <table>
     </tr>
     {% for row in ans %}

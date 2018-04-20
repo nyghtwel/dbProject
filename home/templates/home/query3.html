@@ -5,7 +5,6 @@
             Which states (top 10) had the highest/lowest &ltdata value type&gt for &ltindicator ID&gt for &ltpopulation ID&gt?
         </p>
 </div>
-<h4>{{query}}</h4>
 <br>
 {% for row in query3_content %}
 <div>
@@ -23,11 +22,11 @@
     </form>
 </div>
 {% endfor %}
-<p>{{query_title}}</p>
 <form action="" method="post">
     {% csrf_token %}
     <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
 </form>
+
 <table>
     </tr>
     {% for row in ans %}
