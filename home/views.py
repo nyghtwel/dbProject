@@ -142,7 +142,7 @@ def query2(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		query2_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 and year_start < (select max(year_end) from chronic_disease_indicator) order by year_start ASC".format(ans2)
 		query2_content[3]['fields'], query2_content[3]['disabled'] = populate_form('YEAR_START', query)
 
 	if request.method == 'POST' and request.POST.get("Year_Start"):
