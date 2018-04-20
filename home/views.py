@@ -31,7 +31,7 @@ def query1(request):
 	global ans2 
 	global ans3
 	global ans4 
-
+	btn_class = 'btn btn-success disabled'
 	ans, query_title, query = [], "", ""
 	# if ans1 == "":
 		# ans1 = "temp"
@@ -52,24 +52,29 @@ def query1(request):
 		query1_content[2]['fields'], query1_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
-		print("here")
+	
 		query1_content[2]['save'] = ans3 = request.POST.get("Indicator")
 		query = "select year_start from chronic_disease_indicator where name = '{}' order by year_start ASC".format(ans2)
 		
 		for i in query1_content[3:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		query1_content[3]['fields'], query1_content[3]['disabled'] = populate_form('YEAR_START', query)		
-		print(query1_content[3]['fields'])
+	
 
 	if request.method == 'POST' and request.POST.get("Year"):
 		query1_content[3]['save'] = ans4 = request.POST.get("Year")
 		for i in query1_content[4:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		query1_content[4]['fields'], query1_content[4]['disabled'] = ['above', 'below'], ''
+		
 
 	if request.method == 'POST' and request.POST.get("Above/Below"):
 		query1_content[4]['save'] = request.POST.get("Above/Below")
-		temp = ">" if request.POST.get("final") == "above" else "<"		
+		btn_class = 'btn btn-success'
+
+	if request.method == 'POST' and request.POST.get("submit"):
+		print("here")
+		temp = ">" if query1_content[4]['save'] == "above" else "<"		
 		query_title = """with temp_nat as (select * from indicator_estimate 
 						where DATA_VALUE_TYPE = '{}' 
 						and year_start = {} 
@@ -93,6 +98,9 @@ def query1(request):
 		ans1 = ans2 = ans3 = ans4 = ans5 = ""
 		query1_content[0]['fields'], query1_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 
+	# for i in query1_content:
+	# 	i['fields'].insert(0, i['save'])
+
 	# print(request.session.get('topic'))	
 	context = {
 		'query1_content':query1_content,
@@ -102,7 +110,8 @@ def query1(request):
 		'ans2': (ans2 if ans2 else ""),
 		'ans3': (ans3 if ans3 else ""),
 		'ans4': (ans4 if ans4 else ""), 
-		'query': query
+		'query': query, 
+		'btn_class' : btn_class
 		
 	}
 	return render(request, 'home/query1.html', context)
