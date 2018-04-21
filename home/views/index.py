@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from .helper import *
 
 def index(request):
 	query = '''with temp_count as

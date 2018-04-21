@@ -1,7 +1,10 @@
+from .helper import *
+
 questions_5, indicator_5, increase_decrease_5 = [], [], []
 question_button_5 = indicator_button_5 = increase_decrease_button_5 = "btn btn-success disabled"
+ans1 = ans2 = ans3 = ""
 
-def query5(request):
+def location(request):
 	global health_domain
 	global questions_5
 	global question_button_5
@@ -51,4 +54,4 @@ def query5(request):
 		'indicator': indicator_5,
 		'indicator_button': indicator_button_5
 	}
-	return render(request, 'home/query5.html', context)
+	return render(request, 'home/location.html', context)

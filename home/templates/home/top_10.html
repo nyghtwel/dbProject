@@ -1,13 +1,12 @@
 {% extends 'home/layout.html' %} {% block content %}
 <div class="container">
-    <h1 class="mt-5">Query 2</h3>
+    <h1 class="mt-5">Query 3</h3>
         <p class="lead">
-            Which states had an increase/decrease in &ltdata value type&gt for *ltindicator ID&gt from year 1 to year 2?
+            Which states (top 10) had the highest/lowest &ltdata value type&gt for &ltindicator ID&gt for &ltpopulation ID&gt?
         </p>
 </div>
-
 <br>
-{% for row in query2_content %}
+{% for row in top_10_content %}
 <div>
     <form action="" method="post">
         {% csrf_token %}
@@ -32,7 +31,7 @@
     </tr>
     {% for row in ans %}
     <tr>
-        <td>{{ row}}</td>
+        <td>{{row}}</td>
     </tr>
     {% endfor %}
 </table>

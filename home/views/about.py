@@ -1,3 +1,5 @@
+from .helper import *
+
 def about(request):
 	context = {
 

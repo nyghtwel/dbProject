@@ -97,12 +97,12 @@ path	../home/urls.py	/^from django.urls import path, include$/;"	kind:namespace	
 include	../home/urls.py	/^from django.urls import path, include$/;"	kind:namespace	line:1
 views	../home/urls.py	/^import .views$/;"	kind:namespace	line:2
 urlpatterns	../home/urls.py	/^urlpatterns = [$/;"	kind:variable	line:5
-query4.py	../home/views/query4.py	1;"	kind:file	line:1
-query1.py	../home/views/query1.py	1;"	kind:file	line:1
-render	../home/views/query1.py	/^from django.shortcuts import render$/;"	kind:namespace	line:1
-query1_content	../home/views/query1.py	/^query1_content = [$/;"	kind:variable	line:3
-query1	../home/views/query1.py	/^def query1(request):$/;"	kind:function	line:12
-json	../home/views/query1.py	/^	import json$/;"	kind:namespace	line:117
+indicators.py	../home/views/indicators.py	1;"	kind:file	line:1
+national_avg.py	../home/views/national_avg.py	1;"	kind:file	line:1
+render	../home/views/national_avg.py	/^from django.shortcuts import render$/;"	kind:namespace	line:1
+national_avg_content	../home/views/national_avg.py	/^national_avg_content = [$/;"	kind:variable	line:3
+national_avg	../home/views/national_avg.py	/^def national_avg(request):$/;"	kind:function	line:12
+json	../home/views/national_avg.py	/^	import json$/;"	kind:namespace	line:117
 index.py	../home/views/index.py	1;"	kind:file	line:1
 render	../home/views/index.py	/^from django.shortcuts import render$/;"	kind:namespace	line:1
 index	../home/views/index.py	/^def index(request):$/;"	kind:function	line:3
@@ -112,8 +112,8 @@ HttpResponse	../home/views/__init__.py	/^from django.http import HttpResponse$/;
 connection	../home/views/__init__.py	/^from django.db import connection$/;"	kind:namespace	line:3
 messages	../home/views/__init__.py	/^from django.contrib import messages$/;"	kind:namespace	line:4
 populate_form	../home/views/__init__.py	/^def populate_form(id, query):$/;"	kind:function	line:9
-query2.py	../home/views/query2.py	1;"	kind:file	line:1
-query3.py	../home/views/query3.py	1;"	kind:file	line:1
+time.py	../home/views/time.py	1;"	kind:file	line:1
+top_10.py	../home/views/top_10.py	1;"	kind:file	line:1
 __init__.py	../dbApp/migrations/__init__.py	1;"	kind:file	line:1
 models.py	../dbApp/models.py	1;"	kind:file	line:1
 models	../dbApp/models.py	/^from django.db import models$/;"	kind:namespace	line:1
