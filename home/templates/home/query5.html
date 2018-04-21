@@ -1,75 +1,37 @@
 {% extends 'home/layout.html' %} {% block content %}
 <div class="container">
-    <h1 class="mt-5">Query 5</h1>
+    <h1 class="mt-5">Query 5</h3>
         <p class="lead">
-            Which years and locations had the highest increase/decrease in some indicator for some location from the previous year?
+             Which years and locations had the highest increase/decrease in {indicator name} for {located in} from the previous year?
         </p>
 </div>
 <br>
+{% for row in query5_content %}
 <div>
     <form action="" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label for="sel1">Topic:</label>
-            <select class="form-control" id="topics" name="topics">
-                {% for name in health_domain %}
-                <option> {{name}} </option>
+            <label for="sel">{{row.title}}: {{row.save}}</label>
+            <select class="form-control" id="{{row.title}}" name="{{row.title}}" onchange="form.submit()" {{row.disabled}}>
+                {% for row2 in row.fields %}
+                <option>{{row2}}</option>
                 {% endfor %}
             </select>
         </div>
-        <button type="submit" class="btn btn-success" value="submit" name="search_btn">Next</button>
-    </form>
-    <h3>{{ans1}}</h3>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Question</label>
-            <select class="form-control" id="questions" name="questions">
-                {% for question in questions %}
-                <option> {{question}} </option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="submit" class="{{question_button}}" value="submit" name="search_btn">Next</button>
-    </form>
-    <h3>{{ans2}}</h3>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Indicator</label>
-            <select class="form-control" id="indicator" name="indicator">
-                {% for row in indicator %}
-                <option>{{row}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="submit" class="{{indicator_button}}" value="submit" name="search_btn">Next</button>
-    </form>
-    <h3>{{ans3}}</h3>
-</div>
-<br>
-<div>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="sel1">Increase/Decrease</label>
-            <select class="form-control" id="final" name="final">
-                {% for row in increase_decrease %}
-                <option>{{row}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="submit" class="{{increase_decrease_button}}" value="submit" name="search_btn">Search</button>
     </form>
 </div>
-<br>
-<h1>{{query_title}}</h1>
-<p>{{ans}}</p>
+{% endfor %}
+<form action="" method="post">
+    {% csrf_token %}
+    <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
+</form>
+<table>
+    </tr>
+    {% for row in ans %}
+    <tr>
+        <td>{{ row}}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}
