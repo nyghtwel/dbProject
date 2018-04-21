@@ -64,7 +64,7 @@ def top_10(request):
 				(select distinct race, stratid from populationid)
 				union (select distinct gender, stratid from populationid)
 				union (select distinct overall, stratid from populationid))
-			where race is not null and stratid in ( select stratid from indicator_estimate
+			where race is not null and stratid in ( select strat_id from indicator_estimate
 													where data_value_type = '{}'
 													and year_start = {}
 													and indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}'))
