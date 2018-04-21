@@ -1,8 +1,9 @@
 {% extends 'home/layout.html' %} {% block content %}
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <div class="container">
-    <h1 class="mt-5">Query 1</h3>
+    <h1 class="mt-5">Which states have a &ltdata value type&gt for &ltindicator ID&gt in a certain year that is above/below the national average?</h3>
         <p class="lead">
-            Which states’s have a &ltdata value type&gt for &ltindicator ID&gt in a certain year that is *above/below* the national average?
+            
         </p>
 </div>
 <br>
@@ -25,20 +26,23 @@
     {% csrf_token %}
     <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
 </form>
-
+<!--
 <table>
     </tr>
     {% for row in ans %}
-    <tr>
+    <t>
         <td>{{row}}</td>
     </tr>
     {% endfor %}
 </table>
+-->
 <br>
 {% if ans %}
 <div class="container-fluid text-center text-md-left">
 <h3>States {{ans5}} the National Average of {{national_avg}} in {{ans4}} for {{ans3}} in {{ans2}} </h3>
-<div id="chartContainer" style="height: 700px; width: 100%;"></div>
+<div class='container'>
+    <div id="chartContainer" style="height: 100%; width: 100%;"></div>
+</div>
 </div>
 {% endif %}
 <script type='text/javascript'>
@@ -62,13 +66,13 @@
             theme: "light2", // "light1", "light2", "dark1", "dark2"
             title: {
                 text: ''
-                
             },
             axisX:{
                 interval: 1
             },
             axisY: {
-                title: "Percentage"
+                title: "Percentage",
+                
             },
             axisY2: {
                 
@@ -81,10 +85,11 @@
                 legendText: "States",
                 dataPoints: data
             }]
+            
         });
         chart.render();
 
     }
 </script>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
 {% endblock %}

@@ -23,8 +23,7 @@ def national_avg(request):
 	# if ans1 == "":
 	# ans1 = "temp"
 	for i in national_avg_content:
-		if i['fields']:
-			i['fields'].pop(0)
+		if i['fields']: i['fields'].pop(0)
 
 	national_avg_content[0]['fields'], national_avg_content[0]['disabled'] = populate_form(
 		'NAME', "Select distinct name from health_domain")
@@ -84,7 +83,6 @@ def national_avg(request):
 		btn_class = 'btn btn-success'
 
 	if request.method == 'POST' and request.POST.get("submit"):
-		print("here")
 		temp = ">" if national_avg_content[4]['save'] == "above" else "<"
 		query_title = """with temp_nat as (select * from indicator_estimate 
 						where DATA_VALUE_TYPE = '{}' 
@@ -92,7 +90,7 @@ def national_avg(request):
 						and strat_id = 'OVR' 
 						and indicator_id in (select indicator_id 
 							from chronic_disease_indicator 
-							where name = '{}')) select location.name, temp_nat.year_start as year, concat(round((select avg(data_value) 
+							where name = '{}')) select distinct location.name, temp_nat.year_start as year, concat(round((select avg(data_value) 
 								from temp_nat), 1), '%') as national_avg, 
 								temp_nat.data_value as location_data_value from temp_nat, location 
 									where temp_nat.location_id = location.location_ID and temp_nat.data_value {} (select avg(data_value) from temp_nat)
@@ -102,11 +100,12 @@ def national_avg(request):
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 
+		# ans = ans.sort(key=lambda x: x[NAME])
 		messages.success(request, query_title)
 		national_avg = ans[0]['NATIONAL_AVG']
 
-		for i in national_avg_content:
-			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		# for i in national_avg_content:
+		# 	i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 
 		# ans1 = ans2 = ans3 = ans4 = ans5 = ""
 		national_avg_content[0]['fields'], national_avg_content[0]['disabled'] = populate_form(
