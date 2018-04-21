@@ -570,3 +570,180 @@ def dictfetchall(cursor):
 		dict(zip(columns, row))
 		for row in cursor.fetchall()
 	]
+
+
+# Add map view (optional)
+
+test_content = [ 
+	{'title': 'Topics', 'fields': [], 'disabled':'disabled', 'save': ''},
+	{'title': 'Questions', 'fields': [], 'disabled': 'disabled', 'save':''},
+	{'title': 'Indicator', 'fields': [], 'disabled': 'disabled', 'save':''},
+	{'title': 'Year', 'fields': [], 'disabled': 'disabled', 'save':''}
+]
+
+
+def test(request):
+	global test_content
+	global ans1 
+	global ans2 
+	global ans3
+	global ans4
+	btn_class = 'btn btn-success disabled'
+	ans, query_title, query = [], "", ""
+	# if ans1 == "":
+		# ans1 = "temp"
+	for i in test_content:
+		if i['fields']: i['fields'].pop(0)
+
+	test_content[0]['fields'], test_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
+	
+	if request.method == 'POST' and request.POST.get("Topics"):
+		test_content[0]['save'] = ans1 = request.POST.get("Topics")
+		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
+		for i in test_content[1:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		test_content[1]['fields'], test_content[1]['disabled'] = populate_form('NAME', query)
+		for i in test_content[2:]:
+			i['disabled'] = 'disabled'
+		messages.success(request, query)
+
+	if request.method == 'POST' and request.POST.get("Questions"):
+		test_content[1]['save'] = ans2 = request.POST.get("Questions")
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
+		for i in test_content[2:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		test_content[2]['fields'], test_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
+		for i in test_content[3:]:
+			i['disabled'] = 'disabled'
+		messages.success(request, query)
+
+	if request.method == 'POST' and request.POST.get("Indicator"):
+		test_content[2]['save'] = ans3 = request.POST.get("Indicator")
+		query = "select year_start from chronic_disease_indicator where name = '{}' order by year_start ASC".format(ans2)
+		for i in test_content[3:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		test_content[3]['fields'], test_content[3]['disabled'] = populate_form('YEAR_START', query)
+		messages.success(request, query)			
+		# for i in home_content[4:]:
+		# 	i['disabled'] = 'disabled'
+
+	if request.method == 'POST' and request.POST.get("Year"):
+		test_content[3]['save'] = ans4 = request.POST.get("Year")
+
+		btn_class = 'btn btn-success'
+
+	if request.method == 'POST' and request.POST.get("submit"):
+		print("here")
+		# temp = ">" if query1_content[4]['save'] == "above" else "<"		
+		query_title = """with temp_nat as (select * from indicator_estimate 
+						where DATA_VALUE_TYPE = '{}' and year_start = {} and strat_id = 'OVR' 
+						and indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')) 
+						select location.name, temp_nat.data_value as location_data_value 
+						from temp_nat, location 
+						where temp_nat.location_id = location.location_ID""".format(ans3, ans4, ans2)
+		
+		with connection.cursor() as cursor:
+			cursor.execute(query_title)
+			ans = dictfetchall(cursor)
+
+		messages.success(request, query_title)
+		
+		for i in test_content:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+
+		ans1 = ans2 = ans3 = ans4 = ""
+		test_content[0]['fields'], test_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
+
+	for i in test_content:
+		i['fields'].insert(0, i['save'])
+
+	import json
+	json_test = json.dumps(ans)
+	# print(json_data)
+
+
+	# print(request.session.get('topic'))	
+	context = {
+		'test_content':test_content,
+		'ans' : (ans if ans else ""),
+		'ans1': (ans1 if ans1 else ""),
+		'ans2': (ans2 if ans2 else ""),
+		'ans3': (ans3 if ans3 else ""),
+		'ans4': (ans4 if ans4 else ""), 
+		'btn_class' : btn_class
+		
+	}
+
+	return render(request, 'home/test.html', context)
+
+# Advanced Search
+
+main_content = [ 
+	{'title': 'Topics', 'fields': [], 'disabled':'disabled', 'save': ''},
+	{'title': 'Questions', 'fields': [], 'disabled': 'disabled', 'save':''},
+	{'title': 'Indicator', 'fields': [], 'disabled': 'disabled', 'save':''},
+	{'title': 'Year', 'fields': [], 'disabled': 'disabled', 'save':''},
+	{'title': 'Location', 'fields': [], 'disabled': 'disabled', 'save':''},
+	{'title': 'Population', 'fields': [], 'disabled': 'disabled', 'save':''}
+]
+
+def main(request):
+	global main_content
+	global ans1 
+	global ans2 
+	global ans3
+	global ans4
+	global ans5
+	global ans6
+
+	ans, query_title = [], ""
+
+	main_content[0]['fields'], main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain order by name asc")
+	main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', "Select distinct name from CHRONIC_DISEASE_INDICATOR order by name asc")
+	main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', "Select distinct data_value_type from indicator_estimate order by data_value_type asc")
+	main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', "Select distinct year_start from CHRONIC_DISEASE_INDICATOR order by YEAR_START asc")
+	main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', "Select distinct name from location order by name asc")
+	main_content[5]['fields'], main_content[5]['disabled'] = populate_form('Population', "Select  distinct(gender || race || overall) p from populationid order by p asc")
+
+	btn_class = 'btn btn-success'
+
+	if request.method == 'POST' and request.POST.get("submit"):
+		print("here")
+		# for i in main_content['title']:
+		# 	if request.POST.get(i):
+		# 	 	main_content[i]['save'] = request.POST.get(i)
+
+		temp = []
+		for i in range(0, 6):
+			temp.append('is not null') if main_content[i]['save'] == '' else temp.append('in {}'.format(main_content[i]))	
+			
+		query_title = """with all_data as 
+		(select hd.NAME topic,  cdi.NAME question, ie.data_value_type indicator, cdi.YEAR_START year, ie.data_value value, ie.data_unit unit, ie.data_source source, l.name location, (p.gender || p.race || p.overall) population
+		from DB4.HEALTH_DOMAIN hd, DB4.CHRONIC_DISEASE_INDICATOR cdi, DB4.INDICATOR_ESTIMATE ie,DB4.LOCATION l, DB4.POPULATIONID p
+		where hd.domain_id = cdi.domain_id and cdi.indicator_id = ie.indicator_id and cdi.year_start = ie.year_start and ie.location_id = l.location_id and ie.strat_id = p.stratid and ie.data_value is not null)
+		select * from all_data
+		where topic {} and question {} and indicator {} and year {} and location {} and population {}
+		order by topic, question, indicator, year, location, population asc
+		""".format(temp[0], temp[1], temp[2], temp[3], temp[4], temp[5])
+		
+		with connection.cursor() as cursor:
+			cursor.execute(query_title)
+			ans = dictfetchall(cursor)
+
+		messages.success(request, query_title)
+
+		ans1 = ans2 = ans3 = ans4 = ans5 = ans6 = ""
+	
+	context = {
+		'main_content':main_content,
+		'ans' : (ans if ans else ""),
+		'ans1': (ans1 if ans1 else ""),
+		'ans2': (ans2 if ans2 else ""),
+		'ans3': (ans3 if ans3 else ""),
+		'ans4': (ans4 if ans4 else ""), 
+		'ans5': (ans5 if ans5 else ""), 
+		'ans6': (ans6 if ans6 else ""), 
+		'btn_class' : btn_class	
+	}
+
+	return render(request, 'home/main.html', context)
