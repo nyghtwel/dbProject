@@ -35,4 +35,56 @@
     {% endfor %}
 </table>
 <br>
+{% if ans %}
+<div class="container-fluid text-center text-md-left">
+<h3>States {{ans5}} the National Average of {{national_avg}} in {{ans4}} for {{ans3}} in {{ans2}} </h3>
+<div id="chartContainer" style="height: 700px; width: 100%;"></div>
+</div>
+{% endif %}
+<script type='text/javascript'>
+    
+    window.onload = function () {
+        data_from_django = jQuery.parseJSON('{{json_data|safe}}');
+        console.log(data_from_django);
+        var i;
+        var data = [];
+        for (i=0; i<data_from_django.length; i++){
+            var a = data_from_django[i].LOCATION_DATA_VALUE
+            var b = data_from_django[i].NAME
+            var point = {y: a, label: b}
+            data.push(point)
+        }
+        var text2 = 'States '+ jQuery.parseHTML('{{ans5|safe}}')+" the National Avg of in "+jQuery.parseHTML('{{ans4|safe}}')
+        console.log(text2)
+        console.log(data);
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            title: {
+                text: ''
+                
+            },
+            axisX:{
+                interval: 1
+            },
+            axisY: {
+                title: "Percentage"
+            },
+            axisY2: {
+                
+            },
+            data: [{
+                type: "bar",
+                showInLegend: true,
+                legendMarkerColor: "grey",
+                axisYType: "secondary",
+                legendText: "States",
+                dataPoints: data
+            }]
+        });
+        chart.render();
+
+    }
+</script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 {% endblock %}
