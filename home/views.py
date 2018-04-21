@@ -517,6 +517,13 @@ def query4(request):
 	}
 	return render(request, 'home/query4.html', context)
 
+query5_content = [
+    {'title': 'Topics', 'fields': [], 'disabled': 'disabled', 'save': ''},
+   	{'title': 'Questions', 'fields': [], 'disabled': 'disabled', 'save': ''},
+   	{'title': 'Indicator', 'fields': [], 'disabled': 'disabled', 'save': ''},
+   	{'title': 'Increase/Decrease', 'fields': [],'disabled': 'disabled', 'save': ''}
+]
+
 def query5(request):
 	global query5_content
 	global ans1
