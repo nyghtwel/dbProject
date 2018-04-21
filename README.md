@@ -17,6 +17,27 @@ TBD
 - Install Oracle Client libraries 
 - Create local_settings.py in dbProject/ for environment variables and database connections
 
+### Git Instructions
+- Ready to start working?
+    - git checkout -b <branch_name>
+    - (done working)
+    - git status (to see changes)
+    - git add .
+    - git commit -m '<message here, make it short but informative>'
+    - git checkout master
+    - git pull origin master
+    - git checkout <branch_name>
+    - git merge master 
+    - git checkout master 
+    - git merge <branch_name>
+    - git push origin master 
+
+- Can't get stuff to work need to go back to last commit?
+    - make sure you are on your working branch
+    - git reset --hard
+
+- Alway git pull origin master to see if there are any updates
+
 ### TODO
 - [ ] Users
     - [ ] Show Users
@@ -27,7 +48,7 @@ TBD
     - [ ] Testing
 
 - [ ] Visualization
-    - [ ] Graphs/Tables for National Avg query 
+    - [ ] Graphs/Tables for National Avg query (AL)
     - [ ] Graphs/Tables for Time query
     - [ ] Graphs/Tables for Top 10 query 
     - [ ] Graphs/Tables for Indicator query 
