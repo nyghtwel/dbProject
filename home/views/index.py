@@ -15,6 +15,7 @@ def index(request):
 				cursor.execute(query)
 				total = dictfetchall(cursor)[0]['TOTAL_NO_OF_TUPLES']
 
+	messages.success(request, query)
 	context = {
 		'total': total
 	}
