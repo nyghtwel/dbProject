@@ -1,0 +1,167 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+__init__.py	../home/migrations/__init__.py	1;"	kind:file	line:1
+models.py	../home/models.py	1;"	kind:file	line:1
+models	../home/models.py	/^from django.db import models$/;"	kind:namespace	line:1
+datetime	../home/models.py	/^from datetime import datetime$/;"	kind:namespace	line:2
+Users	../home/models.py	/^class Users(models.Model):$/;"	kind:class	line:6
+username	../home/models.py	/^    username = models.CharField(primary_key=True, max_length=20)$/;"	kind:variable	line:7
+password	../home/models.py	/^    password = models.CharField(max_length=50)$/;"	kind:variable	line:8
+email	../home/models.py	/^    email = models.CharField(max_length=20)$/;"	kind:variable	line:9
+organization	../home/models.py	/^    organization = models.CharField(blank=True, null=True, max_length=20)$/;"	kind:variable	line:10
+job_title	../home/models.py	/^    job_title = models.CharField(blank=True, null=True, max_length=20)$/;"	kind:variable	line:11
+__str__	../home/models.py	/^    def __str__(self):$/;"	kind:member	line:13
+Meta	../home/models.py	/^    class Meta:$/;"	kind:class	line:16
+managed	../home/models.py	/^        managed = True $/;"	kind:variable	line:17
+db_table	../home/models.py	/^        db_table = 'user'$/;"	kind:variable	line:18
+Query	../home/models.py	/^class Query(models.Model):$/;"	kind:class	line:21
+query_ID	../home/models.py	/^    query_ID = models.BigIntegerField(primary_key=True)$/;"	kind:variable	line:22
+domain	../home/models.py	/^    domain = models.CharField(blank=True, null=True, max_length=20)$/;"	kind:variable	line:23
+indicator	../home/models.py	/^    indicator = models.CharField(blank=True, null=True, max_length=20)$/;"	kind:variable	line:24
+location	../home/models.py	/^    location = models.CharField(blank=True, null=True, max_length=20)$/;"	kind:variable	line:25
+population	../home/models.py	/^    population = models.CharField(blank=True, null=True, max_length=20)$/;"	kind:variable	line:26
+__str__	../home/models.py	/^    def __str__(self):$/;"	kind:member	line:28
+Meta	../home/models.py	/^    class Meta:$/;"	kind:class	line:31
+managed	../home/models.py	/^        managed = True $/;"	kind:variable	line:32
+db_table	../home/models.py	/^        db_table = 'query' $/;"	kind:variable	line:33
+Write	../home/models.py	/^class Write(models.Model):$/;"	kind:class	line:35
+username	../home/models.py	/^    username = models.ForeignKey(Users,on_delete=models.CASCADE)$/;"	kind:variable	line:36
+query_ID	../home/models.py	/^    query_ID = models.ForeignKey(Query, on_delete=models.CASCADE)$/;"	kind:variable	line:37
+datetime	../home/models.py	/^    datetime = models.DateTimeField(default=datetime.now, blank=True)$/;"	kind:variable	line:38
+Meta	../home/models.py	/^    class Meta:$/;"	kind:class	line:40
+managed	../home/models.py	/^        managed = True $/;"	kind:variable	line:41
+db_table	../home/models.py	/^        db_table = 'write'$/;"	kind:variable	line:42
+Health_Domain	../home/models.py	/^class Health_Domain(models.Model):$/;"	kind:class	line:44
+domain_ID	../home/models.py	/^    domain_ID = models.CharField(primary_key=True, max_length=50)$/;"	kind:variable	line:45
+name	../home/models.py	/^    name = models.CharField(blank=True, null=True, max_length=50)  $/;"	kind:variable	line:46
+__str__	../home/models.py	/^    def __str__(self):$/;"	kind:member	line:48
+Meta	../home/models.py	/^    class Meta:$/;"	kind:class	line:51
+managed	../home/models.py	/^        managed = True$/;"	kind:variable	line:52
+db_table	../home/models.py	/^        db_table = 'health_table'$/;"	kind:variable	line:53
+Chronic_Disease_Indicator	../home/models.py	/^class Chronic_Disease_Indicator(models.Model):$/;"	kind:class	line:55
+indicator_ID	../home/models.py	/^    indicator_ID = models.CharField(primary_key=True, max_length=50)$/;"	kind:variable	line:56
+name	../home/models.py	/^    name = models.CharField(blank=True, null=True, max_length=200)$/;"	kind:variable	line:57
+year_start	../home/models.py	/^    year_start = models.BigIntegerField(blank=True, null=True)$/;"	kind:variable	line:58
+year_end	../home/models.py	/^    year_end = models.BigIntegerField(blank=True, null=True)$/;"	kind:variable	line:59
+domain_ID	../home/models.py	/^    domain_ID = models.CharField(blank=True, null=True, max_length=50)$/;"	kind:variable	line:61
+__str__	../home/models.py	/^    def __str__(self):$/;"	kind:member	line:63
+Meta	../home/models.py	/^    class Meta:$/;"	kind:class	line:66
+managed	../home/models.py	/^        managed = True$/;"	kind:variable	line:67
+db_table	../home/models.py	/^        db_table = 'chronic_disease_indicator'$/;"	kind:variable	line:68
+Location	../home/models.py	/^class Location(models.Model):$/;"	kind:class	line:70
+location_ID	../home/models.py	/^    location_ID = models.BigIntegerField(primary_key=True)$/;"	kind:variable	line:71
+name	../home/models.py	/^    name = models.CharField(blank=True, null=True, max_length=50)$/;"	kind:variable	line:72
+abbreviation	../home/models.py	/^    abbreviation = models.CharField(blank=True, null=True, max_length=50)$/;"	kind:variable	line:73
+__str__	../home/models.py	/^    def __str__(self):$/;"	kind:member	line:76
+Meta	../home/models.py	/^    class Meta:$/;"	kind:class	line:79
+managed	../home/models.py	/^        managed = True $/;"	kind:variable	line:80
+db_table	../home/models.py	/^        db_table = 'location'$/;"	kind:variable	line:81
+Population	../home/models.py	/^class Population(models.Model):$/;"	kind:class	line:83
+population_ID	../home/models.py	/^    population_ID = models.CharField(primary_key=True, max_length=50)$/;"	kind:variable	line:84
+gender	../home/models.py	/^    gender = models.CharField(blank=True, null=True, max_length=10)$/;"	kind:variable	line:85
+race	../home/models.py	/^    race = models.CharField(blank=True, null=True, max_length=10)$/;"	kind:variable	line:86
+location_ID	../home/models.py	/^    location_ID = models.BigIntegerField(blank=True, null=True)$/;"	kind:variable	line:87
+__str__	../home/models.py	/^    def __str__(self):$/;"	kind:member	line:89
+Meta	../home/models.py	/^    class Meta:$/;"	kind:class	line:92
+managed	../home/models.py	/^        managed = True$/;"	kind:variable	line:93
+db_table	../home/models.py	/^        db_table = 'population'$/;"	kind:variable	line:94
+Indicator_Estimate	../home/models.py	/^class Indicator_Estimate(models.Model):$/;"	kind:class	line:96
+data_value	../home/models.py	/^    data_value = models.FloatField(blank=True, null=True)$/;"	kind:variable	line:97
+data_unit	../home/models.py	/^    data_unit = models.CharField(blank=True, null=True, max_length=50)$/;"	kind:variable	line:98
+data_value_type	../home/models.py	/^    data_value_type = models.CharField(blank=True, null=True, max_length=50)$/;"	kind:variable	line:99
+confidence_interval	../home/models.py	/^    confidence_interval = models.CharField(blank=True, null=True, max_length=50)$/;"	kind:variable	line:100
+data_source	../home/models.py	/^    data_source = models.CharField(blank=True, null=True, max_length=50)$/;"	kind:variable	line:101
+location_ID	../home/models.py	/^    location_ID = models.ForeignKey(Location, on_delete=models.CASCADE)$/;"	kind:variable	line:104
+Meta	../home/models.py	/^    class Meta:$/;"	kind:class	line:106
+managed	../home/models.py	/^        managed = True $/;"	kind:variable	line:107
+db_table	../home/models.py	/^        db_table = 'indicator_estimate'$/;"	kind:variable	line:108
+GEO_LAKE	../home/models.py	/^class GEO_LAKE(models.Model):$/;"	kind:class	line:110
+lake	../home/models.py	/^    lake = models.CharField(blank=True, null=False, max_length=50)$/;"	kind:variable	line:111
+country	../home/models.py	/^    country = models.CharField(blank=True, null=False, max_length=50)$/;"	kind:variable	line:112
+province	../home/models.py	/^    province = models.CharField(blank=True, null=False, max_length=50)$/;"	kind:variable	line:113
+__init__.py	../home/__init__.py	1;"	kind:file	line:1
+apps.py	../home/apps.py	1;"	kind:file	line:1
+AppConfig	../home/apps.py	/^from django.apps import AppConfig$/;"	kind:namespace	line:1
+HomeConfig	../home/apps.py	/^class HomeConfig(AppConfig):$/;"	kind:class	line:4
+name	../home/apps.py	/^    name = 'home'$/;"	kind:variable	line:5
+admin.py	../home/admin.py	1;"	kind:file	line:1
+admin	../home/admin.py	/^from django.contrib import admin$/;"	kind:namespace	line:1
+tests.py	../home/tests.py	1;"	kind:file	line:1
+TestCase	../home/tests.py	/^from django.test import TestCase$/;"	kind:namespace	line:1
+urls.py	../home/urls.py	1;"	kind:file	line:1
+path	../home/urls.py	/^from django.urls import path, include$/;"	kind:namespace	line:1
+include	../home/urls.py	/^from django.urls import path, include$/;"	kind:namespace	line:1
+views	../home/urls.py	/^import .views$/;"	kind:namespace	line:2
+urlpatterns	../home/urls.py	/^urlpatterns = [$/;"	kind:variable	line:5
+query4.py	../home/views/query4.py	1;"	kind:file	line:1
+query1.py	../home/views/query1.py	1;"	kind:file	line:1
+render	../home/views/query1.py	/^from django.shortcuts import render$/;"	kind:namespace	line:1
+query1_content	../home/views/query1.py	/^query1_content = [$/;"	kind:variable	line:3
+query1	../home/views/query1.py	/^def query1(request):$/;"	kind:function	line:12
+json	../home/views/query1.py	/^	import json$/;"	kind:namespace	line:117
+index.py	../home/views/index.py	1;"	kind:file	line:1
+render	../home/views/index.py	/^from django.shortcuts import render$/;"	kind:namespace	line:1
+index	../home/views/index.py	/^def index(request):$/;"	kind:function	line:3
+__init__.py	../home/views/__init__.py	1;"	kind:file	line:1
+render	../home/views/__init__.py	/^from django.shortcuts import render$/;"	kind:namespace	line:1
+HttpResponse	../home/views/__init__.py	/^from django.http import HttpResponse$/;"	kind:namespace	line:2
+connection	../home/views/__init__.py	/^from django.db import connection$/;"	kind:namespace	line:3
+messages	../home/views/__init__.py	/^from django.contrib import messages$/;"	kind:namespace	line:4
+populate_form	../home/views/__init__.py	/^def populate_form(id, query):$/;"	kind:function	line:9
+query2.py	../home/views/query2.py	1;"	kind:file	line:1
+query3.py	../home/views/query3.py	1;"	kind:file	line:1
+__init__.py	../dbApp/migrations/__init__.py	1;"	kind:file	line:1
+models.py	../dbApp/models.py	1;"	kind:file	line:1
+models	../dbApp/models.py	/^from django.db import models$/;"	kind:namespace	line:1
+__init__.py	../dbApp/__init__.py	1;"	kind:file	line:1
+apps.py	../dbApp/apps.py	1;"	kind:file	line:1
+AppConfig	../dbApp/apps.py	/^from django.apps import AppConfig$/;"	kind:namespace	line:1
+DbappConfig	../dbApp/apps.py	/^class DbappConfig(AppConfig):$/;"	kind:class	line:4
+name	../dbApp/apps.py	/^    name = 'dbApp'$/;"	kind:variable	line:5
+admin.py	../dbApp/admin.py	1;"	kind:file	line:1
+admin	../dbApp/admin.py	/^from django.contrib import admin$/;"	kind:namespace	line:1
+tests.py	../dbApp/tests.py	1;"	kind:file	line:1
+TestCase	../dbApp/tests.py	/^from django.test import TestCase$/;"	kind:namespace	line:1
+views.py	../dbApp/views.py	1;"	kind:file	line:1
+render	../dbApp/views.py	/^from django.shortcuts import render$/;"	kind:namespace	line:1
+manage.py	../manage.py	1;"	kind:file	line:1
+os	../manage.py	/^import os$/;"	kind:namespace	line:2
+sys	../manage.py	/^import sys$/;"	kind:namespace	line:3
+execute_from_command_line	../manage.py	/^        from django.core.management import execute_from_command_line$/;"	kind:namespace	line:8
+__init__.py	../dbProject/__init__.py	1;"	kind:file	line:1
+local_settings.py	../dbProject/local_settings.py	1;"	kind:file	line:1
+DEBUG	../dbProject/local_settings.py	/^DEBUG = True$/;"	kind:variable	line:2
+ALLOWED_HOSTS	../dbProject/local_settings.py	/^ALLOWED_HOSTS = ['*']$/;"	kind:variable	line:4
+DATABASES	../dbProject/local_settings.py	/^DATABASES = {$/;"	kind:variable	line:7
+settings.py	../dbProject/settings.py	1;"	kind:file	line:1
+os	../dbProject/settings.py	/^import os$/;"	kind:namespace	line:1
+BASE_DIR	../dbProject/settings.py	/^BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))$/;"	kind:variable	line:4
+SECRET_KEY	../dbProject/settings.py	/^SECRET_KEY = '(6l^d6w$&%4hzodrvbd5$ear46vj1xo%$ul*z0)gp(99vkt19)'$/;"	kind:variable	line:11
+DEBUG	../dbProject/settings.py	/^DEBUG = True$/;"	kind:variable	line:14
+ALLOWED_HOSTS	../dbProject/settings.py	/^ALLOWED_HOSTS = []$/;"	kind:variable	line:16
+INSTALLED_APPS	../dbProject/settings.py	/^INSTALLED_APPS = [$/;"	kind:variable	line:21
+MIDDLEWARE	../dbProject/settings.py	/^MIDDLEWARE = [$/;"	kind:variable	line:32
+ROOT_URLCONF	../dbProject/settings.py	/^ROOT_URLCONF = 'dbProject.urls'$/;"	kind:variable	line:42
+TEMPLATES	../dbProject/settings.py	/^TEMPLATES = [$/;"	kind:variable	line:44
+WSGI_APPLICATION	../dbProject/settings.py	/^WSGI_APPLICATION = 'dbProject.wsgi.application'$/;"	kind:variable	line:60
+DATABASES	../dbProject/settings.py	/^DATABASES = {$/;"	kind:variable	line:68
+AUTH_PASSWORD_VALIDATORS	../dbProject/settings.py	/^AUTH_PASSWORD_VALIDATORS = [$/;"	kind:variable	line:81
+LANGUAGE_CODE	../dbProject/settings.py	/^LANGUAGE_CODE = 'en-us'$/;"	kind:variable	line:100
+TIME_ZONE	../dbProject/settings.py	/^TIME_ZONE = 'UTC'$/;"	kind:variable	line:102
+USE_I18N	../dbProject/settings.py	/^USE_I18N = True$/;"	kind:variable	line:104
+USE_L10N	../dbProject/settings.py	/^USE_L10N = True$/;"	kind:variable	line:106
+USE_TZ	../dbProject/settings.py	/^USE_TZ = True$/;"	kind:variable	line:108
+STATIC_URL	../dbProject/settings.py	/^STATIC_URL = '\/static\/'$/;"	kind:variable	line:114
+urls.py	../dbProject/urls.py	1;"	kind:file	line:1
+admin	../dbProject/urls.py	/^from django.contrib import admin$/;"	kind:namespace	line:18
+path	../dbProject/urls.py	/^from django.urls import path, include $/;"	kind:namespace	line:19
+include	../dbProject/urls.py	/^from django.urls import path, include $/;"	kind:namespace	line:19
+urlpatterns	../dbProject/urls.py	/^urlpatterns = [$/;"	kind:variable	line:21
+wsgi.py	../dbProject/wsgi.py	1;"	kind:file	line:1
+os	../dbProject/wsgi.py	/^import os$/;"	kind:namespace	line:10
+get_wsgi_application	../dbProject/wsgi.py	/^from django.core.wsgi import get_wsgi_application$/;"	kind:namespace	line:12
+application	../dbProject/wsgi.py	/^application = get_wsgi_application()$/;"	kind:variable	line:16
