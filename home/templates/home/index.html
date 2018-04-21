@@ -21,3 +21,88 @@
     
 </div>
 {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-5">main</h3>
+        <p class="lead"> Select your category of interest</p>
+</div>
+
+<br>
+{% for row in main_content %}
+<div>
+    <h2>Checkbox</h2>
+    <form action="" method="post">
+            {% csrf_token %}
+        <input id="{{row.title}}" type="checkbox" name="{{row.title}}" value="{{row.disabled}}"><br>
+    </form>
+</div>
+{% endfor %}
+
+<!-- <br>
+{% for row in home_content %}
+<div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="sel">{{row.title}}: {{row.save}}</label>
+            <select class="form-control" id="{{row.title}}" name="{{row.title}}" onchange="form.submit()" {{row.disabled}}>
+                {% for row2 in row.fields %}
+                <option>{{row2}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+</div>
+{% endfor %} -->
+
+<form action="" method="post">
+    {% csrf_token %}
+    <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
+</form>
+
+<div class="container">
+    <style scoped>
+        #customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #customers td, #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+        #customers tr:hover {background-color: #ddd;}
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <!-- <tr>
+                {% for row in home_content %}
+                <th scope="col">{{row.title}}</th>
+                {% endfor %}
+            </tr> -->
+        </thead>
+        <tbody>    
+            {% for row in ans %}
+            <tr>
+                <td>{{row}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+</div>
+{% endblock %}
