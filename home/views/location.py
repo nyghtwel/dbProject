@@ -22,18 +22,18 @@ def location(request):
 		ans1 = request.POST.get("topics")
 		print(ans1)
 		health_domain, temp = populate_form(
-			'NAME', "Select distinct name from health_domain")
+			'NAME', "Select distinct name from db4.health_domain")
 
 	if request.method == 'POST' and request.POST.get("topics"):
 		ans1 = request.POST.get("topics")
 		ans2 = request.POST.get("questions")
-		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(
+		query = "select distinct cdi.name from db4.chronic_disease_indicator cdi, db4.health_domain hd where cdi.domain_id = hd.domain_id and hd.name = '{}'".format(
 			ans1)
 		questions_5, question_button_5 = populate_form('NAME', query)
 
 	if request.method == 'POST' and request.POST.get("questions"):
 		ans2 = request.POST.get("questions")
-		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(
+		query = "select distinct data_value_type from db4.indicator_estimate where indicator_id in (select indicator_id from db4.chronic_disease_indicator where name = '{}')".format(
 			ans2)
 		indicator_5, indicator_button_5 = populate_form('DATA_VALUE_TYPE', query)
 

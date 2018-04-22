@@ -28,11 +28,11 @@ def time(request):
 	# if ans1 == "":
 	ans1 == ""
 	time_content[0]['fields'], time_content[0]['disabled'] = populate_form(
-		'NAME', "Select distinct name from health_domain")
+		'NAME', "Select distinct name from db4.health_domain")
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		time_content[0]['save'] = ans1 = request.POST.get("Topics")
-		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(
+		query = "select distinct cdi.name from db4.chronic_disease_indicator cdi, db4.health_domain hd where cdi.domain_id = hd.domain_id and hd.name = '{}'".format(
 			ans1)
 		time_content[1]['fields'], time_content[1]['disabled'] = populate_form(
 			'NAME', query)
@@ -42,7 +42,7 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("Questions"):
 		time_content[1]['save'] = ans2 = request.POST.get("Questions")
-		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(
+		query = "select distinct data_value_type from db4.indicator_estimate where indicator_id in (select indicator_id from db4.chronic_disease_indicator where name = '{}')".format(
 			ans2)
 		time_content[2]['fields'], time_content[2]['disabled'] = populate_form(
 			'DATA_VALUE_TYPE', query)
@@ -53,8 +53,8 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		time_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
-			ans2)
+		query = "select distinct year_start from db4.chronic_disease_indicator where name = '{}' and year_start >= 2007 and year_start < (select max(year_start) from db4.chronic_disease_indicator where name = '{}' ) order by year_start ASC".format(
+			ans2,ans2)
 		time_content[3]['fields'], time_content[3]['disabled'] = populate_form(
 			'YEAR_START', query)
 		for i in time_content[4:]:
@@ -63,7 +63,7 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("Year_Start"):
 		time_content[3]['save'] = ans4 = request.POST.get("Year_Start")
-		query = "select distinct year_end from chronic_disease_indicator where name = '{}' and year_end > {} order by year_end ASC".format(
+		query = "select distinct year_end from db4.chronic_disease_indicator where name = '{}' and year_end > {} order by year_end ASC".format(
 			ans2, ans4)
 		time_content[4]['fields'], time_content[4]['disabled'] = populate_form(
 			'YEAR_END', query)
@@ -85,15 +85,15 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("submit"):
 		temp = "<" if time_content[5]['save'] == "increase" else ">"
-		query_title = """With temp_nat as (select * from indicator_estimate 
+		query_title = """With temp_nat as (select * from db4.indicator_estimate 
 					where DATA_VALUE_TYPE= '{}'
     		            and strat_id='OVR'
-						and indicator_id in (select indicator_id from CHRONIC_DISEASE_INDICATOR
+						and indicator_id in (select indicator_id from db4.CHRONIC_DISEASE_INDICATOR
 							where name='{}'))
-							select location.name, t1.year_start as first_year, t1.data_value as first_value,
+							select l.name, t1.year_start as first_year, t1.data_value as first_value,
     				   			t2.year_start as second_year, t2.data_value as second_value
-								from temp_nat t1,  temp_nat t2, location
-									where t1.location_id = location.location_ID
+								from temp_nat t1,  temp_nat t2, db4.location l
+									where t1.location_id = l.location_ID
 										and t2.location_id = t1.location_id
     						  			and t1.year_start = {}
     						  			and t2.year_start = {}
@@ -110,7 +110,7 @@ def time(request):
 
 		ans1 = ans2 = ans3 = ans3 = ans4 = ans5 = ans6 = ""
 		time_content[0]['fields'], time_content[0]['disabled'] = populate_form(
-			'NAME', "Select distinct name from health_domain")
+			'NAME', "Select distinct name from db4.health_domain")
 
 	for i in time_content:
 		if i['fields']:

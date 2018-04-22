@@ -27,11 +27,11 @@ def indicators(request):
 	ans1 == ""
 
 	indicators_content[0]['fields'], indicators_content[0]['disabled'] = populate_form(
-		'NAME', "Select distinct name from health_domain")
+		'NAME', "Select distinct name from db4.health_domain")
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		indicators_content[0]['save'] = ans1 = request.POST.get("Topics")
-		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(
+		query = "select distinct cdi.name from db4.chronic_disease_indicator cdi, db4.health_domain hd where cdi.domain_id = hd.domain_id and hd.name = '{}'".format(
 			ans1)
 		indicators_content[1]['fields'], indicators_content[1]['disabled'] = populate_form(
 			'NAME', query)
@@ -41,7 +41,7 @@ def indicators(request):
 
 	if request.method == 'POST' and request.POST.get("Questions"):
 		indicators_content[1]['save'] = ans2 = request.POST.get("Questions")
-		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(
+		query = "select distinct data_value_type from db4.indicator_estimate where indicator_id in (select indicator_id from db4.chronic_disease_indicator where name = '{}')".format(
 			ans2)
 		indicators_content[2]['fields'], indicators_content[2]['disabled'] = populate_form(
 			'DATA_VALUE_TYPE', query)
@@ -51,7 +51,7 @@ def indicators(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		indicators_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
+		query = "select distinct year_start from db4.chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
 			ans2)
 		indicators_content[3]['fields'], indicators_content[3]['disabled'] = populate_form(
 			'YEAR_START', query)
@@ -61,7 +61,7 @@ def indicators(request):
 
 	if request.method == 'POST' and request.POST.get("Year Start"):
 		indicators_content[3]['save'] = ans4 = request.POST.get("Year Start")
-		query = "select distinct year_end from chronic_disease_indicator where year_end > {} order by year_end ASC".format(
+		query = "select distinct year_end from db4.chronic_disease_indicator where year_end > {} order by year_end ASC".format(
 			ans4)
 		indicators_content[4]['fields'], indicators_content[4]['disabled'] = populate_form(
 			'YEAR_END', query)
@@ -86,33 +86,33 @@ def indicators(request):
 		temp = "<" if indicators_content[5]['save'] == "increase" else ">"
 		query_title = """
 			select id1 as question, round(dat_val1 , 3)as avg_val_year1, round(dat_val2 , 3) as avg_val_year2 from (
-					select health_domain.name as name1,
-					chronic_disease_indicator.name as id1, 
-					indicator_estimate.DATA_VALUE_TYPE as type1,
-					avg(INDICATOR_ESTIMATE.data_value) as dat_val1
-					from indicator_estimate, chronic_disease_indicator, health_domain where 
-					indicator_estimate.indicator_id = chronic_disease_indicator.indicator_id and
-					health_domain.domain_id = chronic_disease_indicator.domain_id and 
-					health_domain.name = '{}' and
-					indicator_estimate.year_start = '{}' and
+					select hd.name as name1,
+					cdi.name as id1, 
+					ie.DATA_VALUE_TYPE as type1,
+					avg(ie.data_value) as dat_val1
+					from db4.indicator_estimate ie, db4.chronic_disease_indicator cdi, db4.health_domain hd where 
+					ie.indicator_id = cdi.indicator_id and
+					hd.domain_id = cdi.domain_id and 
+					hd.name = '{}' and
+					ie.year_start = '{}' and
 					data_value_type = '{}' and
 					data_value is not null and
 					strat_id = 'OVR'
-					group by health_domain.name, chronic_disease_indicator.name, indicator_estimate.DATA_VALUE_TYPE
+					group by hd.name, cdi.name, ie.DATA_VALUE_TYPE
 					),
-					(select health_domain.name as name2,
-					chronic_disease_indicator.name as id2, 
-					indicator_estimate.DATA_VALUE_TYPE as type2,
-					avg(INDICATOR_ESTIMATE.data_value) as dat_val2
-					from indicator_estimate, chronic_disease_indicator, health_domain where 
-					indicator_estimate.indicator_id = chronic_disease_indicator.indicator_id and
-					health_domain.domain_id = chronic_disease_indicator.domain_id and 
-					health_domain.name = '{}' and
-					indicator_estimate.year_start = '{}' and
+					(select hd.name as name2,
+					cdi.name as id2, 
+					ie.DATA_VALUE_TYPE as type2,
+					avg(ie.data_value) as dat_val2
+					from db4.indicator_estimate ie, db4.chronic_disease_indicator cdi, db4.health_domain hd where 
+					ie.indicator_id = cdi.indicator_id and
+					hd.domain_id = cdi.domain_id and 
+					hd.name = '{}' and
+					ie.year_start = '{}' and
 					data_value_type = '{}' and
 					data_value is not null and
 					strat_id = 'OVR'
-					group by health_domain.name, chronic_disease_indicator.name, indicator_estimate.DATA_VALUE_TYPE)
+					group by hd.name, cdi.name, ie.DATA_VALUE_TYPE)
 					
 			where  name1 = name2 and
 			id1 = id2 and
