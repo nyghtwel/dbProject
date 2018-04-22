@@ -15,6 +15,7 @@ def location(request):
 	global ans2
 	global ans3
 
+#<<<<<<< HEAD
 	ans, query_title, query = [], "", ""
 	btn_class = 'btn btn-success disabled'
 
