@@ -35,12 +35,7 @@ def national_avg(request):
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		national_avg_content[0]['save'] = ans1 = request.POST.get("Topics")
-<<<<<<< HEAD
 		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
-=======
-		query = "select distinct cdi.name from db4.chronic_disease_indicator cdi, db4.health_domain hd where cdi.domain_id = hd.domain_id and hd.name = '{}'".format(
-			ans1)
->>>>>>> master
 		for i in national_avg_content[1:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		national_avg_content[1]['fields'], national_avg_content[1]['disabled'] = populate_form('NAME', query)

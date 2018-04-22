@@ -49,14 +49,8 @@ TBD
 
 - [ ] Visualization
     - [x] messages pop ontop of page (AL)
-<<<<<<< HEAD
     - [X] Graphs/Tables for National Avg query (AL)
     - [X] Graphs/Tables for Time query
-=======
-    - [x] Graphs/Tables for National Avg query (AL)
-    - [ ] need to add y axis title
-    - [ ] Graphs/Tables for Time query
->>>>>>> master
     - [ ] Graphs/Tables for Top 10 query 
     - [ ] Graphs/Tables for Indicator query 
     - [ ] Graphs/Tables for Location query
