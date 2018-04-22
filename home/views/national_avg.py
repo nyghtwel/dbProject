@@ -26,11 +26,11 @@ def national_avg(request):
 		if i['fields']: i['fields'].pop(0)
 
 	national_avg_content[0]['fields'], national_avg_content[0]['disabled'] = populate_form(
-		'NAME', "Select distinct name from health_domain")
+		'NAME', "Select distinct name from db4.health_domain")
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		national_avg_content[0]['save'] = ans1 = request.POST.get("Topics")
-		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(
+		query = "select distinct cdi.name from db4.chronic_disease_indicator cdi, db4.health_domain hd where cdi.domain_id = hd.domain_id and hd.name = '{}'".format(
 			ans1)
 		for i in national_avg_content[1:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
@@ -42,7 +42,7 @@ def national_avg(request):
 
 	if request.method == 'POST' and request.POST.get("Questions"):
 		national_avg_content[1]['save'] = ans2 = request.POST.get("Questions")
-		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(
+		query = "select distinct data_value_type from db4.indicator_estimate where indicator_id in (select indicator_id from db4.chronic_disease_indicator where name = '{}')".format(
 			ans2)
 		for i in national_avg_content[2:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
@@ -54,7 +54,7 @@ def national_avg(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		national_avg_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select year_start from chronic_disease_indicator where name = '{}' order by year_start ASC".format(
+		query = "select year_start from db4.chronic_disease_indicator where name = '{}' order by year_start ASC".format(
 			ans2)
 		for i in national_avg_content[3:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
@@ -84,17 +84,14 @@ def national_avg(request):
 
 	if request.method == 'POST' and request.POST.get("submit"):
 		temp = ">" if national_avg_content[4]['save'] == "above" else "<"
-		query_title = """with temp_nat as (select * from indicator_estimate 
-						where DATA_VALUE_TYPE = '{}' 
-						and year_start = {} 
-						and strat_id = 'OVR' 
-						and indicator_id in (select indicator_id 
-							from chronic_disease_indicator 
-							where name = '{}')) select distinct location.name, temp_nat.year_start as year, concat(round((select avg(data_value) 
-								from temp_nat), 1), '%') as national_avg, 
-								temp_nat.data_value as location_data_value from temp_nat, location 
-									where temp_nat.location_id = location.location_ID and temp_nat.data_value {} (select avg(data_value) from temp_nat)
-				""".format(ans3, ans4, ans2, temp)
+		query_title = """with temp_nat as 
+						(select * from db4.indicator_estimate 
+						where DATA_VALUE_TYPE = '{}' and year_start = {} and strat_id = 'OVR' 
+						and indicator_id in (select indicator_id from db4.chronic_disease_indicator where name = '{}')) 
+						select distinct l.name, temp_nat.year_start as year, concat(round((select avg(data_value) from temp_nat), 1), '%') as national_avg, temp_nat.data_value as location_data_value 
+						from temp_nat, db4.location l 
+						where temp_nat.location_id = l.location_ID and temp_nat.data_value {} (select avg(data_value) from temp_nat)
+					""".format(ans3, ans4, ans2, temp)
 
 		with connection.cursor() as cursor:
 			cursor.execute(query_title)

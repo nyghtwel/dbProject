@@ -1,12 +1,23 @@
 from .helper import *
 
+## 
+main_content = [ 
+    {'title': 'Topics', 'fields': [], 'disabled':'disabled', 'save': ''},
+    {'title': 'Questions', 'fields': [], 'disabled': 'disabled', 'save':''},
+    {'title': 'Indicator', 'fields': [], 'disabled': 'disabled', 'save':''},
+    {'title': 'Year', 'fields': [], 'disabled': 'disabled', 'save':''},
+    {'title': 'Location', 'fields': [], 'disabled': 'disabled', 'save':''},
+    {'title': 'Population', 'fields': [], 'disabled': 'disabled', 'save':''}
+]
+##
+
 def index(request):
 	query = '''with temp_count as
-			((select count(rowid)as number_of_rows from CHRONIC_DISEASE_INDICATOR) union
- 			(select count(rowid) as number_of_rows from INDICATOR_ESTIMATE) union
- 			(select count(rowid) as number_of_rows from POPULATIONID) union
- 			(select count(rowid) as number_of_rows from HEALTH_DOMAIN) union
- 			(select count(rowid) as number_of_rows from location))
+			((select count(rowid)as number_of_rows from db4.CHRONIC_DISEASE_INDICATOR) union
+ 			(select count(rowid) as number_of_rows from db4.INDICATOR_ESTIMATE) union
+ 			(select count(rowid) as number_of_rows from db4.POPULATIONID) union
+ 			(select count(rowid) as number_of_rows from db4.HEALTH_DOMAIN) union
+ 			(select count(rowid) as number_of_rows from db4.location))
 			select sum(number_of_rows) as total_no_of_tuples from temp_count
 			'''
 	total = ""
@@ -21,17 +32,6 @@ def index(request):
 	}
 	return render(request, 'home/index.html', context)
 
-# Advanced Search
-
-main_content = [ 
-    {'title': 'Topics', 'fields': [], 'disabled':'disabled', 'save': ''},
-    {'title': 'Questions', 'fields': [], 'disabled': 'disabled', 'save':''},
-    {'title': 'Indicator', 'fields': [], 'disabled': 'disabled', 'save':''},
-    {'title': 'Year', 'fields': [], 'disabled': 'disabled', 'save':''},
-    {'title': 'Location', 'fields': [], 'disabled': 'disabled', 'save':''},
-    {'title': 'Population', 'fields': [], 'disabled': 'disabled', 'save':''}
-]
-
 def main(request):
     global main_content
     global ans1 
@@ -43,17 +43,18 @@ def main(request):
 
     ans, query_title = [], ""
 
-    main_content[0]['fields'], main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain order by name asc")
-    main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', "Select distinct name from CHRONIC_DISEASE_INDICATOR order by name asc")
-    main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', "Select distinct data_value_type from indicator_estimate order by data_value_type asc")
-    main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', "Select distinct year_start from CHRONIC_DISEASE_INDICATOR order by YEAR_START asc")
-    main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', "Select distinct name from location order by name asc")
-    main_content[5]['fields'], main_content[5]['disabled'] = populate_form('Population', "Select  distinct(gender || race || overall) p from populationid order by p asc")
+    main_content[0]['fields'], main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from db4.health_domain order by name asc")
+    main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', "Select distinct name from db4.CHRONIC_DISEASE_INDICATOR order by name asc")
+    main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', "Select distinct data_value_type from db4.indicator_estimate order by data_value_type asc")
+    main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', "Select distinct year_start from db4.CHRONIC_DISEASE_INDICATOR order by YEAR_START asc")
+    main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', "Select distinct name from db4.location order by name asc")
+    main_content[5]['fields'], main_content[5]['disabled'] = populate_form('Population', "Select  distinct(gender || race || overall) p from db4.populationid order by p asc")
 
     btn_class = 'btn btn-success'
 
     if request.method == 'POST' and request.POST.get("submit"):
         print("here")
+		
         # for i in main_content['title']:
         #   if request.POST.get(i):
         #       main_content[i]['save'] = request.POST.get(i)
@@ -77,10 +78,14 @@ def main(request):
 
         messages.success(request, query_title)
 
+	# for i in national_avg_content:
+	# 	i['fields'].insert(0, i['save'])
+
         ans1 = ans2 = ans3 = ans4 = ans5 = ans6 = ""
     
     context = {
-        'main_content':main_content,
+		# 'total': total,
+        'main_content': main_content,
         'ans' : (ans if ans else ""),
         'ans1': (ans1 if ans1 else ""),
         'ans2': (ans2 if ans2 else ""),
@@ -91,5 +96,5 @@ def main(request):
         'btn_class' : btn_class 
     }
 
-    return render(request, 'home/main.html', context)
+    return render(request, 'home/index.html', context)
 

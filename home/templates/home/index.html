@@ -20,27 +20,116 @@
     </div>
     
 </div>
-{% endblock %}
-
-{% block content %}
-<div class="container">
-    <h1 class="mt-5">main</h3>
-        <p class="lead"> Select your category of interest</p>
-</div>
 
 <br>
-{% for row in main_content %}
-<div>
-    <h2>Checkbox</h2>
-    <form action="" method="post">
-            {% csrf_token %}
-        <input id="{{row.title}}" type="checkbox" name="{{row.title}}" value="{{row.disabled}}"><br>
-    </form>
-</div>
-{% endfor %}
+<br>
+<br>
+<br>
 
-<!-- <br>
-{% for row in home_content %}
+<div class="container">
+    <h3 class="mt-5"> Advanced search </h3>
+        <p class="lead"> Select your categories of interest and see all available data</p>    
+    <br>
+    <br>
+
+    {% for row in main_content %}
+    <div>
+        <!-- <style scoped>
+        
+            label.btn span {
+            font-size: 1.5em ;
+            }
+
+            label input[type="radio"] ~ i.fa.fa-circle-o{
+                color: #c8c8c8;    display: inline;
+            }
+            label input[type="radio"] ~ i.fa.fa-dot-circle-o{
+                display: none;
+            }
+            label input[type="radio"]:checked ~ i.fa.fa-circle-o{
+                display: none;
+            }
+            label input[type="radio"]:checked ~ i.fa.fa-dot-circle-o{
+                color: #7AA3CC;    display: inline;
+            }
+            label:hover input[type="radio"] ~ i.fa {
+            color: #7AA3CC;
+            }
+
+            label input[type="checkbox"] ~ i.fa.fa-square-o{
+                color: #c8c8c8;    display: inline;
+            }
+            label input[type="checkbox"] ~ i.fa.fa-check-square-o{
+                display: none;
+            }
+            label input[type="checkbox"]:checked ~ i.fa.fa-square-o{
+                display: none;
+            }
+            label input[type="checkbox"]:checked ~ i.fa.fa-check-square-o{
+                color: #7AA3CC;    display: inline;
+            }
+            label:hover input[type="checkbox"] ~ i.fa {
+            color: #7AA3CC;
+            }
+
+            div[data-toggle="buttons"] label.active{
+                color: #7AA3CC;
+            }
+
+            div[data-toggle="buttons"] label {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 2em;
+            text-align: left;
+            white-space: nowrap;
+            vertical-align: top;
+            cursor: pointer;
+            background-color: none;
+            border: 0px solid 
+            #c8c8c8;
+            border-radius: 3px;
+            color: #c8c8c8;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            }
+
+            div[data-toggle="buttons"] label:hover {
+            color: #7AA3CC;
+            }
+
+            div[data-toggle="buttons"] label:active, div[data-toggle="buttons"] label.active {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            }
+    
+        </style> -->
+        <div>
+            <hr> {{title}}:
+                <br>
+                <div class="btn-group btn-group-vertical" data-toggle="buttons">
+                <label class="btn ">
+                    <input type="checkbox" name='email1' checked><i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i> <span> Marketing Email</span>
+                </label>
+                </div>
+        </div>
+    {% endfor %} 
+    </div>
+
+   
+    <div class="container">
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success" name="submit" value="submit" onclick="form.submit()">Submit</button>
+        </form> 
+    </div>
+
+<!-- {% for row in national_avg_content %}
 <div>
     <form action="" method="post">
         {% csrf_token %}
@@ -56,10 +145,18 @@
 </div>
 {% endfor %} -->
 
-<form action="" method="post">
+<!-- 
+
+<div>
+    <h2>Checkbox</h2>
+    <form action="" method="post">
+        {% for row in main_content %}
+        <input id="{{row.title}}" type="checkbox" name="{{row.title}}" value="{{row.save}}"><br>
+        {% endfor %}
+    </form>
     {% csrf_token %}
-    <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
-</form>
+</div>
+
 
 <div class="container">
     <style scoped>
@@ -89,11 +186,7 @@
 
     <table class="table">
         <thead class="thead-dark">
-            <!-- <tr>
-                {% for row in home_content %}
-                <th scope="col">{{row.title}}</th>
-                {% endfor %}
-            </tr> -->
+
         </thead>
         <tbody>    
             {% for row in ans %}
@@ -104,5 +197,8 @@
         </tbody>
     </table>
     <br>
+</div> -->
+
 </div>
+
 {% endblock %}
