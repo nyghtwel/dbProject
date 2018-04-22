@@ -29,11 +29,11 @@
 <div class="container">
     <h3 class="mt-5"> Advanced search </h3>
         <p class="lead"> Select your categories of interest and see all available data</p>    
-    <br>
-    <br>
 
-    {% for row in main_content %}
+
+{% for row in main_content %}
     <div>
+
         <!-- <style scoped>
         
             label.btn span {
@@ -109,7 +109,21 @@
             }
     
         </style> -->
-        <div>
+
+        <div class="container">
+            <form action="">
+                <hr> {{row.title}}:
+                <br>
+                <br>
+                {% for row2 in row.fields %}
+                    <input type="checkbox" name='email1'>
+                    <span>{{row2}}</span>
+                    <br>
+                {% endfor %}
+            </form>
+        </div>
+
+        <!-- <div>
             <hr> {{title}}:
                 <br>
                 <div class="btn-group btn-group-vertical" data-toggle="buttons">
@@ -117,9 +131,9 @@
                     <input type="checkbox" name='email1' checked><i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i> <span> Marketing Email</span>
                 </label>
                 </div>
-        </div>
-    {% endfor %} 
+        </div> -->
     </div>
+{% endfor %} 
 
    
     <div class="container">
