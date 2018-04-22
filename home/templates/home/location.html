@@ -25,13 +25,28 @@
     {% csrf_token %}
     <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
 </form>
-<table>
-    </tr>
-    {% for row in ans %}
-    <tr>
-        <td>{{ row}}</td>
-    </tr>
-    {% endfor %}
-</table>
+<div>
+    <div class='container text-center'>
+        <table class='table table-striped' style='display: inline;'>
+            <thead>
+                <tr>
+                    {% for i in ans.0 %}
+                    <td>{{i}}</td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in ans %}
+                <tr>
+                    {% for key, value in row.items %}
+                    <td>{{value}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="" style="height: 100%; width: 100%;"></div>
+</div>
 
 {% endblock %}
