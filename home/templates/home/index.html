@@ -33,113 +33,27 @@
 
 {% for row in main_content %}
     <div>
-
-        <!-- <style scoped>
-        
-            label.btn span {
-            font-size: 1.5em ;
-            }
-
-            label input[type="radio"] ~ i.fa.fa-circle-o{
-                color: #c8c8c8;    display: inline;
-            }
-            label input[type="radio"] ~ i.fa.fa-dot-circle-o{
-                display: none;
-            }
-            label input[type="radio"]:checked ~ i.fa.fa-circle-o{
-                display: none;
-            }
-            label input[type="radio"]:checked ~ i.fa.fa-dot-circle-o{
-                color: #7AA3CC;    display: inline;
-            }
-            label:hover input[type="radio"] ~ i.fa {
-            color: #7AA3CC;
-            }
-
-            label input[type="checkbox"] ~ i.fa.fa-square-o{
-                color: #c8c8c8;    display: inline;
-            }
-            label input[type="checkbox"] ~ i.fa.fa-check-square-o{
-                display: none;
-            }
-            label input[type="checkbox"]:checked ~ i.fa.fa-square-o{
-                display: none;
-            }
-            label input[type="checkbox"]:checked ~ i.fa.fa-check-square-o{
-                color: #7AA3CC;    display: inline;
-            }
-            label:hover input[type="checkbox"] ~ i.fa {
-            color: #7AA3CC;
-            }
-
-            div[data-toggle="buttons"] label.active{
-                color: #7AA3CC;
-            }
-
-            div[data-toggle="buttons"] label {
-            display: inline-block;
-            padding: 6px 12px;
-            margin-bottom: 0;
-            font-size: 14px;
-            font-weight: normal;
-            line-height: 2em;
-            text-align: left;
-            white-space: nowrap;
-            vertical-align: top;
-            cursor: pointer;
-            background-color: none;
-            border: 0px solid 
-            #c8c8c8;
-            border-radius: 3px;
-            color: #c8c8c8;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -o-user-select: none;
-            user-select: none;
-            }
-
-            div[data-toggle="buttons"] label:hover {
-            color: #7AA3CC;
-            }
-
-            div[data-toggle="buttons"] label:active, div[data-toggle="buttons"] label.active {
-            -webkit-box-shadow: none;
-            box-shadow: none;
-            }
-    
-        </style> -->
-
         <div class="container">
             <form action="">
-                <hr> {{row.title}}:
-                <br>
-                <br>
+                {% csrf_token %}
+                <hr> 
+                <h4>{{row.title}}:</h4>
                 {% for row2 in row.fields %}
-                    <input type="checkbox" name='email1'>
+                    <input type="checkbox" name="{{row.title}}">
                     <span>{{row2}}</span>
                     <br>
                 {% endfor %}
             </form>
         </div>
-
-        <!-- <div>
-            <hr> {{title}}:
-                <br>
-                <div class="btn-group btn-group-vertical" data-toggle="buttons">
-                <label class="btn ">
-                    <input type="checkbox" name='email1' checked><i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i> <span> Marketing Email</span>
-                </label>
-                </div>
-        </div> -->
     </div>
 {% endfor %} 
 
    
     <div class="container">
+        <hr>
         <form action="" method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-success" name="submit" value="submit" onclick="form.submit()">Submit</button>
+            <button type="submit" class="btn btn-success" name="submit2" value="submit2" onclick="form.submit()">Submit</button>
         </form> 
     </div>
 
@@ -159,59 +73,51 @@
 </div>
 {% endfor %} -->
 
-<!-- 
 
-<div>
-    <h2>Checkbox</h2>
-    <form action="" method="post">
-        {% for row in main_content %}
-        <input id="{{row.title}}" type="checkbox" name="{{row.title}}" value="{{row.save}}"><br>
-        {% endfor %}
-    </form>
-    {% csrf_token %}
-</div>
+    <div class="container">
+        <!-- <style scoped>
+            #customers {
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
 
+            #customers td, #customers th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
 
-<div class="container">
-    <style scoped>
-        #customers {
-            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
+            #customers tr:nth-child(even){background-color: #f2f2f2;}
 
-        #customers td, #customers th {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
+            #customers tr:hover {background-color: #ddd;}
 
-        #customers tr:nth-child(even){background-color: #f2f2f2;}
-
-        #customers tr:hover {background-color: #ddd;}
-
-        #customers th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
-
-    <table class="table">
-        <thead class="thead-dark">
-
-        </thead>
-        <tbody>    
+            #customers th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #4CAF50;
+                color: white;
+            }
+        </style> -->
+        <table>
+            </tr>
             {% for row in ans %}
-            <tr>
+            <t>
                 <td>{{row}}</td>
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
-    <br>
-</div> -->
+        </table>
+    <!--     
+        <table class="table">
+            <tbody>    
+                {% for row in ans %}
+                <tr>
+                    <td>{{row}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> -->
+    </div>
 
 </div>
 
