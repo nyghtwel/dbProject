@@ -31,7 +31,7 @@ def indicators(request):
 	if request.method == 'POST' and request.POST.get("Topics"):
 		indicators_content[0]['save'] = ans1 = request.POST.get("Topics")
 
-		query = "select distinct data_value_type from db4.indicator_estimate where indicator_id in (select indicator_id from db4.health_domain where name = '{}')".format(ans1)
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from health_domain where name = '{}')".format(ans1)
 		indicators_content[1]['fields'], indicators_content[1]['disabled'] = populate_form(
 			'DATA_VALUE_TYPE', query)
 		for i in indicators_content[2:]:
@@ -50,7 +50,7 @@ def indicators(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		indicators_content[1]['save'] = ans2 = request.POST.get("Indicator")
-		query = "select distinct year_start from db4.chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
 			ans2)
 		indicators_content[2]['fields'], indicators_content[2]['disabled'] = populate_form(
 			'DATA_VALUE_TYPE', query)
@@ -70,7 +70,7 @@ def indicators(request):
 
 	if request.method == 'POST' and request.POST.get("Year Start"):
 		indicators_content[3]['save'] = ans3 = request.POST.get("Year Start")
-		query = "select distinct year_end from db4.chronic_disease_indicator where year_end > {} order by year_end ASC".format(
+		query = "select distinct year_end from chronic_disease_indicator where year_end > {} order by year_end ASC".format(
 			ans4)
 		indicators_content[4]['fields'], indicators_content[4]['disabled'] = populate_form(
 			'YEAR_END', query)
@@ -99,7 +99,7 @@ def indicators(request):
 					cdi.name as id1, 
 					ie.DATA_VALUE_TYPE as type1,
 					avg(ie.data_value) as dat_val1
-					from db4.indicator_estimate ie, db4.chronic_disease_indicator cdi, db4.health_domain hd where 
+					from indicator_estimate ie, chronic_disease_indicator cdi, health_domain hd where 
 					ie.indicator_id = cdi.indicator_id and
 					hd.domain_id = cdi.domain_id and 
 					hd.name = '{}' and
@@ -113,7 +113,7 @@ def indicators(request):
 					cdi.name as id2, 
 					ie.DATA_VALUE_TYPE as type2,
 					avg(ie.data_value) as dat_val2
-					from db4.indicator_estimate ie, db4.chronic_disease_indicator cdi, db4.health_domain hd where 
+					from indicator_estimate ie, chronic_disease_indicator cdi, health_domain hd where 
 					ie.indicator_id = cdi.indicator_id and
 					hd.domain_id = cdi.domain_id and 
 					hd.name = '{}' and

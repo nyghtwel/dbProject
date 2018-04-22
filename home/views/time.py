@@ -25,7 +25,7 @@ def time(request):
 
 	ans, query_title, query = [], "", ""
 	ans1 == ""
-	time_content[0]['fields'], time_content[0]['disabled'] = populate_form('NAME', "Select distinct name from db4.health_domain")
+	time_content[0]['fields'], time_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 
 	'''
 	pattern:
@@ -35,7 +35,7 @@ def time(request):
 	'''
 	if request.method == 'POST' and request.POST.get("Topics"):
 		time_content[0]['save'] = ans1 = request.POST.get("Topics")
-		query = "select distinct cdi.name from db4.chronic_disease_indicator cdi, db4.health_domain hd where cdi.domain_id = hd.domain_id and hd.name = '{}'".format(ans1)
+		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
 		
 		# clear prev fields before populating
 		for i in time_content[1:]:
@@ -48,7 +48,7 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("Questions"):
 		time_content[1]['save'] = ans2 = request.POST.get("Questions")
-		query = "select distinct data_value_type from db4.indicator_estimate where indicator_id in (select indicator_id from db4.chronic_disease_indicator where name = '{}')".format(ans2)
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
 		for i in time_content[2:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		time_content[2]['fields'], time_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
@@ -59,7 +59,7 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		time_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from db4.chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
 		for i in time_content[3:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		time_content[3]['fields'], time_content[3]['disabled'] = populate_form('YEAR_START', query)
@@ -69,7 +69,7 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("Year_Start"):
 		time_content[3]['save'] = ans4 = request.POST.get("Year_Start")
-		query = "select distinct year_end from db4.chronic_disease_indicator where name = '{}' and year_end > {} order by year_end ASC".format(ans2, ans4)
+		query = "select distinct year_end from chronic_disease_indicator where name = '{}' and year_end > {} order by year_end ASC".format(ans2, ans4)
 		for i in time_content[4:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		time_content[4]['fields'], time_content[4]['disabled'] = populate_form('YEAR_END', query)
@@ -97,10 +97,10 @@ def time(request):
     		            and strat_id='OVR'
 						and indicator_id in (select indicator_id from db4.CHRONIC_DISEASE_INDICATOR
 							where name='{}'))
-							select loc.name, t1.year_start as first_year, t1.data_value as first_value,
+							select l.name, t1.year_start as first_year, t1.data_value as first_value,
     				   			t2.year_start as second_year, t2.data_value as second_value
-								from temp_nat t1,  temp_nat t2, db4.location loc
-									where t1.location_id = loc.location_ID
+								from temp_nat t1,  temp_nat t2, db4.location l
+									where t1.location_id = l.location_ID
 										and t2.location_id = t1.location_id
     						  			and t1.year_start = {}
     						  			and t2.year_start = {}
@@ -112,7 +112,7 @@ def time(request):
 			ans = dictfetchall(cursor)
 		messages.success(request, query_title)
 
-		time_content[0]['fields'], time_content[0]['disabled'] = populate_form('NAME', "Select distinct name from db4.health_domain")
+		time_content[0]['fields'], time_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 
 	json_data = json.dumps(ans)
 	for i in time_content:

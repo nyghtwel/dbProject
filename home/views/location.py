@@ -24,25 +24,25 @@ def location(request):
 
 	ans1 == ""
 
-	location_content[0]['fields'], location_content[0]['disabled'] = populate_form('NAME', "Select distinct name from db4.health_domain")
+	location_content[0]['fields'], location_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 	
 	if request.method == 'POST' and request.POST.get("Topics"):
 		location_content[0]['save'] = ans1 = request.POST.get("Topics")
-		query = "select distinct cdi.name from db4.chronic_disease_indicator cdi, db4.health_domain hd where cdi.domain_id = hd.domain_id and hd.name = '{}'".format(ans1)
+		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
 		location_content[1]['fields'], location_content[1]['disabled'] = populate_form('NAME', query)
 		for i in location_content[2:]:
 			i['disabled'] = 'disabled'
 
 	if request.method == 'POST' and request.POST.get("Questions"):
 		location_content[1]['save'] = ans2 = request.POST.get("Questions")
-		query = "select distinct data_value_type from db4.indicator_estimate where indicator_id in (select indicator_id from db4.chronic_disease_indicator where name = '{}')".format(ans2)
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
 		location_content[2]['fields'], location_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
 		for i in location_content[3:]:
 			i['disabled'] = 'disabled'
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		location_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from db4.chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
 		location_content[3]['fields'], location_content[3]['disabled'] = ["increase", "decrease"], ""
 		for i in location_content[4:]:
 			i['disabled'] = 'disabled'
@@ -62,7 +62,7 @@ from (
   from
       (select cdi.year_start as year_1, ind_est.data_value as yr_1_value, ind_est.indicator_ID as id1,
         ind_est.location_id as location_1
-      from db4.indicator_estimate ind_est, db4.chronic_disease_indicator cdi, db4.health_domain dom
+      from indicator_estimate ind_est, chronic_disease_indicator cdi, health_domain dom
       where cdi.indicator_ID = ind_est.indicator_ID 
         AND cdi.year_start = ind_est.year_start 
         AND dom.domain_ID = cdi.domain_ID 
@@ -74,8 +74,8 @@ from (
       JOIN
       (select cdi.year_start as year_2, ind_est.data_value as yr_2_value, ind_est.indicator_ID as id2,
         ind_est.location_id as location_2, loc.name as location_name
-      from db4.indicator_estimate ind_est, db4.chronic_disease_indicator cdi, 
-        db4.health_domain dom, db4.location loc
+      from indicator_estimate ind_est, chronic_disease_indicator cdi, 
+        health_domain dom, location loc
       where cdi.indicator_ID = ind_est.indicator_ID 
         AND cdi.year_start = ind_est.year_start 
         AND dom.domain_ID = cdi.domain_ID 

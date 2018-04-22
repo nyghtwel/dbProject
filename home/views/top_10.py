@@ -30,7 +30,7 @@ def top_10(request):
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		top_10_content[0]['save'] = ans1 = request.POST.get("Topics")
-		query = "select distinct cdi.name from db4.chronic_disease_indicator cdi, db4.health_domain hd where cdi.domain_id = hd.domain_id and hd.name = '{}'".format(ans1)
+		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
 		for i in top_10_content[1:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		top_10_content[1]['fields'], top_10_content[1]['disabled'] = populate_form('NAME', query)
@@ -40,7 +40,7 @@ def top_10(request):
 
 	if request.method == 'POST' and request.POST.get("Questions"):
 		top_10_content[1]['save'] = ans2 = request.POST.get("Questions")
-		query = "select distinct data_value_type from db4.indicator_estimate where indicator_id in (select indicator_id from db4.chronic_disease_indicator where name = '{}')".format(ans2)
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
 		for i in top_10_content[2:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		top_10_content[2]['fields'], top_10_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
@@ -50,7 +50,7 @@ def top_10(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		top_10_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from db4.chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
 		for i in top_10_content[3:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		top_10_content[3]['fields'], top_10_content[3]['disabled'] = populate_form('YEAR_START', query)
