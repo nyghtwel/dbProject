@@ -26,7 +26,7 @@ def indicators(request):
 	ans1 == ""
 
 	indicators_content[0]['fields'], indicators_content[0]['disabled'] = populate_form(
-		'NAME', "Select distinct name from db4.health_domain")
+		'NAME', "Select distinct name from health_domain")
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		indicators_content[0]['save'] = ans1 = request.POST.get("Topics")
@@ -60,7 +60,7 @@ def indicators(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		indicators_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from db4.chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
 			ans2)
 		indicators_content[2]['fields'], indicators_content[3]['disabled'] = populate_form(
 			'YEAR_START', query)
