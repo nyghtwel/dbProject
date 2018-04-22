@@ -20,22 +20,25 @@ def national_avg(request):
 	btn_class = 'btn btn-success disabled'
 	ans, query_title, query = [], "", ""
 	national_avg = ""
-	# if ans1 == "":
-	# ans1 = "temp"
+	
 	for i in national_avg_content:
 		if i['fields']: i['fields'].pop(0)
 
+	'''
+	pattern:
+		1) clear fields, clear save, and set to disable 
+		2) populate form from query
+		3) disable the form after the next one
+	'''
 	national_avg_content[0]['fields'], national_avg_content[0]['disabled'] = populate_form(
 		'NAME', "Select distinct name from health_domain")
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		national_avg_content[0]['save'] = ans1 = request.POST.get("Topics")
-		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(
-			ans1)
+		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
 		for i in national_avg_content[1:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
-		national_avg_content[1]['fields'], national_avg_content[1]['disabled'] = populate_form(
-			'NAME', query)
+		national_avg_content[1]['fields'], national_avg_content[1]['disabled'] = populate_form('NAME', query)
 		for i in national_avg_content[2:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
@@ -48,6 +51,7 @@ def national_avg(request):
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		national_avg_content[2]['fields'], national_avg_content[2]['disabled'] = populate_form(
 			'DATA_VALUE_TYPE', query)
+
 		for i in national_avg_content[3:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
@@ -114,7 +118,7 @@ def national_avg(request):
 	for i in national_avg_content:
 		i['fields'].insert(0, i['save'])
 
-	import json
+	
 	json_data = json.dumps(ans)
 	# print(json_data)
 

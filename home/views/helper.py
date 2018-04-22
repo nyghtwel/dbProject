@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db import connection
 from django.contrib import messages
-
+import json
 def populate_form(id, query):
 	table = []
 	with connection.cursor() as cursor:

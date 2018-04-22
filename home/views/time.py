@@ -24,28 +24,34 @@ def time(request):
 			i['fields'].pop(0)
 
 	ans, query_title, query = [], "", ""
-
-	# if ans1 == "":
 	ans1 == ""
-	time_content[0]['fields'], time_content[0]['disabled'] = populate_form(
-		'NAME', "Select distinct name from health_domain")
+	time_content[0]['fields'], time_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 
+	'''
+	pattern:
+		1) clear fields, clear save, and set to disable 
+		2) populate form from query
+		3) disable the form after the next one
+	'''
 	if request.method == 'POST' and request.POST.get("Topics"):
 		time_content[0]['save'] = ans1 = request.POST.get("Topics")
-		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(
-			ans1)
-		time_content[1]['fields'], time_content[1]['disabled'] = populate_form(
-			'NAME', query)
+		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
+		
+		# clear prev fields before populating
+		for i in time_content[1:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+
+		time_content[1]['fields'], time_content[1]['disabled'] = populate_form('NAME', query)
 		for i in time_content[2:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Questions"):
 		time_content[1]['save'] = ans2 = request.POST.get("Questions")
-		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(
-			ans2)
-		time_content[2]['fields'], time_content[2]['disabled'] = populate_form(
-			'DATA_VALUE_TYPE', query)
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
+		for i in time_content[2:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		time_content[2]['fields'], time_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
 		for i in time_content[3:]:
 			i['disabled'] = 'disabled'
 
@@ -53,28 +59,29 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		time_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
-			ans2)
-		time_content[3]['fields'], time_content[3]['disabled'] = populate_form(
-			'YEAR_START', query)
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		for i in time_content[3:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		time_content[3]['fields'], time_content[3]['disabled'] = populate_form('YEAR_START', query)
 		for i in time_content[4:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Year_Start"):
 		time_content[3]['save'] = ans4 = request.POST.get("Year_Start")
-		query = "select distinct year_end from chronic_disease_indicator where name = '{}' and year_end > {} order by year_end ASC".format(
-			ans2, ans4)
-		time_content[4]['fields'], time_content[4]['disabled'] = populate_form(
-			'YEAR_END', query)
+		query = "select distinct year_end from chronic_disease_indicator where name = '{}' and year_end > {} order by year_end ASC".format(ans2, ans4)
+		for i in time_content[4:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		time_content[4]['fields'], time_content[4]['disabled'] = populate_form('YEAR_END', query)
 		for i in time_content[5:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Year_End"):
 		time_content[4]['save'] = ans5 = request.POST.get("Year_End")
-		time_content[5]['fields'], time_content[5]['disabled'] = [
-			'increase', 'decrease'], ''
+		for i in time_content[5:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		time_content[5]['fields'], time_content[5]['disabled'] = ['increase', 'decrease'], ''
 		for i in time_content[6:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
@@ -105,22 +112,16 @@ def time(request):
 			ans = dictfetchall(cursor)
 		messages.success(request, query_title)
 
-		for i in time_content:
-			i['fields'], i['disabled'], i['save'] = [], 'disabled', ''
+		time_content[0]['fields'], time_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 
-		ans1 = ans2 = ans3 = ans3 = ans4 = ans5 = ans6 = ""
-		time_content[0]['fields'], time_content[0]['disabled'] = populate_form(
-			'NAME', "Select distinct name from health_domain")
-
+	json_data = json.dumps(ans)
 	for i in time_content:
-		if i['fields']:
-			i['fields'].insert(0, i['save'])
+		if i['fields']: i['fields'].insert(0, i['save'])
 
 	context = {
 		'time_content': time_content,
 		'ans': (ans if ans else ""),
-
-
-		'btn_class': btn_class
+		'btn_class': btn_class,
+		'json_data': json_data
 	}
 	return render(request, 'home/time.html', context)

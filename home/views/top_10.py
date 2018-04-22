@@ -30,32 +30,33 @@ def top_10(request):
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		top_10_content[0]['save'] = ans1 = request.POST.get("Topics")
-		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(
-			ans1)
-		top_10_content[1]['fields'], top_10_content[1]['disabled'] = populate_form(
-			'NAME', query)
+		query = "select distinct chronic_disease_indicator.name from chronic_disease_indicator, health_domain where chronic_disease_indicator.domain_id = health_domain.domain_id and health_domain.name = '{}'".format(ans1)
+		for i in top_10_content[1:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		top_10_content[1]['fields'], top_10_content[1]['disabled'] = populate_form('NAME', query)
 		for i in top_10_content[2:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Questions"):
 		top_10_content[1]['save'] = ans2 = request.POST.get("Questions")
-		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(
-			ans2)
-		top_10_content[2]['fields'], top_10_content[2]['disabled'] = populate_form(
-			'DATA_VALUE_TYPE', query)
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(ans2)
+		for i in top_10_content[2:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		top_10_content[2]['fields'], top_10_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
 		for i in top_10_content[3:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		top_10_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
-			ans2)
-		top_10_content[3]['fields'], top_10_content[3]['disabled'] = populate_form(
-			'YEAR_START', query)
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		for i in top_10_content[3:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		top_10_content[3]['fields'], top_10_content[3]['disabled'] = populate_form('YEAR_START', query)
 		for i in top_10_content[4:]:
 			i['disabled'] = 'disabled'
+		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Year"):
 		top_10_content[3]['save'] = ans4 = request.POST.get("Year")
@@ -69,14 +70,17 @@ def top_10(request):
 													and year_start = {}
 													and indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}'))
 		""".format(ans3, ans4, ans2)
-		top_10_content[4]['fields'], top_10_content[4]['disabled'] = populate_form(
-			'POPULATION', query)
+		for i in top_10_content[4:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		top_10_content[4]['fields'], top_10_content[4]['disabled'] = populate_form('POPULATION', query)
+		for i in top_10_content[5:]:
+			i['disabled'] = 'disabled'
+
 		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Population"):
 		top_10_content[4]['save'] = ans5 = request.POST.get("Population")
-		top_10_content[5]['fields'], top_10_content[5]['disabled'] = [
-			"highest", "lowest"], "btn btn-success"
+		top_10_content[5]['fields'], top_10_content[5]['disabled'] = ["highest", "lowest"], "btn btn-success"
 		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Highest/Lowest"):
@@ -108,8 +112,8 @@ def top_10(request):
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 
-		print(ans)
-		print(query_title)
+		temp = sorted(ans, key=lambda x: x['DATA_VALUE'])
+		print(temp)
 		messages.success(request, query_title)
 		for i in top_10_content:
 			i['fields'], i['disabled'], i['save'] = [], "btn btn-success disabled", ''
@@ -118,14 +122,14 @@ def top_10(request):
 			'NAME', "Select distinct name from health_domain")
 		ans1 = ans2 = asn3 = ans4 = ans5 = ans6 = ""
 
+	json_data = json.dumps(ans)
 	for i in top_10_content:
 		i['fields'].insert(0, i['save'])
 
 	context = {
 		'top_10_content': top_10_content,
 		'ans': (ans if ans else ""),
-
-
-		'btn_class': btn_class
+		'btn_class': btn_class,
+		'json_data': json_data
 	}
 	return render(request, 'home/top_10.html', context)
