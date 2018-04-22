@@ -92,15 +92,15 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("submit"):
 		temp = "<" if time_content[5]['save'] == "increase" else ">"
-		query_title = """With temp_nat as (select * from indicator_estimate 
+		query_title = """With temp_nat as (select * from db4.indicator_estimate 
 					where DATA_VALUE_TYPE= '{}'
     		            and strat_id='OVR'
-						and indicator_id in (select indicator_id from CHRONIC_DISEASE_INDICATOR
+						and indicator_id in (select indicator_id from db4.CHRONIC_DISEASE_INDICATOR
 							where name='{}'))
-							select location.name, t1.year_start as first_year, t1.data_value as first_value,
+							select l.name, t1.year_start as first_year, t1.data_value as first_value,
     				   			t2.year_start as second_year, t2.data_value as second_value
-								from temp_nat t1,  temp_nat t2, location
-									where t1.location_id = location.location_ID
+								from temp_nat t1,  temp_nat t2, db4.location l
+									where t1.location_id = l.location_ID
 										and t2.location_id = t1.location_id
     						  			and t1.year_start = {}
     						  			and t2.year_start = {}

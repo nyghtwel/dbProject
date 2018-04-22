@@ -26,7 +26,7 @@ def top_10(request):
 			i['fields'].pop(0)
 
 	top_10_content[0]['fields'], top_10_content[0]['disabled'] = populate_form(
-		'NAME', "Select distinct name from health_domain")
+		'NAME', "Select distinct name from db4.health_domain")
 
 	if request.method == 'POST' and request.POST.get("Topics"):
 		top_10_content[0]['save'] = ans1 = request.POST.get("Topics")
@@ -62,13 +62,13 @@ def top_10(request):
 		top_10_content[3]['save'] = ans4 = request.POST.get("Year")
 		query = """ 
 			select race as population from (
-				(select distinct race, stratid from populationid)
-				union (select distinct gender, stratid from populationid)
-				union (select distinct overall, stratid from populationid))
-			where race is not null and stratid in ( select stratid from indicator_estimate
+				(select distinct race, stratid from db4.populationid)
+				union (select distinct gender, stratid from db4.populationid)
+				union (select distinct overall, stratid from db4.populationid))
+			where race is not null and stratid in ( select strat_id from db4.indicator_estimate
 													where data_value_type = '{}'
 													and year_start = {}
-													and indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}'))
+													and indicator_id in (select indicator_id from db4.chronic_disease_indicator where name = '{}'))
 		""".format(ans3, ans4, ans2)
 		for i in top_10_content[4:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
@@ -91,18 +91,18 @@ def top_10(request):
 		temp = "desc" if top_10_content[5]['save'] == "highest" else "asc"
 		query_title = """
 			select * from (
-			select location.name, temp_nat.data_value || temp_nat.data_unit as data_value
-			from (select * from indicator_estimate  
+			select l.name, temp_nat.data_value || temp_nat.data_unit as data_value
+			from (select * from db4.indicator_estimate  
 						where DATA_VALUE_TYPE = '{}' 
 								and strat_id in 
-								(select STRATID from populationid where
+								(select STRATID from db4.populationid where
 										race = '{}' or 
 										GENDER= '{}' or 
 										OVERALL= '{}')
 								and year_start = {}
-								and indicator_id in (select indicator_id from CHRONIC_DISEASE_INDICATOR 
-													where name = '{}')) temp_nat, location
-						where temp_nat.location_id = location.location_ID
+								and indicator_id in (select indicator_id from db4.CHRONIC_DISEASE_INDICATOR 
+													where name = '{}' )) temp_nat, db4.location l
+						where temp_nat.location_id = l.location_ID
 								and temp_nat.data_value is not null
 						order by temp_nat.data_value {})
 						where rownum < 11
@@ -119,7 +119,7 @@ def top_10(request):
 			i['fields'], i['disabled'], i['save'] = [], "btn btn-success disabled", ''
 
 		top_10_content[0]['fields'], top_10_content[0]['disabled'] = populate_form(
-			'NAME', "Select distinct name from health_domain")
+			'NAME', "Select distinct name from db4.health_domain")
 		ans1 = ans2 = asn3 = ans4 = ans5 = ans6 = ""
 
 	json_data = json.dumps(ans)

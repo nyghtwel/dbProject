@@ -20,4 +20,105 @@
     </div>
     
 </div>
+
+<br>
+<br>
+<br>
+<br>
+
+<div class="container">
+    <h3 class="mt-5"> Advanced search </h3>
+        <p class="lead"> Select your categories of interest and see all available data</p>    
+
+
+{% for row in main_content %}
+    <div>
+        <div class="container">
+            <form action="">
+                {% csrf_token %}
+                <hr> 
+                <h4>{{row.title}}:</h4>
+                {% for row2 in row.fields %}
+                    <input type="checkbox" name="{{row.title}}">
+                    <span>{{row2}}</span>
+                    <br>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+{% endfor %} 
+
+   
+    <div class="container">
+        <hr>
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success" name="submit2" value="submit2" onclick="form.submit()">Submit</button>
+        </form> 
+    </div>
+
+<!-- {% for row in national_avg_content %}
+<div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="sel">{{row.title}}: {{row.save}}</label>
+            <select class="form-control" id="{{row.title}}" name="{{row.title}}" onchange="form.submit()" {{row.disabled}}>
+                {% for row2 in row.fields %}
+                <option>{{row2}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+</div>
+{% endfor %} -->
+
+
+    <div class="container">
+        <!-- <style scoped>
+            #customers {
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            #customers td, #customers th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+            #customers tr:hover {background-color: #ddd;}
+
+            #customers th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #4CAF50;
+                color: white;
+            }
+        </style> -->
+        <table>
+            </tr>
+            {% for row in ans %}
+            <t>
+                <td>{{row}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    <!--     
+        <table class="table">
+            <tbody>    
+                {% for row in ans %}
+                <tr>
+                    <td>{{row}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> -->
+    </div>
+
+</div>
+
 {% endblock %}
