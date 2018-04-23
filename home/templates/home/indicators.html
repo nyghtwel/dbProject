@@ -62,15 +62,12 @@
         var data_from_django = jQuery.parseJSON('{{json_data|safe}}');
         var data_first_value = [];
         var data_second_value = [];
-        console.log(data_from_django)
         var keys = Object.keys(data_from_django[0])
-        console.log(keys[0])
-        var x = keys[1] 
         console.log(data_from_django[0][keys[1]])
         for (i = 0; i < data_from_django.length; i++) {
             name = data_from_django[i].QUESTION;
-            first_value = data_from_django[i][keys[1]];
-            second_value = data_from_django[i][keys[2]];
+            first_value = parseFloat(data_from_django[i][keys[1]]);
+            second_value = parseFloat(data_from_django[i][keys[2]]);
             point1 = { y: first_value, label: name };
             point2 = { y: second_value, label: name };
             data_first_value.push(point1);
@@ -88,14 +85,14 @@
                 interval: 1
             },
             axisY: {
-                title: "Year 1",
+                title: keys[1],
                 titleFontColor: "#4F81BC",
                 lineColor: "#4F81BC",
                 labelFontColor: "#4F81BC",
                 tickColor: "#4F81BC"
             },
             axisY2: {
-                title: "Year 2",
+                title: keys[2],
                 titleFontColor: "#C0504E",
                 lineColor: "#C0504E",
                 labelFontColor: "#C0504E",
@@ -110,16 +107,16 @@
             },
             data: [{
                 type: "bar",
-                name: "Year Start",
-                legendText: "Year Start",
+                name: keys[1],
+                legendText: keys[1],
                 showInLegend: true,
                 dataPoints: data_first_value
 
             },
             {
                 type: "bar",
-                name: "Year End",
-                legendText: "Year End",
+                name: keys[2],
+                legendText: keys[2],
                 axisYType: "secondary",
                 showInLegend: true,
                 dataPoints: data_second_value

@@ -52,9 +52,10 @@ TBD
     - [X] Graphs/Tables for National Avg query (AL)
     - [X] Graphs/Tables for Time query (AL)
     - [X] Graphs/Tables for Top 10 query (AL)
-    - [ ] Graphs/Tables for Indicator query (AL)
+    - [x] Graphs/Tables for Indicator query (AL)
     - [X] Graphs/Tables for Location query (AL)
     - [ ] Add titles
+    - [ ] limit the # of entries in graphs?
 
 - [x] Bugs
     - [x] Indicator query bug, year end query is not correct return all possible years
