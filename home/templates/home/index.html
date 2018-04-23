@@ -27,6 +27,17 @@
 
 <div class="container">
     
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+
+    <!-- Latest compiled JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <!-- Canva JS -->
+    <!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
+    
     <style scoped>
         body {font-family: Arial, Helvetica, sans-serif;}
         
@@ -71,14 +82,33 @@
 
     </style>
     
+
     <h3 class="lead">Select your categories of interest and see all available data</h3>
+
+
+    <!-- {% for row in main_content %}
+        <h3><button id='btn_{{row.title}}' class="btn btn-success"> Select </button>
+            <label for="sel"> {{row.title}}: {{row.save}} </label>
+        </h3>        
+        <div id='modal_{{row.title}}' class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <h4>{{row.title}}</h4>
+                    {% for rows in row.fields %}
+                        <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
+                    {% endfor %}
+                    <br><button type="submit" class="{{btn_class}}" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
+                </form>
+            </div>
+        </div>
+
+    {% endfor %} -->
 
     {% for row in main_content %}
         <h3><button id='btn_{{row.title}}' class="btn btn-success"> Select </button>
             <label for="sel"> {{row.title}}: {{row.save}} </label>
-        </h3>
-        <!-- Trigger/Open The Modal -->
-        
+        </h3>        
         <div id='modal_{{row.title}}' class="modal">
             <div class="modal-content">
                 <form action="" method="post">
@@ -188,7 +218,6 @@
     </div>
     {% endfor %}   -->
     <br>
-    <br>
  
 
     <!-- <form action="" method="post">
@@ -261,22 +290,41 @@
         }
     </script> -->
 
+
+
     {% if ans %}
-    <!-- <form action='' method='post'>
+    <form action='' method='post'>
         {% csrf_token %}
         <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
-    </form> -->
+    </form>
 
-    <div class="container">
-        <table>
-            </tr>
-            {% for row in ans %}
-            <t>
-                <td>{{row}}</td>
-            </tr>
-            {% endfor %}
-        </table>
+    <div>
+        <div class='container text-center'> 
+
+            <h4> All Results  </h4>
+                       
+            <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block;  height: 400px;
+            overflow-y: auto" >
+                <thead>
+                    <tr>
+                    {% for i in ans.0 %}
+                        <td>{{i}}</td>
+                    {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in ans %}
+                    <tr>
+                        {% for key, value in row.items %}
+                        <td>{{value}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+
     {% endif %}
 
 
