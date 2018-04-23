@@ -51,7 +51,7 @@ TBD
     - [x] messages pop ontop of page (AL)
     - [X] Graphs/Tables for National Avg query (AL)
     - [X] Graphs/Tables for Time query (AL)
-    - [ ] Graphs/Tables for Top 10 query (AL)
+    - [X] Graphs/Tables for Top 10 query (AL)
     - [X] Graphs/Tables for Indicator query (AL)
     - [X] Graphs/Tables for Location query (AL)
     - [ ] Add titles
@@ -60,7 +60,9 @@ TBD
     - [ ] Indicator query bug, year end query is not correct return all possible years
     - [x] top 10 query bug, does not return the specific populations, return all possible populations
     - [ ] query4 topics doesn't return specified indicators
-    
+
+- [ ] Special Features
+    - [X] able to download csv file    
 
 - [ ] Homepage/Index
     - [ ] Dynamic query set up

@@ -144,11 +144,8 @@ def indicators(request):
 	for i in indicators_content:
 		i['fields'].insert(0, i['save'])
 
-	for i in ans:
-		temp_avg1 = i['AVG_VAL_YEAR1']
-		temp_avg2 = i['AVG_VAL_YEAR2']
-		i['AVG_VAL_YEAR1'] = str(temp_avg1)
-		i['AVG_VAL_YEAR2'] = str(temp_avg2)
+	for i in indicators_content:
+                i['fields'].insert(0, i['save'])
 
 	print(ans)
 	json_data = json.dumps(ans)
