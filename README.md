@@ -68,7 +68,8 @@ TBD
 
 - [ ] Homepage/Index
     - [x] Dynamic query set up
-    - [ ] create popup modals to show the options 
+    - [x] popup modals to show the options 
+    - [ ] remove bug when for nothing selected (add select all)
     - [ ] UI design done 
     - [x] Able to populate table
     - [ ] Able to combine inputs but users (what is this?)

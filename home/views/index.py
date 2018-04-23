@@ -48,6 +48,7 @@ def index(request):
     
     if request.method == 'POST' and request.POST.get("Topics"):
         main_content[0]['save']  = ans1 = list_to_query(request.POST.getlist('choices[]'))
+        # print (ans1)
         query = "select distinct cdi.name from chronic_disease_indicator cdi, health_domain hd where cdi.domain_id = hd.domain_id and hd.name in ({})  order by cdi.name asc".format(ans1)
         for i in main_content[1:]:
             i['fields'], i['disabled'], i['save'] = [], "disabled", ""
@@ -135,16 +136,16 @@ def index(request):
         
         messages.success(request, query_title)
 
-        # csv_data = ans
+        csv_data = ans
         
         # custom_Search = ans[0]['custom_Search']
         
         main_content[0]['fields'], main_content[0]['disabled'] = populate_form(
 			'NAME', "Select distinct name from health_domain")
 
-        # if request.method == 'POST' and request.POST.get('export'):
-        #     print('in export')
-        #     return export_csv_file(request, csv_data)
+        if request.method == 'POST' and request.POST.get('export'):
+            print('in export')
+            return export_csv_file(request, csv_data)
 
     context = {
         'total': total,
