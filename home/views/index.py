@@ -79,8 +79,7 @@ def index(request):
 
     if request.method == 'POST' and request.POST.get("Year"):
         main_content[3]['save']  = ans4 = list_to_query(request.POST.getlist('choices[]'))
-        query = "Select distinct name from location"
-        # query = "Select distinct name from location where location_id in (select location_id from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name in ({}) ) and data_valu_type in ({}) and year_start in ({}) order by name asc".format(ans2, ans3, ans4)
+        query = "Select distinct name from location where location_id in (select location_id from indicator_estimate where indicator_id in (select distinct indicator_id from chronic_disease_indicator where name in ({}) ) and data_value_type in ({}) and year_start in ({})) order by name asc".format(ans2, ans3, ans4)
         for i in main_content[4:]:
             i['fields'], i['disabled'], i['save'] = [], "disabled", ""
         main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', query)
@@ -90,7 +89,7 @@ def index(request):
 
     if request.method == 'POST' and request.POST.get("Location"):
         main_content[4]['save']  = ans5 = list_to_query(request.POST.getlist('choices[]'))
-        query = "Select  distinct (gender || race || overall) population from populationid where stratid in (select start_id from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name in ({}) ) and data_valu_type in ({}) and year_start in ({}) and location in ({}) order by population asc".format(ans2, ans3, ans4, ans5)
+        query = "Select  distinct (gender || race || overall) population from populationid where stratid in (select strat_id from indicator_estimate where indicator_id in (select distinct indicator_id from chronic_disease_indicator where name in ({}) ) and data_value_type in ({}) and year_start in ({}) and location_id in (select location_id from location where name in ({}))) order by population asc".format(ans2, ans3, ans4, ans5)
         for i in main_content[5:]:
             i['fields'], i['disabled'], i['save'] = [], "disabled", ""
         main_content[5]['fields'], main_content[5]['disabled'] = populate_form('POPULATION', query)
@@ -102,9 +101,9 @@ def index(request):
         main_content[5]['save']  = ans6 = list_to_query(request.POST.getlist('choices[]'))
         for i in main_content[6:]:
             i['fields'], i['disabled'], i['save'] = [], "disabled", ""
-        messages.success(request, query)
 
     btn_class = 'btn btn-success'
+
     if request.method == 'POST' and request.POST.get("search"):
         print("here")
 
@@ -128,16 +127,16 @@ def index(request):
         
         messages.success(request, query_title)
 
-        csv_data = ans
+        # csv_data = ans
         
         # custom_Search = ans[0]['custom_Search']
         
         main_content[0]['fields'], main_content[0]['disabled'] = populate_form(
 			'NAME', "Select distinct name from health_domain")
 
-        if request.method == 'POST' and request.POST.get('export'):
-            print('in export')
-            return export_csv_file(request, csv_data)
+        # if request.method == 'POST' and request.POST.get('export'):
+        #     print('in export')
+        #     return export_csv_file(request, csv_data)
 
     context = {
         'total': total,

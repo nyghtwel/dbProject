@@ -66,9 +66,10 @@ TBD
     - [X] able to download csv file    
 
 - [ ] Homepage/Index
-    - [ ] Dynamic query set up
+    - [x] Dynamic query set up
+    - [ ] create popup modules to show the options 
     - [ ] UI design done 
-    - [ ] Able to populate table
-    - [ ] Able to combine inputs but users
+    - [x] Able to populate table
+    - [ ] Able to combine inputs but users (what is this?)
     - [ ] Testing
 

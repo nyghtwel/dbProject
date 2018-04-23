@@ -46,8 +46,6 @@ def export_csv_file(request, data):
 def list_to_query(list):
 	temp=[]
 	for i in list:
-		if isinstance(i, str):
-			temp.append("'"+i+"'")
-		else:
-			temp.append(str(i))
+		temp.append("'"+i+"'")
+
 	return ', '.join(temp)
