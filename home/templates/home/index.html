@@ -39,7 +39,7 @@
                 <hr> 
                 <h4>{{row.title}}:</h4>
                 {% for row2 in row.fields %}
-                    <input type="checkbox" name="{{row.title}}">
+                    <input type="checkbox" id="{{row.title}}" name="{{row2}}">
                     <span>{{row2}}</span>
                     <br>
                 {% endfor %}
