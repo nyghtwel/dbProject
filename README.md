@@ -51,7 +51,7 @@ TBD
     - [x] messages pop ontop of page (AL)
     - [X] Graphs/Tables for National Avg query (AL)
     - [X] Graphs/Tables for Time query (AL)
-    - [ ] Graphs/Tables for Top 10 query (AL)
+    - [X] Graphs/Tables for Top 10 query (AL)
     - [X] Graphs/Tables for Indicator query (AL)
     - [X] Graphs/Tables for Location query (AL)
     - [ ] Add titles

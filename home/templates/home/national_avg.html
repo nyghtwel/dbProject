@@ -27,7 +27,12 @@
     <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
 </form>
 <br>
+
 {% if ans %}
+<form action='' method='post'>
+    {% csrf_token %}
+    <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
+</form>
 
 <!-- <div class="container-fluid text-center text-md-left"> -->
     <!-- <h3>States {{ans5}} the National Average of {{national_avg}} in {{ans4}} for {{ans3}} in {{ans2}} </h3> -->

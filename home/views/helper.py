@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from django.db import connection
 from django.contrib import messages
 import json
+import csv
+
+
 def populate_form(id, query):
 	table = []
 	with connection.cursor() as cursor:
@@ -21,3 +24,20 @@ def dictfetchall(cursor):
 		dict(zip(columns, row))
 		for row in cursor.fetchall()
 	]
+
+
+def export_csv_file(request, data):
+
+	# data = [{'NAME': 'Ohio', 'DATA_VALUE': '21%'},
+    #      {'NAME': 'Ohio', 'DATA_VALUE': '21%'}, {'NAME': 'Ohio', 'DATA_VALUE': '21%'}, {'NAME': 'Ohio', 'DATA_VALUE': '21%'}]
+
+	response = HttpResponse()
+	response['Content-Disposition'] = 'attactment; filename="data.csv"'
+
+	writer = csv.writer(response)
+	writer.writerow([key for key in data[0]])
+
+	for row in data:
+		writer.writerow([row[i] for i in row])
+
+	return response

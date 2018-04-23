@@ -10,6 +10,7 @@ national_avg_content = [
 ]
 ans1 = ans2 = ans3 = ans4 = ans5 = ""
 
+csv_data = []
 def national_avg(request):
 	global national_avg_content
 	global ans1
@@ -17,6 +18,7 @@ def national_avg(request):
 	global ans3
 	global ans4
 	global ans5
+	global csv_data
 	btn_class = 'btn btn-success disabled'
 	ans, query_title, query = [], "", ""
 	national_avg = ""
@@ -101,6 +103,7 @@ def national_avg(request):
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 
+		csv_data = ans
 		# ans = ans.sort(key=lambda x: x[NAME])
 		messages.success(request, query_title)
 		national_avg = ans[0]['NATIONAL_AVG']
@@ -111,6 +114,10 @@ def national_avg(request):
 		# ans1 = ans2 = ans3 = ans4 = ans5 = ""
 		national_avg_content[0]['fields'], national_avg_content[0]['disabled'] = populate_form(
 			'NAME', "Select distinct name from health_domain")
+
+	if request.method == 'POST' and request.POST.get('export'):
+		print('in export')
+		return export_csv_file(request, csv_data)
 
 	for i in national_avg_content:
 		i['fields'].insert(0, i['save'])
