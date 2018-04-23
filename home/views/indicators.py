@@ -31,7 +31,9 @@ def indicators(request):
 	if request.method == 'POST' and request.POST.get("Topics"):
 		indicators_content[0]['save'] = ans1 = request.POST.get("Topics")
 
-		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from health_domain where name = '{}')".format(ans1)
+		query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where domain_id in (select domain_id from health_domain where name = '{}'))".format(ans1)
+		for i in indicators_content[1:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		indicators_content[1]['fields'], indicators_content[1]['disabled'] = populate_form(
 			'DATA_VALUE_TYPE', query)
 		for i in indicators_content[2:]:
@@ -50,51 +52,47 @@ def indicators(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		indicators_content[1]['save'] = ans2 = request.POST.get("Indicator")
-		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
-			ans2)
+		query = "select distinct year_start from indicator_estimate where data_value_type = '{}' and year_start >= 2007 and indicator_id in (select indicator_id from chronic_disease_indicator where domain_id in (select domain_id from health_domain where name = '{}')) order by year_start ASC".format(
+			ans2, ans1)
+		for i in indicators_content[2:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		indicators_content[2]['fields'], indicators_content[2]['disabled'] = populate_form(
-			'DATA_VALUE_TYPE', query)
-		for i in indicators_content[3:]:
-			i['disabled'] = 'disabled'
-		messages.success(request, query)
-
-	if request.method == 'POST' and request.POST.get("Indicator"):
-		indicators_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(
-			ans2)
-		indicators_content[2]['fields'], indicators_content[3]['disabled'] = populate_form(
 			'YEAR_START', query)
 		for i in indicators_content[3:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Year Start"):
-		indicators_content[3]['save'] = ans3 = request.POST.get("Year Start")
-		query = "select distinct year_end from chronic_disease_indicator where year_end > {} order by year_end ASC".format(
-			ans4)
-		indicators_content[4]['fields'], indicators_content[4]['disabled'] = populate_form(
+		indicators_content[2]['save'] = ans3 = request.POST.get("Year Start")
+		query = "select distinct year_end from chronic_disease_indicator where year_end > {} and indicator_id in (select indicator_id from chronic_disease_indicator where domain_id in (select domain_id from health_domain where name = '{}')) order by year_end ASC".format(
+			ans3, ans1)
+		for i in indicators_content[3:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		indicators_content[3]['fields'], indicators_content[3]['disabled'] = populate_form(
 			'YEAR_END', query)
-		for i in indicators_content[5:]:
+		for i in indicators_content[4:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Year End"):
-		indicators_content[4]['save'] = ans4 = request.POST.get("Year End")
-		indicators_content[5]['fields'], indicators_content[5]['disabled'] = [
+		indicators_content[3]['save'] = ans4 = request.POST.get("Year End")
+		for i in indicators_content[4:]:
+			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+		indicators_content[4]['fields'], indicators_content[4]['disabled'] = [
 			"increase", "decrease"], ""
-		for i in indicators_content[6:]:
+		for i in indicators_content[5:]:
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Increase/Decrease"):
-		indicators_content[5]['save'] = request.POST.get("Increase/Decrease")
+		indicators_content[4]['save'] = request.POST.get("Increase/Decrease")
 		btn_class = 'btn btn-success'
 
 	if request.method == 'POST' and request.POST.get('submit'):
 		topic, indicator, y1, y2 = ans1, ans2, ans3, ans4
 		temp = "<" if indicators_content[4]['save'] == "increase" else ">"
 		query_title = """
-			select id1 as question, round(dat_val1 , 3)as avg_val_year1, round(dat_val2 , 3) as avg_val_year2 from (
+			select id1 as question, round(dat_val1 , 3) as avg_val_year1, round(dat_val2 , 3) as avg_val_year2 from (
 					select hd.name as name1,
 					cdi.name as id1, 
 					ie.DATA_VALUE_TYPE as type1,
@@ -132,6 +130,7 @@ def indicators(request):
 		with connection.cursor() as cursor:
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
+			print(ans)
 
 		for i in indicators_content:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ''
@@ -140,15 +139,16 @@ def indicators(request):
 
 		indicators_content[0]['fields'], indicators_content[0]['disabled'] = populate_form(
 			'NAME', "Select distinct name from health_domain")
-		ans1 = ans2 = asn3 = ans4 = ans5 = ""
+		ans1 = ans2 = asn3 = ans4 = ""
 
 	for i in indicators_content:
 		i['fields'].insert(0, i['save'])
 
 	for i in ans:
-		temp = i['PERCENT_DIFFERENCE']
-		print(temp)
-		i['PERCENT_DIFFERENCE'] = str(temp)
+		temp_avg1 = i['AVG_VAL_YEAR1']
+		temp_avg2 = i['AVG_VAL_YEAR2']
+		i['AVG_VAL_YEAR1'] = str(temp_avg1)
+		i['AVG_VAL_YEAR2'] = str(temp_avg2)
 
 	print(ans)
 	json_data = json.dumps(ans)

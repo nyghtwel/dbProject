@@ -58,7 +58,7 @@ TBD
 
 - [ ] Bugs
     - [ ] Indicator query bug, year end query is not correct return all possible years
-    - [ ] top 10 query bug, does not return the specific populations, return all possible populations
+    - [x] top 10 query bug, does not return the specific populations, return all possible populations
     - [ ] query4 topics doesn't return specified indicators
     
 
