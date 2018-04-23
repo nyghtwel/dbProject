@@ -145,10 +145,7 @@ def indicators(request):
 	for i in indicators_content:
 		i['fields'].insert(0, i['save'])
 
-	for i in ans:
-		temp = i['PERCENT_DIFFERENCE']
-		print(temp)
-		i['PERCENT_DIFFERENCE'] = str(temp)
+	
 
 	print(ans)
 	json_data = json.dumps(ans)

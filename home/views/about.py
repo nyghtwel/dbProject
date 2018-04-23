@@ -4,4 +4,4 @@ def about(request):
 	context = {
 
 	}
-	return render(request,context)
+	return render(request, 'home/about.html', context)
