@@ -56,11 +56,11 @@ TBD
     - [X] Graphs/Tables for Location query (AL)
     - [ ] Add titles
 
-- [ ] Bugs
+- [x] Bugs
     - [x] Indicator query bug, year end query is not correct return all possible years
     - [x] top 10 query bug, does not return the specific populations, return all possible populations
     - [x] query4 topics doesn't return specified indicators
-    - [ ] Indicator query needs to be tweaked to return the relevant fields (MD)
+    - [x] Indicator query needs to be tweaked to return the relevant fields (MD)
 
 - [ ] Special Features
     - [X] able to download csv file    

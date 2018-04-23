@@ -1,4 +1,5 @@
 from .helper import *
+import re
 
 indicators_content = [
     {'title': 'Topics', 'fields': [], 'disabled': 'disabled', 'save': ''},
@@ -88,11 +89,14 @@ def indicators(request):
 		indicators_content[4]['save'] = request.POST.get("Increase/Decrease")
 		btn_class = 'btn btn-success'
 
+	avg_val_year_1 = 'AVG_VAL_' + str(ans3)
+	avg_val_year_2 = 'AVG_VAL_' + str(ans4)
+
 	if request.method == 'POST' and request.POST.get('submit'):
 		topic, indicator, y1, y2 = ans1, ans2, ans3, ans4
-		temp = "<" if indicators_content[4]['save'] == "increase" else ">"
+		temp = "<" if indicators_content[4]['save'] == "decrease" else ">"
 		query_title = """
-			select id1 as question, round(dat_val1 , 3) as avg_val_year1, round(dat_val2 , 3) as avg_val_year2 from (
+			select id1 as question, round(dat_val1 , 3) as avg_val_{}, round(dat_val2 , 3) as avg_val_{} from (
 					select hd.name as name1,
 					cdi.name as id1, 
 					ie.DATA_VALUE_TYPE as type1,
@@ -125,7 +129,7 @@ def indicators(request):
 			id1 = id2 and
 			type1 = type2 and
 			dat_val2 {} dat_val1
-			""".format(topic, y1, indicator, topic, y2, indicator, temp)
+			""".format(y1, y2, topic, y1, indicator, topic, y2, indicator, temp)
 
 		with connection.cursor() as cursor:
 			cursor.execute(query_title)
@@ -144,11 +148,12 @@ def indicators(request):
 	for i in indicators_content:
 		i['fields'].insert(0, i['save'])
 
+
 	for i in ans:
-		temp_avg1 = i['AVG_VAL_YEAR1']
-		temp_avg2 = i['AVG_VAL_YEAR2']
-		i['AVG_VAL_YEAR1'] = str(temp_avg1)
-		i['AVG_VAL_YEAR2'] = str(temp_avg2)
+		temp_avg1 = i[avg_val_year_1]
+		temp_avg2 = i[avg_val_year_2]
+		i[avg_val_year_1] = str(temp_avg1)
+		i[avg_val_year_2] = str(temp_avg2)
 
 
 	print(ans)
