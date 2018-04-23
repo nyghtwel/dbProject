@@ -52,7 +52,7 @@ TBD
     - [X] Graphs/Tables for National Avg query (AL)
     - [X] Graphs/Tables for Time query (AL)
     - [X] Graphs/Tables for Top 10 query (AL)
-    - [X] Graphs/Tables for Indicator query (AL)
+    - [ ] Graphs/Tables for Indicator query (AL)
     - [X] Graphs/Tables for Location query (AL)
     - [ ] Add titles
 
@@ -67,7 +67,8 @@ TBD
 
 - [ ] Homepage/Index
     - [x] Dynamic query set up
-    - [ ] create popup modals to show the options 
+    - [x] popup modals to show the options 
+    - [ ] remove bug when for nothing selected (add select all)
     - [ ] UI design done 
     - [x] Able to populate table
     - [ ] Able to combine inputs but users (what is this?)

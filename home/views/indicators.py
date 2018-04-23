@@ -136,14 +136,14 @@ def indicators(request):
 			ans = dictfetchall(cursor)
 			print(ans)
 
-		for i in indicators_content:
-			i['fields'], i['disabled'], i['save'] = [], "disabled", ''
+		# for i in indicators_content:
+		# 	i['fields'], i['disabled'], i['save'] = [], "disabled", ''
 
 		messages.success(request, query_title)
 
 		indicators_content[0]['fields'], indicators_content[0]['disabled'] = populate_form(
 			'NAME', "Select distinct name from health_domain")
-		ans1 = ans2 = asn3 = ans4 = ""
+		# ans1 = ans2 = asn3 = ans4 = ""
 
 	for i in indicators_content:
 		i['fields'].insert(0, i['save'])
