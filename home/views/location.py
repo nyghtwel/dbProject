@@ -54,7 +54,7 @@ def location(request):
 	if request.method == 'POST' and request.POST.get('submit'):
 		topic, question, indicator = ans1, ans2, ans3
 		print(location_content[3]['save'])
-		temp = "asc" if location_content[3]['save'] == "increase" else "desc"
+		temp = "asc" if location_content[3]['save'] != "increase" else "desc"
 		print(temp)
 		query_title = """select *
 from (
@@ -96,13 +96,19 @@ where ROWNUM < 11
 			ans = dictfetchall(cursor)
 			print(ans)
 
-		for i in location_content:
-			i['fields'], i['disabled'], i['save'] = [], "disabled", ''
+		# for i in location_content:
+		# 	i['fields'], i['disabled'], i['save'] = [], "disabled", ''
 
-		ans1 = ans2 = asn3 = ""
+		# ans1 = ans2 = asn3 = ""
 		location_content[0]['fields'], location_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 		
+	for i in ans:
+		i['PERCENT_DIFFERENCE'] = str(abs(i['PERCENT_DIFFERENCE']))
 
+	json_data = json.dumps(ans)
+
+		
+	
 	for i in location_content:
 		if i['fields']: i['fields'].insert(0, i['save'])
 
@@ -111,6 +117,7 @@ where ROWNUM < 11
 		'ans' : (ans if ans else ""),
 		'query_title' : query_title,
 		'query' : query,
-		'btn_class' : btn_class
+		'btn_class' : btn_class,
+		'json_data': json_data
 	}
 	return render(request, 'home/location.html', context)

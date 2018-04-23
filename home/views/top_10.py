@@ -115,12 +115,12 @@ def top_10(request):
 		temp = sorted(ans, key=lambda x: x['DATA_VALUE'])
 		print(temp)
 		messages.success(request, query_title)
-		for i in top_10_content:
-			i['fields'], i['disabled'], i['save'] = [], "btn btn-success disabled", ''
+		# for i in top_10_content:
+		# 	i['fields'], i['disabled'], i['save'] = [], "btn btn-success disabled", ''
 
 		top_10_content[0]['fields'], top_10_content[0]['disabled'] = populate_form(
 			'NAME', "Select distinct name from health_domain")
-		ans1 = ans2 = asn3 = ans4 = ans5 = ans6 = ""
+		# ans1 = ans2 = asn3 = ans4 = ans5 = ans6 = ""
 
 	json_data = json.dumps(ans)
 	for i in top_10_content:
