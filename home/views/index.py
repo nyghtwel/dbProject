@@ -25,11 +25,11 @@ def index(request):
     ans, query_title = [], ""
 
     query = '''with temp_count as
-			((select count(rowid)as number_of_rows from db4.CHRONIC_DISEASE_INDICATOR) union
- 			(select count(rowid) as number_of_rows from db4.INDICATOR_ESTIMATE) union
- 			(select count(rowid) as number_of_rows from db4.POPULATIONID) union
- 			(select count(rowid) as number_of_rows from db4.HEALTH_DOMAIN) union
- 			(select count(rowid) as number_of_rows from db4.location))
+			((select count(rowid)as number_of_rows from CHRONIC_DISEASE_INDICATOR) union
+ 			(select count(rowid) as number_of_rows from INDICATOR_ESTIMATE) union
+ 			(select count(rowid) as number_of_rows from POPULATIONID) union
+ 			(select count(rowid) as number_of_rows from HEALTH_DOMAIN) union
+ 			(select count(rowid) as number_of_rows from location))
 			select sum(number_of_rows) as total_no_of_tuples from temp_count
 			'''
     
@@ -43,12 +43,12 @@ def index(request):
         messages.success(request, query)
     #########
 
-    main_content[0]['fields'], main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from db4.health_domain order by name asc")
-    main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', "Select distinct name from db4.CHRONIC_DISEASE_INDICATOR order by name asc")
-    main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', "Select distinct data_value_type from db4.indicator_estimate order by data_value_type asc")
-    main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', "Select distinct year_start from db4.CHRONIC_DISEASE_INDICATOR order by YEAR_START asc")
-    main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', "Select distinct name from db4.location order by name asc")
-    main_content[5]['fields'], main_content[5]['disabled'] = populate_form('POPULATION', "Select  distinct(gender || race || overall) population from db4.populationid order by population asc")
+    main_content[0]['fields'], main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain order by name asc")
+    main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', "Select distinct name from CHRONIC_DISEASE_INDICATOR order by name asc")
+    main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', "Select distinct data_value_type from indicator_estimate order by data_value_type asc")
+    main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', "Select distinct year_start from CHRONIC_DISEASE_INDICATOR order by YEAR_START asc")
+    main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', "Select distinct name from location order by name asc")
+    main_content[5]['fields'], main_content[5]['disabled'] = populate_form('POPULATION', "Select  distinct(gender || race || overall) population from populationid order by population asc")
 
     btn_class = 'btn btn-success'
     if request.method == 'POST' and request.POST.get("submit2"):
@@ -64,7 +64,7 @@ def index(request):
             
         query_title = """with all_data as 
         (select hd.NAME topic,  cdi.NAME question, ie.data_value_type indicator, cdi.YEAR_START year, ie.data_value value, ie.data_unit unit, ie.data_source source, l.name location, (p.gender || p.race || p.overall) population
-        from DB4.HEALTH_DOMAIN hd, DB4.CHRONIC_DISEASE_INDICATOR cdi, DB4.INDICATOR_ESTIMATE ie,DB4.LOCATION l, DB4.POPULATIONID p
+        from HEALTH_DOMAIN hd, CHRONIC_DISEASE_INDICATOR cdi, INDICATOR_ESTIMATE ie,LOCATION l, POPULATIONID p
         where hd.domain_id = cdi.domain_id and cdi.indicator_id = ie.indicator_id and cdi.year_start = ie.year_start and ie.location_id = l.location_id and ie.strat_id = p.stratid and ie.data_value is not null)
         select * from all_data
         where topic {} and question {} and indicator {} and year {} and location {} and population {}
@@ -103,12 +103,12 @@ def index(request):
 
     # ans, query_title = [], ""
 
-    # main_content[0]['fields'], main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from db4.health_domain order by name asc")
-    # main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', "Select distinct name from db4.CHRONIC_DISEASE_INDICATOR order by name asc")
-    # main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', "Select distinct data_value_type from db4.indicator_estimate order by data_value_type asc")
-    # main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', "Select distinct year_start from db4.CHRONIC_DISEASE_INDICATOR order by YEAR_START asc")
-    # main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', "Select distinct name from db4.location order by name asc")
-    # main_content[5]['fields'], main_content[5]['disabled'] = populate_form('Population', "Select  distinct(gender || race || overall) p from db4.populationid order by p asc")
+    # main_content[0]['fields'], main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain order by name asc")
+    # main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', "Select distinct name from CHRONIC_DISEASE_INDICATOR order by name asc")
+    # main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', "Select distinct data_value_type from indicator_estimate order by data_value_type asc")
+    # main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', "Select distinct year_start from CHRONIC_DISEASE_INDICATOR order by YEAR_START asc")
+    # main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', "Select distinct name from location order by name asc")
+    # main_content[5]['fields'], main_content[5]['disabled'] = populate_form('Population', "Select  distinct(gender || race || overall) p from populationid order by p asc")
 
     # btn_class = 'btn btn-success'
 
@@ -125,7 +125,7 @@ def index(request):
             
     #     query_title = """with all_data as 
     #     (select hd.NAME topic,  cdi.NAME question, ie.data_value_type indicator, cdi.YEAR_START year, ie.data_value value, ie.data_unit unit, ie.data_source source, l.name location, (p.gender || p.race || p.overall) population
-    #     from DB4.HEALTH_DOMAIN hd, DB4.CHRONIC_DISEASE_INDICATOR cdi, DB4.INDICATOR_ESTIMATE ie,DB4.LOCATION l, DB4.POPULATIONID p
+    #     from HEALTH_DOMAIN hd, CHRONIC_DISEASE_INDICATOR cdi, INDICATOR_ESTIMATE ie,LOCATION l, POPULATIONID p
     #     where hd.domain_id = cdi.domain_id and cdi.indicator_id = ie.indicator_id and cdi.year_start = ie.year_start and ie.location_id = l.location_id and ie.strat_id = p.stratid and ie.data_value is not null)
     #     select * from all_data
     #     where topic {} and question {} and indicator {} and year {} and location {} and population {}

@@ -26,14 +26,74 @@
     {% csrf_token %}
     <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
 </form>
+{% if ans %}
+<div>
+    <div class='container text-center'>
+        <table class='table table-striped' style='display: inline;'>
+            <thead>
+                <tr>
+                    {% for i in ans.0 %}
+                    <td>{{i}}</td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in ans %}
+                <tr>
+                    {% for key, value in row.items %}
+                    <td>{{value}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="chartContainer" style="height: 100%; width: 100%; display: inline-block"></div>
+</div>
+<script type='text/javascript'>
 
-<table>
-    </tr>
-    {% for row in ans %}
-    <tr>
-        <td>{{row}}</td>
-    </tr>
-    {% endfor %}
-</table>
+    window.onload = function () {
+        data_from_django = jQuery.parseJSON('{{json_data|safe}}');
+        console.log(data_from_django);
+        var i;
+        var data = [];
+        for (i = 0; i < data_from_django.length; i++) {
+            var a = parseFloat(data_from_django[i].DATA_VALUE)
+            var b = data_from_django[i].NAME
+            var point = { y: a, label: b }
+            data.push(point)
+        }
+        
+        console.log(data);
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            title: {
+                text: ''
+            },
+            axisX: {
+                interval: 1
+            },
+            axisY: {
+                title: "Percentage",
 
+            },
+            axisY2: {
+
+            },
+            data: [{
+                type: "bar",
+                showInLegend: true,
+                legendMarkerColor: "grey",
+                axisYType: "secondary",
+                legendText: "States",
+                dataPoints: data
+            }]
+
+        });
+        chart.render();
+
+    }
+</script>
+{% endif %}
 {% endblock %}
