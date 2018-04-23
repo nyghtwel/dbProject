@@ -67,7 +67,7 @@ TBD
 
 - [ ] Homepage/Index
     - [x] Dynamic query set up
-    - [ ] create popup modules to show the options 
+    - [ ] create popup modals to show the options 
     - [ ] UI design done 
     - [x] Able to populate table
     - [ ] Able to combine inputs but users (what is this?)

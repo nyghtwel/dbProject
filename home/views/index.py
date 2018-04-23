@@ -54,6 +54,8 @@ def index(request):
         main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', query)
         for i in main_content[2:]:
             i['disabled'] = 'disabled'
+        
+        ans2 = ans3 = ans4 = ans5 = ans6 = ""
         messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Questions"):
@@ -65,6 +67,8 @@ def index(request):
         main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
         for i in main_content[3:]:
             i['disabled'] = 'disabled'
+        
+        ans3 = ans4 = ans5 = ans6 = ""
         messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Indicator"):
@@ -75,6 +79,8 @@ def index(request):
         main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', query)
         for i in main_content[4:]:
             i['disabled'] = 'disabled'
+        
+        ans4 = ans5 = ans6 = ""
         messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Year"):
@@ -85,6 +91,7 @@ def index(request):
         main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', query)
         for i in main_content[5:]:
             i['disabled'] = 'disabled'
+        ans5 = ans6 = ""
         messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Location"):
@@ -95,6 +102,7 @@ def index(request):
         main_content[5]['fields'], main_content[5]['disabled'] = populate_form('POPULATION', query)
         for i in main_content[6:]:
             i['disabled'] = 'disabled'
+        ans6 = ""
         messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Population"):
