@@ -27,7 +27,7 @@ def dictfetchall(cursor):
 
 
 def export_csv_file(request, data):
-
+	
 	# data = [{'NAME': 'Ohio', 'DATA_VALUE': '21%'},
     #      {'NAME': 'Ohio', 'DATA_VALUE': '21%'}, {'NAME': 'Ohio', 'DATA_VALUE': '21%'}, {'NAME': 'Ohio', 'DATA_VALUE': '21%'}]
 
