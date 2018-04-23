@@ -41,3 +41,13 @@ def export_csv_file(request, data):
 		writer.writerow([row[i] for i in row])
 
 	return response
+
+
+def list_to_query(list):
+	temp=[]
+	for i in list:
+		if isinstance(i, str):
+			temp.append("'"+i+"'")
+		else:
+			temp.append(str(i))
+	return ', '.join(temp)

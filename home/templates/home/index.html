@@ -23,82 +23,146 @@
 
 <br>
 <br>
-<br>
-<br>
+
 
 <div class="container">
-    <h3 class="mt-5"> Advanced search </h3>
-        <p class="lead"> Select your categories of interest and see all available data</p>    
+    
+    <style scoped>
+        body {font-family: Arial, Helvetica, sans-serif;}
+        
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
+    </style>
 
-{% for row in main_content %}
-    <div>
-        <div class="container">
-            <form action="">
-                {% csrf_token %}
-                <hr> 
-                <h4>{{row.title}}:</h4>
-                {% for row2 in row.fields %}
-                    <input type="checkbox" id="{{row.title}}" name="{{row2}}">
-                    <span>{{row2}}</span>
-                    <br>
-                {% endfor %}
-            </form>
+    <p class="lead"> Select your categories of interest and see all available data</p>
+
+    <!-- {% for row in main_content %}
+        <label for="sel">{{row.title}}: {{row.save}} </label>
+        <p><button id="{{row.title}}" type="submit" class="btn btn-primary" {{row.disabled}}>Select</button></p>
+
+        <div id="search" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="container">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <h4>{{row.title}}:</h4>
+                        {% for rows in row.fields %}
+                            <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
+                        {% endfor %}
+                        <br><button type="submit" class="{{btn_class}}" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-{% endfor %} 
+    {% endfor %}   -->
 
-   
+    {% for row in main_content %}
+    <label for="sel">{{row.title}}: {{row.save}} </label>
     <div class="container">
-        <hr>
         <form action="" method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-success" name="submit2" value="submit2" onclick="form.submit()">Submit</button>
-        </form> 
+            {% for rows in row.fields %}
+                <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
+            {% endfor %}
+            <br><button type="submit" class="{{btn_class}}" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
+        </form>
+        <br>
+        <br>
     </div>
-
-<!-- {% for row in national_avg_content %}
-<div>
+    {% endfor %}  
+    <br>
     <form action="" method="post">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="sel">{{row.title}}: {{row.save}}</label>
-            <select class="form-control" id="{{row.title}}" name="{{row.title}}" onchange="form.submit()" {{row.disabled}}>
-                {% for row2 in row.fields %}
-                <option>{{row2}}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </form>
-</div>
-{% endfor %} -->
+        <button type="submit" class="btn btn-success" name="search" value="search" onclick="form.submit()">Search</button>
+    </form> 
 
+    <script>
+        var modal = document.getElementById('search');
+        var btn_topics = document.getElementById("Topics");  
+        var btn_question = document.getElementById("Questions");  
+        var btn_indicator = document.getElementById("Indicator");  
+        var btn_year = document.getElementById("Year");  
+        var btn_location = document.getElementById("Location");  
+        var btn_population = document.getElementById("Population");  
+
+        var span = document.getElementsByClassName("close")[0];
+        
+        btn_topics.onclick = function() {
+            modal.style.display = "block";
+        }
+        btn_question.onclick = function() {
+            modal.style.display = "block";
+        }        
+        btn_indicator.onclick = function() {
+            modal.style.display = "block";
+        }
+        btn_year.onclick = function() {
+            modal.style.display = "block";
+        }
+        btn_location.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        btn_population.onclick = function() {
+            modal.style.display = "block";
+        }   
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+    {% if ans %}
+    <form action='' method='post'>
+        {% csrf_token %}
+        <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
+    </form>
 
     <div class="container">
-        <!-- <style scoped>
-            #customers {
-                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-                border-collapse: collapse;
-                width: 100%;
-            }
-
-            #customers td, #customers th {
-                border: 1px solid #ddd;
-                padding: 8px;
-            }
-
-            #customers tr:nth-child(even){background-color: #f2f2f2;}
-
-            #customers tr:hover {background-color: #ddd;}
-
-            #customers th {
-                padding-top: 12px;
-                padding-bottom: 12px;
-                text-align: left;
-                background-color: #4CAF50;
-                color: white;
-            }
-        </style> -->
         <table>
             </tr>
             {% for row in ans %}
@@ -107,18 +171,9 @@
             </tr>
             {% endfor %}
         </table>
-    <!--     
-        <table class="table">
-            <tbody>    
-                {% for row in ans %}
-                <tr>
-                    <td>{{row}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table> -->
     </div>
+    {% endif %}
+
 
 </div>
-
 {% endblock %}
