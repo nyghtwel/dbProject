@@ -90,7 +90,7 @@ def top_10(request):
 
 	" Title for table and graph "
 	title_temp = ans6.capitalize()
-	title = 'States with the {} {} in {} for {} Populations'.format(title_temp, ans3, ans4, ans5)
+	title = 'States with the {} {} in {} for {} in {} Populations'.format(title_temp, ans3, ans4, ans2, ans5)
 	print(title)
 
 	if request.method == 'POST' and request.POST.get('submit'):

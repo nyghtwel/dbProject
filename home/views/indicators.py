@@ -133,7 +133,7 @@ def indicators(request):
 		with connection.cursor() as cursor:
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
-			print(ans)
+			
 
 		csv_data = ans
 		# for i in indicators_content:
@@ -159,7 +159,7 @@ def indicators(request):
 		i[avg_val_year_2] = str(temp_avg2)
 
 
-	print(ans)
+
 	json_data = json.dumps(ans)
 	json_title = json.dumps(title)
 	context = {
