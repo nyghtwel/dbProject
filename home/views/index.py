@@ -40,22 +40,23 @@ def index(request):
 
         messages.success(request, query)
 
-    #########
-
     main_content[0]['fields'], main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain order by name asc")
+    main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', "Select distinct name from CHRONIC_DISEASE_INDICATOR order by name asc")
+    main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', "Select distinct data_value_type from indicator_estimate order by data_value_type asc")
     main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', "Select distinct year_start from CHRONIC_DISEASE_INDICATOR order by YEAR_START asc")
     main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', "Select distinct name from location order by name asc")
     main_content[5]['fields'], main_content[5]['disabled'] = populate_form('POPULATION', "Select  distinct(gender || race || overall) population from populationid order by population asc")
 
-
     if request.method == 'POST' and request.POST.get("Topics"):
         main_content[0]['save']  = ans1 = list_to_query(request.POST.getlist('choices[]'))
         query = "select distinct cdi.name from chronic_disease_indicator cdi, health_domain hd where cdi.domain_id = hd.domain_id and hd.name {}  order by cdi.name asc".format(temp_fill(ans1))
+        query2 = "select distinct cdi.year_start from chronic_disease_indicator cdi, health_domain hd where cdi.domain_id = hd.domain_id and hd.name {}  order by cdi.year_start asc".format(temp_fill(ans1))
         for i in main_content[1:2]:
             i['fields'], i['disabled'], i['save'] = [], "disabled", ""
         main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', query)
-
+        main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', query2)
         messages.success(request, query)
+        messages.success(request, query2)
 
     if request.method == 'POST' and request.POST.get("Questions"):
         main_content[1]['save']  = ans2 = list_to_query(request.POST.getlist('choices[]'))
@@ -67,40 +68,17 @@ def index(request):
     if request.method == 'POST' and request.POST.get("Indicator"):
         main_content[2]['save']  = ans3 = list_to_query(request.POST.getlist('choices[]'))
         query = "select distinct year_start from chronic_disease_indicator where name {} order by year_start ASC".format(temp_fill(ans2))
-        # for i in main_content[3:]:
-        #     i['fields'], i['disabled'], i['save'] = [], "disabled", ""
         main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', query)
-        # for i in main_content[4:]:
-        #     i['disabled'] = 'disabled'
-        # ans4 = ans5 = ans6 = ""
         messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Year"):
         main_content[3]['save']  = ans4 = list_to_query(request.POST.getlist('choices[]'))
-        # query = "Select distinct name from location where location_id in (select location_id from indicator_estimate where indicator_id in (select distinct indicator_id from chronic_disease_indicator where name {} ) and data_value_type {} and year_start {}) order by name asc".format(temp_fill(ans2), temp_fill(ans3), temp_fill(ans4))
-        # for i in main_content[4:]:
-        #     i['fields'], i['disabled'], i['save'] = [], "disabled", ""
-        # main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', query)
-        # for i in main_content[5:]:
-        #     i['disabled'] = 'disabled'
-        # ans5 = ans6 = ""
-        # messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Location"):
         main_content[4]['save']  = ans5 = list_to_query(request.POST.getlist('choices[]'))
-        # temp5 = 'is not null' if ans5 == '' else 'in ({})'.format(ans5)        
-        # query = "Select  distinct (gender || race || overall) population from populationid where stratid in (select strat_id from indicator_estimate where indicator_id in (select distinct indicator_id from chronic_disease_indicator where name {} ) and data_value_type {} and year_start {} and location_id in (select location_id from location where name {})) order by population asc".format(temp_fill(ans2), temp_fill(ans3), temp_fill(ans4), temp_fill(ans5))
-        # for i in main_content[5:]:
-        #     i['fields'], i['disabled'], i['save'] = [], "disabled", ""
-        # main_content[5]['fields'], main_content[5]['disabled'] = populate_form('POPULATION', query)
-        # for i in main_content[6:]:
-        #     i['disabled'] = 'disabled'
-        # ans6 = ""
-        # messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Population"):
         main_content[5]['save']  = ans6 = list_to_query(request.POST.getlist('choices[]'))
-        # temp6 = 'is not null' if ans6 == '' else 'in ({})'.format(ans6)
 
     btn_class = 'btn btn-success'
 

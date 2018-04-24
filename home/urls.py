@@ -10,6 +10,6 @@ urlpatterns = [
     path('time', views.time, name='time'),
     path('indicators', views.indicators, name='indicators'),
     path('location', views.location, name='location'),
-    path('users', views.users, name='users'),
-    path('export_csv_file/<data>/', views.export_csv_file, name='export_csv_file')
+    path('users', views.users, name='users')
+
 ]
