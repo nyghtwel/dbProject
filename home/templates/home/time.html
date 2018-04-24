@@ -1,7 +1,7 @@
 {% extends 'home/layout.html' %} {% block content %} {% load remove_quotes %}
 
 <div class="container">
-    <h2 class="mt-5">Which states had an increase/decrease in &ltdata value type&gt for *ltindicator ID&gt from year 1 to year 2?</h3>
+    <h3 class="mt-5" align='center'>Lists the states that had an increase or decrease in a specified indicator for any question between two specified years.</h3>
         <p class="lead">
             
         </p>
@@ -66,6 +66,15 @@
         var data_first_value = [];
         var data_second_value = [];
 
+        function incHeight() {
+            var numberOfRows = data_from_django.length;
+            var height = (15 * numberOfRows) + 75;
+            var h_str = height.toString()
+            document.getElementById("chartContainer").style.height = h_str + 'px';
+        }
+
+        incHeight()
+
         for(i=0; i<data_from_django.length; i++){
             name = data_from_django[i].NAME;
             first_value = data_from_django[i].FIRST_VALUE;
@@ -76,14 +85,16 @@
             data_second_value.push(point2);
         }
         console.log(data_first_value)
-        console.log(data_second_value) 
+        console.log(data_second_value)
+        console.log(document.getElementById("chartContainer").style.height)
         var chart = new CanvasJS.Chart("chartContainer", {
             animationEnabled: true,
             title: {
                 text: ''
             },
             axisX: {
-              interval: 1  
+              interval: 1,
+              labelFontSize: 10
             },
             axisY: {
                 title: "Year 1",
@@ -121,7 +132,11 @@
                 axisYType: "secondary",
                 showInLegend: true,
                 dataPoints: data_second_value
-            }]
+            }],
+            options: {
+                responsive: true,
+                maintainAspectRation: false
+            }
         });
         chart.render();
 
@@ -135,6 +150,7 @@
             chart.render();
         }
 
+        
     }
 </script>
 {% endif %}

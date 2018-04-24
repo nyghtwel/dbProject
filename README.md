@@ -54,7 +54,7 @@ TBD
     - [X] Graphs/Tables for Top 10 query (AL)
     - [x] Graphs/Tables for Indicator query (AL)
     - [X] Graphs/Tables for Location query (AL)
-    - [ ] Add titles
+    - [X] Add titles
     - [ ] limit the # of entries in graphs?
 
 - [x] Bugs
