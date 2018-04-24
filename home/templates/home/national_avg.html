@@ -34,10 +34,9 @@
     <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
 </form>
 <div>
-    <h1 align='center'>{{ title|remove_quotes }}</h1>
+    <h4 align='center'>{{ title|remove_quotes }}</h4>
     <div class='container text-center' >
-        <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block;  height: 400px;
-        overflow-y: auto">
+        <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block; text-align: left;  height: 400px; overflow-y: auto">
             <thead>
                 <tr>
                 {% for i in ans.0 %}
