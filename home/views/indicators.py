@@ -3,7 +3,6 @@ import re
 
 indicators_content = [
     {'title': 'Topics', 'fields': [], 'disabled': 'disabled', 'save': ''},
-   	#{'title': 'Questions', 'fields': [], 'disabled': 'disabled', 'save': ''},
    	{'title': 'Indicator', 'fields': [], 'disabled': 'disabled', 'save': ''},
    	{'title': 'Year Start', 'fields': [], 'disabled': 'disabled', 'save': ''},
    	{'title': 'Year End', 'fields': [], 'disabled': 'disabled', 'save': ''},
@@ -41,15 +40,6 @@ def indicators(request):
 			i['disabled'] = 'disabled'
 		messages.success(request, query)
 
-	#if request.method == 'POST' and request.POST.get("Questions"):
-	#	indicators_content[1]['save'] = ans2 = request.POST.get("Questions")
-	#	query = "select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name = '{}')".format(
-	#		ans2)
-	#	indicators_content[2]['fields'], indicators_content[2]['disabled'] = populate_form(
-	#		'DATA_VALUE_TYPE', query)
-	#	for i in indicators_content[3:]:
-	#		i['disabled'] = 'disabled'
-	#	messages.success(request, query)
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		indicators_content[1]['save'] = ans2 = request.POST.get("Indicator")
@@ -93,8 +83,13 @@ def indicators(request):
 		indicators_content[4]['save'] = request.POST.get("Increase/Decrease")
 		btn_class = 'btn btn-success'
 
+	" Column names for table "
 	avg_val_year_1 = 'AVG_VAL_' + str(ans3)
 	avg_val_year_2 = 'AVG_VAL_' + str(ans4)
+
+	" Title for table and graph "
+	title_temp = indicators_content[4]['save'] + 'd'
+	title = 'Indicators for {} that {} in {} from {} to {}'.format(ans1, title_temp.capitalize(), ans2, ans3, ans4)
 
 	if request.method == 'POST' and request.POST.get('submit'):
 		topic, indicator, y1, y2 = ans1, ans2, ans3, ans4
@@ -166,10 +161,12 @@ def indicators(request):
 
 	print(ans)
 	json_data = json.dumps(ans)
+	json_title = json.dumps(title)
 	context = {
 		'indicators_content': indicators_content,
 		'ans': (ans if ans else ""),
 		'btn_class': btn_class,
-		'json_data': json_data
+		'json_data': json_data,
+		'title': json_title
 	}
 	return render(request, 'home/indicators.html', context)

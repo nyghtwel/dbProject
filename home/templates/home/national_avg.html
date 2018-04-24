@@ -1,4 +1,4 @@
-{% extends 'home/layout.html' %} {% block content %}
+{% extends 'home/layout.html' %} {% block content %} {% load remove_quotes %}
 
 <div class="container">
     <h2 class="mt-5">Which states have a &ltdata value type&gt for &ltindicator ID&gt in a certain year that is above/below the national average?</h3>
@@ -34,6 +34,7 @@
     <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
 </form>
 <div>
+    <h1 align='center'>{{ title|remove_quotes }}</h1>
     <div class='container text-center' >
         <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block;  height: 400px;
         overflow-y: auto">

@@ -88,6 +88,11 @@ def top_10(request):
 		top_10_content[5]['save'] = ans6 = request.POST.get("Highest/Lowest")
 		btn_class = 'btn btn-success'
 
+	" Title for table and graph "
+	title_temp = ans6.capitalize()
+	title = 'States with the {} {} in {} for {} Populations'.format(title_temp, ans3, ans4, ans5)
+	print(title)
+
 	if request.method == 'POST' and request.POST.get('submit'):
 		temp = "desc" if top_10_content[5]['save'] == "highest" else "asc"
 		query_title = """
@@ -126,6 +131,8 @@ def top_10(request):
 		return export_csv_file(request, csv_data)
 
 	json_data = json.dumps(ans)
+	json_title = json.dumps(title)
+
 	for i in top_10_content:
 		i['fields'].insert(0, i['save'])
 
@@ -133,6 +140,7 @@ def top_10(request):
 		'top_10_content': top_10_content,
 		'ans': (ans if ans else ""),
 		'btn_class': btn_class,
-		'json_data': json_data
+		'json_data': json_data,
+		'title' : json_title
 	}
 	return render(request, 'home/top_10.html', context)

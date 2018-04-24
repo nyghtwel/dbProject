@@ -45,6 +45,7 @@ def export_csv_file(request, data):
 
 def list_to_query(list):
 	temp=[]
+
 	if not list:
 		return ''
 	else:
