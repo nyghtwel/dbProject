@@ -62,7 +62,7 @@ def location(request):
 		print(temp)
 		query_title = """select *
 from (
-  select year_1, year_2, ROUND(((yr_2_value - yr_1_value)/yr_1_value), 3) as percent_difference, location_name
+  select distinct year_1, year_2, ROUND(((yr_2_value - yr_1_value)/yr_1_value), 3) as percent_difference, location_name
   from
       (select cdi.year_start as year_1, ind_est.data_value as yr_1_value, ind_est.indicator_ID as id1,
         ind_est.location_id as location_1

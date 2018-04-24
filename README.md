@@ -63,9 +63,9 @@ TBD
     - [x] query4 topics doesn't return specified indicators
     - [x] Indicator query needs to be tweaked to return the relevant fields (MD)
 
-- [ ] Special Features
+- [x] Special Features
     - [X] able to download csv file    
-    - [ ] table design    
+    - [x] table design    
 
 - [x] Homepage/Index
     - [x] Dynamic query set up

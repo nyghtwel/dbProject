@@ -1,5 +1,20 @@
 {% extends 'home/layout.html' %} {% block content %}
 <div class="container">
-    
+<div class='container text-center'>
+    <h2>History</h2>
+    <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block;  height: 400px;
+        overflow-y: auto">
+
+        <tbody>
+            {% for row in user_history %}
+            <tr>
+                
+                <td>{{row}}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div
 </div>
 {% endblock %}

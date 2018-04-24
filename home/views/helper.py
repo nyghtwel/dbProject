@@ -4,7 +4,7 @@ from django.db import connection
 from django.contrib import messages
 import json
 import csv
-
+from django.conf import settings
 
 def populate_form(id, query):
 	table = []
@@ -56,3 +56,40 @@ def list_to_query(list):
 ## used for dynamic query
 def temp_fill(answer):
     return 'is not null' if answer == '' else 'in ({})'.format(answer)
+
+
+def add_user_query(quer):
+	if not settings.USER: return 
+ # if request.method == 'POST' and request.POST.get('submit'):
+	username = settings.USER_NAME
+	query1 = ''' select max(query_id) from query where query_id is not null
+	'''
+	num = None
+	with connection.cursor() as cursor:
+		cursor.execute(query1)
+		num = cursor.fetchone()
+	print(num[0])
+	if num:	
+	    # increment the max query_id by 1
+		query2 = '''insert into query(query_id, query) 
+				values({},'{}')
+				'''.format(num[0]+1, quer)
+		query3 = '''insert into write(username, query_id, datetime) 
+					values('{}', {}, systimestamp)
+				'''.format(username, num[0]+1)
+
+	else:
+		query2 = '''insert into query(query_id, query) 
+				values(1,"{}")
+				'''.format(quer)
+
+		query3 = '''insert into write(username, query, datetime) 
+					values('{}', '{}', systimestamp)
+				'''.format(username, num[0])
+
+	print(query2)
+	print()
+	print(query3)
+	with connection.cursor() as cursor:
+		cursor.execute(query2)
+		cursor.execute(query3)

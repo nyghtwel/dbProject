@@ -107,7 +107,9 @@ def national_avg(request):
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 
+		add_user_query(query_title)
 		csv_data = ans
+
 		# ans = ans.sort(key=lambda x: x[NAME])
 		messages.success(request, query_title)
 		national_avg = ans[0]['NATIONAL_AVG']
