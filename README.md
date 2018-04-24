@@ -69,8 +69,8 @@ TBD
     - [x] Dynamic query set up
     - [x] popup modals to show the options 
     - [ ] remove bug when for nothing selected (add select all)
-    - [ ] UI design done 
-    - [x] Able to populate table
+    - [ ] UI design done (scrollable table done - export to csv remained)
+    - [x] Able to populate table    
     - [ ] Able to combine inputs but users (what is this?)
     - [ ] Testing
 
