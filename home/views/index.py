@@ -1,17 +1,14 @@
 from .helper import *
 
-## 
-
 main_content = [ 
     {'title': 'Topics', 'fields': [], 'disabled':'disabled', 'save': ''},
     {'title': 'Questions', 'fields': [], 'disabled': 'disabled', 'save':''},
     {'title': 'Indicator', 'fields': [], 'disabled': 'disabled', 'save':''},
-    {'title': 'Year', 'fields': [], 'disabled': 'disabled', 'save':''},
-    {'title': 'Location', 'fields': [], 'disabled': 'disabled', 'save':''},
-    {'title': 'Population', 'fields': [], 'disabled': 'disabled', 'save':''}
+    {'title': 'Year', 'fields': [], 'disabled': '', 'save':''},
+    {'title': 'Location', 'fields': [], 'disabled': '', 'save':''},
+    {'title': 'Population', 'fields': [], 'disabled': '', 'save':''}
 ]
-##
-    
+
 ans1 = ans2 = ans3 = ans4 = ans5 = ans6 = ""
 
 def index(request):
@@ -22,6 +19,7 @@ def index(request):
     global ans4
     global ans5
     global ans6
+    global csv_data
 
     ans, query_title = [], ""
 
@@ -42,85 +40,49 @@ def index(request):
 
         messages.success(request, query)
 
-    #########
-
     main_content[0]['fields'], main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain order by name asc")
-    
+    main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', "Select distinct name from CHRONIC_DISEASE_INDICATOR order by name asc")
+    main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', "Select distinct data_value_type from indicator_estimate order by data_value_type asc")
+    main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', "Select distinct year_start from CHRONIC_DISEASE_INDICATOR order by YEAR_START asc")
+    main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', "Select distinct name from location order by name asc")
+    main_content[5]['fields'], main_content[5]['disabled'] = populate_form('POPULATION', "Select  distinct(gender || race || overall) population from populationid order by population asc")
+
     if request.method == 'POST' and request.POST.get("Topics"):
         main_content[0]['save']  = ans1 = list_to_query(request.POST.getlist('choices[]'))
-        # print (ans1)
-        query = "select distinct cdi.name from chronic_disease_indicator cdi, health_domain hd where cdi.domain_id = hd.domain_id and hd.name in ({})  order by cdi.name asc".format(ans1)
-        for i in main_content[1:]:
+        query = "select distinct cdi.name from chronic_disease_indicator cdi, health_domain hd where cdi.domain_id = hd.domain_id and hd.name {}  order by cdi.name asc".format(temp_fill(ans1))
+        query2 = "select distinct cdi.year_start from chronic_disease_indicator cdi, health_domain hd where cdi.domain_id = hd.domain_id and hd.name {}  order by cdi.year_start asc".format(temp_fill(ans1))
+        for i in main_content[1:2]:
             i['fields'], i['disabled'], i['save'] = [], "disabled", ""
         main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', query)
-        for i in main_content[2:]:
-            i['disabled'] = 'disabled'
-        
-        ans2 = ans3 = ans4 = ans5 = ans6 = ""
+        main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', query2)
         messages.success(request, query)
+        messages.success(request, query2)
 
     if request.method == 'POST' and request.POST.get("Questions"):
         main_content[1]['save']  = ans2 = list_to_query(request.POST.getlist('choices[]'))
-        print(ans2)
-        query = "Select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name in ({}) ) order by data_value_type asc".format(ans2)
-        for i in main_content[2:]:
-            i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+        query = "Select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name {}) order by data_value_type asc".format(temp_fill(ans2))
+        main_content[2]['fields'], main_content[2]['disabled'], main_content[2]['save'] = [], "disabled", ""
         main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
-        for i in main_content[3:]:
-            i['disabled'] = 'disabled'
-        
-        ans3 = ans4 = ans5 = ans6 = ""
         messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Indicator"):
         main_content[2]['save']  = ans3 = list_to_query(request.POST.getlist('choices[]'))
-        query = "select distinct year_start from chronic_disease_indicator where name in ({}) order by year_start ASC".format(ans2)
-        for i in main_content[3:]:
-            i['fields'], i['disabled'], i['save'] = [], "disabled", ""
+        query = "select distinct year_start from chronic_disease_indicator where name {} order by year_start ASC".format(temp_fill(ans2))
         main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', query)
-        for i in main_content[4:]:
-            i['disabled'] = 'disabled'
-        
-        ans4 = ans5 = ans6 = ""
         messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Year"):
         main_content[3]['save']  = ans4 = list_to_query(request.POST.getlist('choices[]'))
-        query = "Select distinct name from location where location_id in (select location_id from indicator_estimate where indicator_id in (select distinct indicator_id from chronic_disease_indicator where name in ({}) ) and data_value_type in ({}) and year_start in ({})) order by name asc".format(ans2, ans3, ans4)
-        for i in main_content[4:]:
-            i['fields'], i['disabled'], i['save'] = [], "disabled", ""
-        main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', query)
-        for i in main_content[5:]:
-            i['disabled'] = 'disabled'
-        ans5 = ans6 = ""
-        messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Location"):
         main_content[4]['save']  = ans5 = list_to_query(request.POST.getlist('choices[]'))
-        query = "Select  distinct (gender || race || overall) population from populationid where stratid in (select strat_id from indicator_estimate where indicator_id in (select distinct indicator_id from chronic_disease_indicator where name in ({}) ) and data_value_type in ({}) and year_start in ({}) and location_id in (select location_id from location where name in ({}))) order by population asc".format(ans2, ans3, ans4, ans5)
-        for i in main_content[5:]:
-            i['fields'], i['disabled'], i['save'] = [], "disabled", ""
-        main_content[5]['fields'], main_content[5]['disabled'] = populate_form('POPULATION', query)
-        for i in main_content[6:]:
-            i['disabled'] = 'disabled'
-        ans6 = ""
-        messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Population"):
         main_content[5]['save']  = ans6 = list_to_query(request.POST.getlist('choices[]'))
-        for i in main_content[6:]:
-            i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 
     btn_class = 'btn btn-success'
 
-    if request.method == 'POST' and request.POST.get("search"):
-        print("here")
-
-        temp = []
-        list_ans = [ans1,ans2,ans3,ans4,ans5,ans6]
-        for i in range(0, 6):
-            temp.append('is not null') if list_ans[i] == '' else temp.append('in ({})'.format(list_ans[i]))   
-            
+    if request.method == 'POST' and request.POST.get("search"):            
         query_title = """with all_data as 
         (select hd.NAME topic,  cdi.NAME question, ie.data_value_type indicator, cdi.YEAR_START year, ie.data_value value, ie.data_unit unit, ie.data_source source, l.name location, (p.gender || p.race || p.overall) population
         from HEALTH_DOMAIN hd, CHRONIC_DISEASE_INDICATOR cdi, INDICATOR_ESTIMATE ie,LOCATION l, POPULATIONID p
@@ -128,24 +90,26 @@ def index(request):
         select * from all_data
         where topic {} and question {} and indicator {} and year {} and location {} and population {}
         order by topic, question, indicator, year, location, population asc
-        """.format(temp[0], temp[1], temp[2], temp[3], temp[4], temp[5])
+        """.format(temp_fill(ans1), temp_fill(ans2), temp_fill(ans3), temp_fill(ans4), temp_fill(ans5), temp_fill(ans6))
         
         with connection.cursor() as cursor:
             cursor.execute(query_title)
             ans = dictfetchall(cursor)
         
-        messages.success(request, query_title)
-
         csv_data = ans
         
-        # custom_Search = ans[0]['custom_Search']
+        messages.success(request, query_title)
         
+    if request.method == 'POST' and request.POST.get('export'):
+        return export_csv_file(request, csv_data)
+
+    if request.POST.get('refresh'):
+        for i in main_content:
+            i['fields'], i['disabled'], i['save'] = [], "disabled", ''
+        ans = ans1 = ans2 = ans3 = ans4 = ans5 = ans6 = temp1 = temp2 = temp3 = temp4 = temp5 = temp6 = ""
+
         main_content[0]['fields'], main_content[0]['disabled'] = populate_form(
 			'NAME', "Select distinct name from health_domain")
-
-        if request.method == 'POST' and request.POST.get('export'):
-            print('in export')
-            return export_csv_file(request, csv_data)
 
     context = {
         'total': total,

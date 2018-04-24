@@ -1,6 +1,4 @@
-{% extends 'home/layout.html' %}
-
-{% block content %}
+{% extends 'home/layout.html' %} {% block content %}
 <div class="container">
     <h1 class="mt-5">U.S. Chronic Disease Indicator</h3>
     <p class="lead"> 
@@ -14,319 +12,89 @@
     <div style='display:inline;'>
     <form action="" method="post">
         {% csrf_token %}
-        <p><button type="submit" class="btn btn-primary" name="submit" value="submit" onclick="form.submit()">Data set has: {{total}} tuples</button></p>
+        <p><button type="submit" class="btn btn-primary" style= "width:20%;" name="submit" value="submit" onclick="form.submit()">Data set has: {{total}} tuples</button></p>
     </form>
     
     </div>
     
-</div>
+</div><br>
 
-<br>
-<br>
-
-
-<div class="container">
-    
+<div class="container">    
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-    <!-- jQuery library -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-
     <!-- Latest compiled JavaScript -->
     <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-    <!-- Canva JS -->
-    <!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
-<!--     
-    <style scoped>
-        body {font-family: Arial, Helvetica, sans-serif;}
-        
-        /* The Modal (background) */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            padding-top: 100px; /* Location of the box */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-        
-        /* Modal Content */
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-        
-        /* The Close Button */
-        .close {
-            color: #aaaaaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    <hr><h3 style="line-height: 200%;">Select your categories of interest and see all available data</h3>
 
-    </style> -->
-    
-
-    <h3 class="lead">Select your categories of interest and see all available data</h3>
-
-
-    <!-- {% for row in main_content %}
-        <h3><button id='btn_{{row.title}}' class="btn btn-success"> Select </button>
-            <label for="sel"> {{row.title}}: {{row.save}} </label>
-        </h3>        
-        <div id='modal_{{row.title}}' class="modal fade" role="dialog">
+    {% for row in main_content %}
+        <h4>
+            <button class="btn btn-default " data-toggle="modal" data-target="#{{row.title}}" style= "width:20%;"> Select {{row.title}} </button>
+            <label for="sel"> {{row.save}} </label>
+        </h4>
+        
+        <div id="{{row.title}}" class="modal fade" role="dialog">
             <div class="modal-dialog">
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <h4>{{row.title}}</h4>
-                    {% for rows in row.fields %}
-                        <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
-                    {% endfor %}
-                    <br><button type="submit" class="{{btn_class}}" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
-                </form>
-            </div>
-        </div>
-
-    {% endfor %} -->
-
-    {% for row in main_content %}
-        <h3><button id='btn_{{row.title}}' class="btn btn-success"> Select </button>
-            <label for="sel"> {{row.title}}: {{row.save}} </label>
-        </h3>        
-        <div id='modal_{{row.title}}' class="modal">
-            <div class="modal-content">
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <h4>{{row.title}}</h4>
-                    {% for rows in row.fields %}
-                        <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
-                    {% endfor %}
-                    <br><button type="submit" class="{{btn_class}}" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
-                </form>
-            </div>
-        </div>
-
-    {% endfor %}
-
-    <br>
-
-    <form action="" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary" name="search" value="search" onclick="form.submit()">Run the search</button>
-    </form> 
-
-    <script>
-        var modal_topics = document.getElementById('modal_Topics');
-        var modal_questions = document.getElementById("modal_Questions");  
-        var modal_indicator = document.getElementById("modal_Indicator");  
-        var modal_year = document.getElementById("modal_Year");  
-        var modal_location = document.getElementById("modal_Location");  
-        var modal_population = document.getElementById("modal_Population"); 
-
-        var btn_topics = document.getElementById("btn_Topics");
-        var btn_questions = document.getElementById("btn_Questions");  
-        var btn_indicator = document.getElementById("btn_Indicator");  
-        var btn_year = document.getElementById("btn_Year");  
-        var btn_location = document.getElementById("btn_Location");  
-        var btn_population = document.getElementById("btn_Population");  
-
-
-        btn_topics.onclick = function() {
-            modal_topics.style.display = "block";
-        }
-
-        btn_questions.onclick = function() {
-            modal_questions.style.display = "block";
-        }
-
-        btn_indicator.onclick = function() {
-            modal_indicator.style.display = "block";
-        }
-
-        btn_year.onclick = function() {
-            modal_year.style.display = "block";
-        }
-
-        btn_location.onclick = function() {
-            modal_location.style.display = "block";
-        }
-
-        btn_population.onclick = function() {
-            modal_population.style.display = "block";
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal_topics) {
-                modal_topics.style.display = "none";
-            }
-        }
-    </script>
-
-
-    <!-- <p class="lead"> Select your categories of interest and see all available data</p>
-
-    {% for row in main_content %}
-        <h3><label for="sel">{{row.title}}: {{row.save}} </label></h3>
-        <p><button id="test" class="btn btn-primary" {{row.disabled}}>Select</button></p>
-
-        <div id="modal_test" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <div class="container">
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <h4>{{row.title}}</h4>
-                        {% for rows in row.fields %}
-                            <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
-                        {% endfor %}
-                        <br><button type="submit" class="{{btn_class}}" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
-                    </form>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <h4>{{row.title}}</h4>
+                            {% for rows in row.fields %}
+                                <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
+                            {% endfor %}
+                            <br><button type="submit" class="{{btn_class}}" style= "width:20%;" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+    {% endfor %}
 
-    {% endfor %}       -->
-
-    <!-- {% for row in main_content %}
-    <label for="sel">{{row.title}}: {{row.save}} </label>
-    <div class="container">
-        <form action="" method="post">
-            {% csrf_token %}
-            {% for rows in row.fields %}
-                <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
-            {% endfor %}
-            <br><button type="submit" class="{{btn_class}}" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
-        </form>
-        <br>
-        <br>
-    </div>
-    {% endfor %}   -->
     <br>
- 
-
-    <!-- <form action="" method="post">
+    <form action="" method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-success" name="search" value="search" onclick="form.submit()">Search</button>
-    </form>  -->
-
-
-
-    <!-- <script>
-        // var modal = document.getElementsByClassName("modal");  
-
-        var modal_topics = document.getElementById("modal_test");  
-        // var modal_questions = document.getElementById("Questions");  
-        // var modal_indicator = document.getElementById("Indicator");  
-        // var modal_year = document.getElementById("Year");  
-        // var modal_location = document.getElementById("Location");  
-        // var modal_population = document.getElementById("Population");  
-
-        var btn_topics = document.getElementById("test");  
-        // var btn_questions = document.getElementById("Questions");  
-        // var btn_indicator = document.getElementById("Indicator");  
-        // var btn_year = document.getElementById("Year");  
-        // var btn_location = document.getElementById("Location");  
-        // var btn_population = document.getElementById("Population");  
-
-        var span = document.getElementsByClassName("close")[0];
-        
-        btn_topics.onclick = function() {
-            modal_topics.style.display = "block";
-        }
-        // btn_question.onclick = function() {
-        //     modal_question.style.display = "block";
-        // }        
-        // btn_indicator.onclick = function() {
-        //     modal_indicator.style.display = "block";
-        // }
-        // btn_year.onclick = function() {
-        //     modal_year.style.display = "block";
-        // }
-        // btn_location.onclick = function() {
-        //     modal_location.style.display = "block";
-        // }
-
-        // btn_population.onclick = function() {
-        //     modal_population.style.display = "block";
-        // }   
-
-        // span.onclick = function() {
-        //     modal.style.display = "none";
-            // modal_question.style.display = "none";
-            // modal_indicator.style.display = "none";
-            // modal_year.style.display = "none";
-            // modal_location.style.display = "none";
-            // modal_population.style.display = "none";
-        }
-        
-        // window.onclick = function(event) {
-        //     if (event.target == modal) {
-        //         modal.style.display = "none";
-
-        // window.onclick = function(event) {
-        //     if (event.target == modal_topics || event.target == modal_question|| event.target == modal_indicator || event.target == modal_year || event.target == modal_location || event.target == modal_population) {
-        //         modal_topics.style.display = "none";
-        //         modal_question.style.display = "none";
-        //         modal_indicator.style.display = "none";
-        //         modal_year.style.display = "none";
-        //         modal_location.style.display = "none";
-        //         modal_population.style.display = "none";
-        }
-    </script> -->
-
-
+        <button type="submit" class="btn btn-primary" style= "width:20%;" name="search" value="search" onclick="form.submit()">Run the search</button>
+    </form><br>
 
     {% if ans %}
-    <form action='' method='post'>
-        {% csrf_token %}
-        <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
-    </form>
+        <hr>
+        <form action='' method='post'>
+            {% csrf_token %}
+            <button type='submit' class='btn btn-primary' style= "width:20%;" name='export' value='export' onclick='form.submit()'>Export csv file</button>
+        </form><br>
 
-    <div>
-        <div class='container text-center'> 
+        <form action='' method='post'>
+            {% csrf_token %}
+            <button type='submit' class='btn btn-primary' style= "width:20%;" name='refresh' value='refresh' onclick='form.submit()'>Refresh</button>
+        </form><br>
 
-            <h4> All Results  </h4>
-                       
-            <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block;  height: 400px;
-            overflow-y: auto" >
-                <thead>
-                    <tr>
-                    {% for i in ans.0 %}
-                        <td>{{i}}</td>
-                    {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in ans %}
-                    <tr>
-                        {% for key, value in row.items %}
-                        <td>{{value}}</td>
+        <div>
+            <div class='container text-center'> 
+
+                <h4> All Results  </h4>
+                        
+                <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block;  height: 400px;
+                overflow-y: auto" >
+                    <thead>
+                        <tr>
+                        {% for i in ans.0 %}
+                            <td>{{i}}</td>
                         {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in ans %}
+                        <tr>
+                            {% for key, value in row.items %}
+                            <td>{{value}}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-
     {% endif %}
-
-
 </div>
 {% endblock %}

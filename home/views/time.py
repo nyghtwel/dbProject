@@ -60,7 +60,7 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		time_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 and year_start < (select max(year_start) from chronic_disease_indicator where name = '{}' and year_start >= 2007) order by year_start ASC".format(ans2,ans2)
 		for i in time_content[3:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		time_content[3]['fields'], time_content[3]['disabled'] = populate_form('YEAR_START', query)
@@ -90,6 +90,12 @@ def time(request):
 	if request.method == 'POST' and request.POST.get("Increase/Decrease"):
 		time_content[5]['save'] = ans6 = request.POST.get("Increase/Decrease")
 		btn_class = 'btn btn-success'
+
+	" Title for table and graph "
+	title_temp = ''
+	if time_content[5]['save'] == 'increase' : title_temp = 'an Increase'
+	if time_content[5]['save'] == 'decrease' : title_temp = 'a Decrease'
+	title = 'States with {} in {} from {} to {} for {}'.format(title_temp, ans3, ans4, ans5, ans2)
 
 	if request.method == 'POST' and request.POST.get("submit"):
 		temp = "<" if time_content[5]['save'] == "increase" else ">"
@@ -121,6 +127,8 @@ def time(request):
 		return export_csv_file(request, csv_data)
 
 	json_data = json.dumps(ans)
+	json_title = json.dumps(title)
+
 	for i in time_content:
 		if i['fields']: i['fields'].insert(0, i['save'])
 
@@ -128,6 +136,7 @@ def time(request):
 		'time_content': time_content,
 		'ans': (ans if ans else ""),
 		'btn_class': btn_class,
-		'json_data': json_data
+		'json_data': json_data,
+		'title' : json_title
 	}
 	return render(request, 'home/time.html', context)

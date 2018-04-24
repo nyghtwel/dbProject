@@ -65,13 +65,16 @@ TBD
 
 - [ ] Special Features
     - [X] able to download csv file    
+    - [ ] table design    
 
 - [ ] Homepage/Index
     - [x] Dynamic query set up
     - [x] popup modals to show the options 
-    - [ ] remove bug when for nothing selected (add select all)
-    - [ ] UI design done 
-    - [x] Able to populate table
-    - [ ] Able to combine inputs but users (what is this?)
-    - [ ] Testing
+    - [x] remove bug when for nothing selected (add select all)
+    - [x] UI design done (scrollable table done - export to csv remained)
+    - [x] Able to populate table    
+    - [x] Able to combine inputs but users 
+    - [ ] merge 3 first selects (topic, question , indicator) - (Not needed)
+    - [x] update popup modal to fix signup issue    
+    - [x] Testing
 
