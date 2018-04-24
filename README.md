@@ -65,6 +65,7 @@ TBD
 
 - [ ] Special Features
     - [X] able to download csv file    
+    - [ ] table design    
 
 - [ ] Homepage/Index
     - [x] Dynamic query set up
@@ -75,5 +76,5 @@ TBD
     - [x] Able to combine inputs but users 
     - [ ] merge 3 first selects (topic, question , indicator) - (Not needed)
     - [x] update popup modal to fix signup issue    
-    - [ ] Testing
+    - [x] Testing
 
