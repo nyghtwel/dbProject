@@ -12,12 +12,12 @@
     <div style='display:inline;'>
     <form action="" method="post">
         {% csrf_token %}
-        <p><button type="submit" class="btn btn-primary" name="submit" value="submit" onclick="form.submit()">Data set has: {{total}} tuples</button></p>
+        <p><button type="submit" class="btn btn-primary" style= "width:20%;" name="submit" value="submit" onclick="form.submit()">Data set has: {{total}} tuples</button></p>
     </form>
     
     </div>
     
-</div><br><br>
+</div><br>
 
 <div class="container">    
     <!-- Latest compiled and minified CSS -->
@@ -28,7 +28,7 @@
 
     {% for row in main_content %}
         <h4>
-            <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#{{row.title}}"> Select {{row.title}} </button>
+            <button class="btn btn-default " data-toggle="modal" data-target="#{{row.title}}" style= "width:20%;"> Select {{row.title}} </button>
             <label for="sel"> {{row.save}} </label>
         </h4>
         
@@ -43,7 +43,7 @@
                             {% for rows in row.fields %}
                                 <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
                             {% endfor %}
-                            <br><button type="submit" class="{{btn_class}}" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
+                            <br><button type="submit" class="{{btn_class}}" style= "width:20%;" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
                         </form>
                     </div>
                 </div>
@@ -54,19 +54,19 @@
     <br>
     <form action="" method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-primary" name="search" value="search" onclick="form.submit()">Run the search</button>
+        <button type="submit" class="btn btn-primary" style= "width:20%;" name="search" value="search" onclick="form.submit()">Run the search</button>
     </form><br>
 
     {% if ans %}
         <hr>
         <form action='' method='post'>
             {% csrf_token %}
-            <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
+            <button type='submit' class='btn btn-primary' style= "width:20%;" name='export' value='export' onclick='form.submit()'>Export csv file</button>
         </form><br>
 
         <form action='' method='post'>
             {% csrf_token %}
-            <button type='submit' class='btn btn-primary' name='refresh' value='refresh' onclick='form.submit()'>Refresh</button>
+            <button type='submit' class='btn btn-primary' style= "width:20%;" name='refresh' value='refresh' onclick='form.submit()'>Refresh</button>
         </form><br>
 
         <div>

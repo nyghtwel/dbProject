@@ -73,7 +73,7 @@ TBD
     - [x] UI design done (scrollable table done - export to csv remained)
     - [x] Able to populate table    
     - [x] Able to combine inputs but users 
-    - [ ] merge 3 first selets (topic, question , indicator)
+    - [ ] merge 3 first selects (topic, question , indicator) - (Not needed)
     - [x] update popup modal to fix signup issue    
     - [ ] Testing
 
