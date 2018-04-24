@@ -51,7 +51,7 @@ def index(request):
         main_content[0]['save']  = ans1 = list_to_query(request.POST.getlist('choices[]'))
         query = "select distinct cdi.name from chronic_disease_indicator cdi, health_domain hd where cdi.domain_id = hd.domain_id and hd.name {}  order by cdi.name asc".format(temp_fill(ans1))
         query2 = "select distinct cdi.year_start from chronic_disease_indicator cdi, health_domain hd where cdi.domain_id = hd.domain_id and hd.name {}  order by cdi.year_start asc".format(temp_fill(ans1))
-        for i in main_content[1:2]:
+        for i in main_content[1:3]:
             i['fields'], i['disabled'], i['save'] = [], "disabled", ""
         main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', query)
         main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', query2)
@@ -61,9 +61,14 @@ def index(request):
     if request.method == 'POST' and request.POST.get("Questions"):
         main_content[1]['save']  = ans2 = list_to_query(request.POST.getlist('choices[]'))
         query = "Select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name {}) order by data_value_type asc".format(temp_fill(ans2))
-        main_content[2]['fields'], main_content[2]['disabled'], main_content[2]['save'] = [], "disabled", ""
+        query2 = "select distinct year_start from chronic_disease_indicator where name {} order by year_start ASC".format(temp_fill(ans2))        
+        for i in main_content[2:3]:
+            i['fields'], i['disabled'], i['save'] = [], "disabled", ""
         main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', query)
+        main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', query2)
         messages.success(request, query)
+        messages.success(request, query2)
+
 
     if request.method == 'POST' and request.POST.get("Indicator"):
         main_content[2]['save']  = ans3 = list_to_query(request.POST.getlist('choices[]'))
@@ -109,7 +114,7 @@ def index(request):
         ans = ans1 = ans2 = ans3 = ans4 = ans5 = ans6 = temp1 = temp2 = temp3 = temp4 = temp5 = temp6 = ""
 
         main_content[0]['fields'], main_content[0]['disabled'] = populate_form(
-			'NAME', "Select distinct name from health_domain")
+			'NAME', "Select distinct name from health_domain order by name")
 
     context = {
         'total': total,

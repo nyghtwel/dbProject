@@ -1,100 +1,99 @@
 {% extends 'home/layout.html' %} {% block content %}
-<div class="container">
-    <h1 class="mt-5">U.S. Chronic Disease Indicator</h3>
-    <p class="lead"> 
-         CDC's Division of Population Health provides cross-cutting set of 124 indicators that were developed by consensus and that
-        allows states and territories and large metropolitan areas to uniformly define, collect, and report chronic disease data
-        that are important to public health practice and available for states, territories and large metropolitan areas. In addition
-        to providing access to state-specific indicator data, the CDI web site serves as a gateway to additional information and
-        data resources.
-        <br>
-    </p>
-    <div style='display:inline;'>
-    <form action="" method="post">
-        {% csrf_token %}
-        <p><button type="submit" class="btn btn-primary" style= "width:20%;" name="submit" value="submit" onclick="form.submit()">Data set has: {{total}} tuples</button></p>
-    </form>
-    
-    </div>
-    
-</div><br>
 
-<div class="container">    
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- Latest compiled JavaScript -->
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-    <hr><h3 style="line-height: 200%;">Select your categories of interest and see all available data</h3>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    </head>
 
-    {% for row in main_content %}
-        <h4>
-            <button class="btn btn-default " data-toggle="modal" data-target="#{{row.title}}" style= "width:20%;"> Select {{row.title}} </button>
-            <label for="sel"> {{row.save}} </label>
-        </h4>
+    <div class="container">
+        <h1 class="mt-5">U.S. Chronic Disease Indicator</h3>
+        <p class="lead"> 
+            CDC's Division of Population Health provides cross-cutting set of 124 indicators that were developed by consensus and that
+            allows states and territories and large metropolitan areas to uniformly define, collect, and report chronic disease data
+            that are important to public health practice and available for states, territories and large metropolitan areas. In addition
+            to providing access to state-specific indicator data, the CDI web site serves as a gateway to additional information and
+            data resources.
+            <br>
+        </p>
+        <div style='display:inline;'>
+        <form action="" method="post">
+            {% csrf_token %}
+            <p><button type="submit" class="btn btn-primary" style= "width:20%;" name="submit" value="submit" onclick="form.submit()">Data set has: {{total}} tuples</button></p>
+        </form>
         
-        <div id="{{row.title}}" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            <h4>{{row.title}}</h4>
-                            {% for rows in row.fields %}
-                                <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
-                            {% endfor %}
-                            <br><button type="submit" class="{{btn_class}}" style= "width:20%;" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
-                        </form>
+        </div>
+        
+    </div><br>
+
+    <div class="container">    
+        <hr><h3 style="line-height: 200%;">Select your categories of interest and see all available data</h3>
+
+        {% for row in main_content %}
+            <h4>
+                <button class="btn btn-default " data-toggle="modal" data-target="#{{row.title}}" style= "width:20%;"> Select {{row.title}} </button>
+                <label for="sel"> {{row.save}} </label>
+            </h4>
+            
+            <div id="{{row.title}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <h4>{{row.title}}</h4>
+                                {% for rows in row.fields %}
+                                    <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
+                                {% endfor %}
+                                <br><button type="submit" class="{{btn_class}}" style= "width:20%;" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
 
-    <br>
-    <form action="" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary" style= "width:20%;" name="search" value="search" onclick="form.submit()">Run the search</button>
-    </form><br>
-
-    {% if ans %}
-        <hr>
-        <form action='' method='post'>
+        <br>
+        <form action="" method="post">
             {% csrf_token %}
-            <button type='submit' class='btn btn-primary' style= "width:20%;" name='export' value='export' onclick='form.submit()'>Export csv file</button>
+            <button type="submit" class="btn btn-primary" style= "width:20%;" name="search" value="search" onclick="form.submit()">Run the search</button>
         </form><br>
 
-        <form action='' method='post'>
-            {% csrf_token %}
-            <button type='submit' class='btn btn-primary' style= "width:20%;" name='refresh' value='refresh' onclick='form.submit()'>Refresh</button>
-        </form><br>
+        {% if ans %}
+            <hr>
+            <form action='' method='post'>
+                {% csrf_token %}
+                <button type='submit' class='btn btn-primary' style= "width:20%;" name='export' value='export' onclick='form.submit()'>Export csv file</button>
+            </form><br>
 
-        <div>
-            <div class='container text-center'> 
-
-                <h4> All Results  </h4>
-                        
-                <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block;  height: 400px;
-                overflow-y: auto" >
-                    <thead>
-                        <tr>
-                        {% for i in ans.0 %}
-                            <td>{{i}}</td>
-                        {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for row in ans %}
-                        <tr>
-                            {% for key, value in row.items %}
-                            <td>{{value}}</td>
-                            {% endfor %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    {% endif %}
+            <form action='' method='post'>
+                {% csrf_token %}
+                <button type='submit' class='btn btn-primary' style= "width:20%;" name='refresh' value='refresh' onclick='form.submit()'>Refresh</button>
+            </form><br>
+    </div>
+             
+    <div class="container text-center">
+        <h4>All the available data for the selected query</h4>
+        <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block; text-align: left;  height: 400px; overflow-y: auto">
+            <thead>
+                <tr>
+                {% for i in ans.0 %}
+                    <td >{{i}}</td>
+                {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in ans %}
+                <tr>
+                    {% for key, value in row.items %}
+                    <td>{{value}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 </div>
+    {% endif %}
 {% endblock %}
