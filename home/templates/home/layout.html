@@ -59,7 +59,7 @@
                         <a href='' onclick="document.forms['logout'].submit(); return false;">
                             <form action="{% url 'users' %}" name='logout' method='POST'>
                                 {% csrf_token %}
-                                <input type='hidden' name='logout' value='{{request.path}}'>
+                                <input type='hidden' name='logout' value="{% url 'index' %}">
                             </form>
                             logout</a>
                     </li>

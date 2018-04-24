@@ -1,10 +1,15 @@
 {% extends 'home/layout.html' %} {% block content %}
 <div class="container">
 <div class='container text-center'>
-    <h2>History</h2>
+    <h2>Query History</h2>
     <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block;  height: 400px;
         overflow-y: auto">
-
+        <thead>
+            <tr>
+                <td>Time Stamp</td>
+                <td>Query</td>
+            </tr>
+        </thead>
         <tbody>
             {% for row in user_history %}
             <tr>
