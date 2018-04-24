@@ -8,13 +8,13 @@ location_content = [
 ]
 
 ans1 = ans2 = ans3 = ""
-
+csv_data = []
 def location(request):
 	global location_content
 	global ans1
 	global ans2
 	global ans3
-
+	global csv_data
 #<<<<<<< HEAD
 	ans, query_title, query = [], "", ""
 	btn_class = 'btn btn-success disabled'
@@ -94,18 +94,20 @@ where ROWNUM < 11
 		with connection.cursor() as cursor:
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
-			print(ans)
 
-		# for i in location_content:
-		# 	i['fields'], i['disabled'], i['save'] = [], "disabled", ''
+		for i in ans:
+			i['PERCENT_DIFFERENCE'] = str(abs(i['PERCENT_DIFFERENCE']))
+			
+		csv_data = ans
 
-		# ans1 = ans2 = asn3 = ""
 		location_content[0]['fields'], location_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 		
-	for i in ans:
-		i['PERCENT_DIFFERENCE'] = str(abs(i['PERCENT_DIFFERENCE']))
+	if request.method == 'POST' and request.POST.get('export'):
+		return export_csv_file(request, csv_data)
+
 
 	json_data = json.dumps(ans)
+
 
 		
 	

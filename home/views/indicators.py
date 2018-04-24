@@ -10,7 +10,7 @@ indicators_content = [
    	{'title': 'Increase/Decrease', 'fields': [], 'disabled': 'disabled', 'save': ''}
 ]
 ans1 = ans2 = ans3 = ans4 = ""
-
+csv_data = []
 def indicators(request):
 	global indicators_content
 	global ans1
@@ -18,7 +18,7 @@ def indicators(request):
 	global ans3
 	global ans4
 	ans, query_title, query = [], "", ""
-
+	global csv_data
 	btn_class = 'btn btn-success disabled'
 	for i in indicators_content:
 		if i['fields']:
@@ -136,6 +136,7 @@ def indicators(request):
 			ans = dictfetchall(cursor)
 			print(ans)
 
+		csv_data = ans
 		# for i in indicators_content:
 		# 	i['fields'], i['disabled'], i['save'] = [], "disabled", ''
 
@@ -144,6 +145,9 @@ def indicators(request):
 		indicators_content[0]['fields'], indicators_content[0]['disabled'] = populate_form(
 			'NAME', "Select distinct name from health_domain")
 		# ans1 = ans2 = asn3 = ans4 = ""
+
+	if request.method == 'POST' and request.POST.get('export'):
+		return export_csv_file(request, csv_data)
 
 	for i in indicators_content:
 		i['fields'].insert(0, i['save'])

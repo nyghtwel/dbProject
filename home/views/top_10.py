@@ -8,7 +8,7 @@ top_10_content = [
    	{'title': 'Population', 'fields': [], 'disabled': 'disabled', 'save': ''},
    	{'title': 'Highest/Lowest', 'fields': [], 'disabled': 'disabled', 'save': ''}
 ]
-
+csv_data = []
 ans1 = ans2 = ans3 = ans4 = ans5 = ans6 = ""
 def top_10(request):
 	global top_10_content
@@ -18,6 +18,7 @@ def top_10(request):
 	global ans4
 	global ans5
 	global ans6
+	global csv_data
 	btn_class = 'btn btn-success disabled'
 	ans, query_title, query = [], "", ""
 
@@ -112,15 +113,17 @@ def top_10(request):
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 
+		csv_data = ans
 		temp = sorted(ans, key=lambda x: x['DATA_VALUE'])
-		print(temp)
+
 		messages.success(request, query_title)
-		# for i in top_10_content:
-		# 	i['fields'], i['disabled'], i['save'] = [], "btn btn-success disabled", ''
 
 		top_10_content[0]['fields'], top_10_content[0]['disabled'] = populate_form(
 			'NAME', "Select distinct name from health_domain")
-		# ans1 = ans2 = asn3 = ans4 = ans5 = ans6 = ""
+
+
+	if request.method == 'POST' and request.POST.get('export'):
+		return export_csv_file(request, csv_data)
 
 	json_data = json.dumps(ans)
 	for i in top_10_content:

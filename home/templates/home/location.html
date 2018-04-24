@@ -27,6 +27,11 @@
 </form>
 
 {% if ans %}
+<br>
+<form action='' method='post'>
+    {% csrf_token %}
+    <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
+</form>
 <div>
     <div class='container text-center'>
         <table class='table table-striped' style='display: inline;'>
