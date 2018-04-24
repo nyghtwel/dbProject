@@ -53,10 +53,13 @@
                     
                     {% if user %}
                     <li>
-                        {{user_name}}
+                        <a href="{% url 'users' %}">{{user_name}}</a>
                     </li>
                     <li>
-                        <a href='' >Logout</a>
+                        <form action="{% url 'user' %}" method='POST'>
+                            <input type='hidden' name='logout' value='{{request.path}}'
+                            <a href='' >Logout</a>
+                        </form>
                     </li>
                     {% else %}
                     <li>
