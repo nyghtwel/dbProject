@@ -3,8 +3,6 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
     </head>
 
     <div class="container">
@@ -54,6 +52,9 @@
                 </div>
             </div>
         {% endfor %}
+    </div>
+    
+    <div class="container">
 
         <br>
         <form action="" method="post">
@@ -72,28 +73,32 @@
                 {% csrf_token %}
                 <button type='submit' class='btn btn-primary' style= "width:20%;" name='refresh' value='refresh' onclick='form.submit()'>Refresh</button>
             </form><br>
+
+    
+    
+        <div class="panel panel-default">
+            <div class="panel-heading"><h1 align='center'>All the available data for the selected query</h1></div> 
+            <div class="table table-responsive">
+                <table class="table" style="display: inline-block; width:auto; text-align: left;  height: 400px;  overflow-y: auto">
+                    <thead>
+                        <tr>
+                        {% for i in ans.0 %}
+                            <td >{{i}}</td>
+                        {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in ans %}
+                        <tr>
+                            {% for key, value in row.items %}
+                            <td>{{value}}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div> 
     </div>
-             
-    <div class="container text-center">
-        <h4>All the available data for the selected query</h4>
-        <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block; text-align: left;  height: 400px; overflow-y: auto">
-            <thead>
-                <tr>
-                {% for i in ans.0 %}
-                    <td >{{i}}</td>
-                {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in ans %}
-                <tr>
-                    {% for key, value in row.items %}
-                    <td>{{value}}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-</div>
     {% endif %}
 {% endblock %}

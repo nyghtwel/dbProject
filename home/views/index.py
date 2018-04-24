@@ -111,6 +111,12 @@ def index(request):
     if request.POST.get('refresh'):
         for i in main_content:
             i['fields'], i['disabled'], i['save'] = [], "disabled", ''
+        main_content[0]['fields'], main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain order by name asc")
+        main_content[1]['fields'], main_content[1]['disabled'] = populate_form('NAME', "Select distinct name from CHRONIC_DISEASE_INDICATOR order by name asc")
+        main_content[2]['fields'], main_content[2]['disabled'] = populate_form('DATA_VALUE_TYPE', "Select distinct data_value_type from indicator_estimate order by data_value_type asc")
+        main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', "Select distinct year_start from CHRONIC_DISEASE_INDICATOR order by YEAR_START asc")
+        main_content[4]['fields'], main_content[4]['disabled'] = populate_form('NAME', "Select distinct name from location order by name asc")
+        main_content[5]['fields'], main_content[5]['disabled'] = populate_form('POPULATION', "Select  distinct(gender || race || overall) population from populationid order by population asc")
         ans = ans1 = ans2 = ans3 = ans4 = ans5 = ans6 = temp1 = temp2 = temp3 = temp4 = temp5 = temp6 = ""
 
         main_content[0]['fields'], main_content[0]['disabled'] = populate_form(

@@ -33,26 +33,26 @@
     <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
 </form>
 <div>
-    <h4 align='center'>{{ title|remove_quotes }}</h4>
-    <div class='container text-center'>
-        <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block; text-align: left;  height: 400px; overflow-y: auto">  
-            <thead>
-                <tr>
-                    {% for i in ans.0 %}
-                    <td>{{i}}</td>
+    <div class="panel panel-default">
+        <div class="panel-heading"><h1 align='center'>{{ title|remove_quotes }}</h1></div> 
+            <table class="table" style="display: inline-block; width:auto; text-align: left;  height: 400px;  overflow-y: auto">
+                <thead>
+                    <tr>
+                        {% for i in ans.0 %}
+                        <td>{{i}}</td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in ans %}
+                    <tr>
+                        {% for key, value in row.items %}
+                        <td>{{value}}</td>
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in ans %}
-                <tr>
-                    {% for key, value in row.items %}
-                    <td>{{value}}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
     </div>
     <div id="chartContainer" style="height: 100%; width: 100%; display: inline-block"></div>
 </div>
