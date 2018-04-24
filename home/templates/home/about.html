@@ -16,7 +16,73 @@
                 Mohamad Ahmadzade Razkenari
             </li>
         </p>
-    <p class='lead'>Plug in info about dataset https://www.healthdata.gov/dataset/us-chronic-disease-indicators-cdi </p>
+    <p class='lead'>Data source: 
+        <a href="https://www.healthdata.gov/dataset/us-chronic-disease-indicators-cdi">https://www.healthdata.gov/dataset/us-chronic-disease-indicators-cdi</a> 
+    </p>
+</div>
+<div>
+    <h3>Definitions of each selector</h3>
+    <p>
+        <dl>
+            <dt>Topic</dt>
+            <dd>Refers to the 17 different groups for chronic disease indicators, as established by the CDC. Topic names can be found in the raw data under the "Topic" column.</dd>
+        </dl>
+        <dl>
+            <dt>Question</dt>
+            <dd>Refers to the various indicator names that describe the indicator value being measured (e.g., Cancer of the bladder, mortality). Question names can be found in the raw data under the "Question" column.</dd>
+        </dl>
+        <dl>
+            <dt>Indicator</dt>
+            <dd>Refers to the various indicator measures that are used for each indicator name (e.g., Crude Prevalence). Indicator measures can be found in the raw data under the "DataValueType" column.</dd>
+        </dl>
+        <dl>
+            <dt>Year</dt>
+            <dd>Refers to the year that the data for each indicator was collected. Data for the years 2007 to 2016 are included in the database. Year can be found in the raw data under both the "YearStart" and "YearEnd" columns.</dd>
+        </dl>
+        <dl>
+            <dt>Location</dt>
+            <dd>Refers to the location in the United States that the data was collected from. The granularity of the data is at the top-level administrative subdivision (i.e., 50 states, District of Columbia, and various territories). The raw data contains columsn for Location name ("LocationDesc"), Location abbreviation ("LocationAbbr"), and Location id ("LocationID"), the latter of which are numeric identifiers that were curated by the CDC.</dd>
+        </dl>
+        <dl>
+            <dt>Population</dt>
+            <dd>Refers to the race/ethnicity or gender of the individuals in a particular location that were sampled by each data source. Population can be found in the raw data under the "Stratification1" column.</dd>
+        </dl>
+    </p>
+</div>
+<div>
+    <h3>Descriptions of each query</h3>
+    <p>
+        <dl>
+            <dt>National Avg</dt>
+            <dd>
+                Allows users to construct a query for indicator names (i.e., Questions) and their respective locations in which the measure for that indicator is above or below the national average for that year. Users select the topic, question, indicator measure, year, and "above" or "below." Query returns 
+            </dd>
+        </dl>
+        <dl>
+            <dt>Time</dt>
+            <dd>
+                Allows users to construct a query for states that had an increase or decrease in a particular indicator measure between two specified years. Users select the topic, question, indicator measure, year start, year end, and "increase" or "decrease." Query returns the years selected and their corresponding values along with the location.
+            </dd>
+        </dl>
+        <dl>
+            <dt>Top 10</dt>
+            <dd>
+                Allows users to construct a query for the top 10 locations with either the highest or the lowest value for a specified indicator measure for a specified population. Users select the topic, question, indicator measure, year, and population. Query returns the location and the corresponding value.
+            </dd>
+        </dl>
+        <dl>
+            <dt>Indicators</dt>
+            <dd>
+                Allows users to construct a query for all indicator names that had an increase or decrease in their yearly average between two specified years. Users select the topic, indicator, year start, year end, and "increase" or "decrease." Query returns questions along with their corresponding values for the two years selected.
+            </dd>
+        </dl>
+        <dl>
+            <dt>Location</dt>
+            <dd>
+                Allows users to construct a query for all locations and years that had the largest increase or decrease in a particular indicator name and measure. Users select the topic, question, indicator, and "increase" or "decrease." Query returns the location, years selected, and the percent difference in the measures between the two years.
+            </dd>
+        </dl>
+    </p>
 </div>
 {% endblock %}
 
