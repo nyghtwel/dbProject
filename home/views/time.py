@@ -60,7 +60,7 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		time_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 and year_start < (select max(year_start) from chronic_disease_indicator where name = '{}' and year_start >= 2007) order by year_start ASC".format(ans2,ans2)
 		for i in time_content[3:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		time_content[3]['fields'], time_content[3]['disabled'] = populate_form('YEAR_START', query)

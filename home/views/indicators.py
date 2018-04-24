@@ -53,8 +53,12 @@ def indicators(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		indicators_content[1]['save'] = ans2 = request.POST.get("Indicator")
-		query = "select distinct year_start from indicator_estimate where data_value_type = '{}' and year_start >= 2007 and indicator_id in (select indicator_id from chronic_disease_indicator where domain_id in (select domain_id from health_domain where name = '{}')) order by year_start ASC".format(
-			ans2, ans1)
+		query = """select distinct year_start from indicator_estimate where data_value_type = '{}' and year_start >= 2007  and 
+		indicator_id in (select indicator_id from chronic_disease_indicator where domain_id in (select domain_id from health_domain where name = '{}')) 
+		and year_start < (select max(year_start) from indicator_estimate where data_value_type = '{}' and year_start >= 2007 
+		and indicator_id in (select indicator_id from chronic_disease_indicator where domain_id in (select domain_id from health_domain where name = '{}')))
+		order by year_start ASC""".format(ans2, ans1, ans2, ans1)
+
 		for i in indicators_content[2:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		indicators_content[2]['fields'], indicators_content[2]['disabled'] = populate_form(
