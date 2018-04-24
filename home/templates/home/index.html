@@ -41,8 +41,10 @@
                             <form action="" method="post">
                                 {% csrf_token %}
                                 <h4>{{row.title}}</h4>
+                                <!-- on.select="form.submit" -->
+                                <h4><input type="checkbox" value="all_selected" name="choices[]" ><span>&nbsp;Select all</h4></span><br>
                                 {% for rows in row.fields %}
-                                    <input type="checkbox" value="{{rows}}" name="choices[]"><span>{{rows}}</span><br>
+                                    <input type="checkbox" value="{{rows}}" name="choices[]"><span>&nbsp;{{rows}}</span><br>
                                 {% endfor %}
                                 <br><button type="submit" class="{{btn_class}}" style= "width:20%;" name="{{row.title}}" value="{{row.title}}" onclick="form.submit()">Done</button><br>
                             </form>
@@ -61,19 +63,17 @@
             <button type="submit" class="btn btn-primary" style= "width:20%;" name="search" value="search" onclick="form.submit()">Run the search</button>
         </form><br>
 
+        <form action='' method='post'>
+            {% csrf_token %}
+            <button type='submit' class='btn btn-primary' style= "width:20%;" name='refresh' value='refresh' onclick='form.submit()'>Refresh</button>
+        </form><br>
+
         {% if ans %}
             <hr>
             <form action='' method='post'>
                 {% csrf_token %}
                 <button type='submit' class='btn btn-primary' style= "width:20%;" name='export' value='export' onclick='form.submit()'>Export csv file</button>
-            </form><br>
-
-            <form action='' method='post'>
-                {% csrf_token %}
-                <button type='submit' class='btn btn-primary' style= "width:20%;" name='refresh' value='refresh' onclick='form.submit()'>Refresh</button>
-            </form><br>
-
-    
+            </form><br>    
     
         <div class="panel panel-default">
             <div class="panel-heading"><h1 align='center'>All the available data for the selected query</h1></div> 

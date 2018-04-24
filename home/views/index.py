@@ -49,6 +49,10 @@ def index(request):
 
     if request.method == 'POST' and request.POST.get("Topics"):
         main_content[0]['save']  = ans1 = list_to_query(request.POST.getlist('choices[]'))
+        if ans1 == '':
+            main_content[0]['save'] =  list_to_query(main_content[0]['fields'])
+            # , main_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain order by name asc")
+
         query = "select distinct cdi.name from chronic_disease_indicator cdi, health_domain hd where cdi.domain_id = hd.domain_id and hd.name {}  order by cdi.name asc".format(temp_fill(ans1))
         query2 = "select distinct cdi.year_start from chronic_disease_indicator cdi, health_domain hd where cdi.domain_id = hd.domain_id and hd.name {}  order by cdi.year_start asc".format(temp_fill(ans1))
         for i in main_content[1:3]:
@@ -60,6 +64,8 @@ def index(request):
 
     if request.method == 'POST' and request.POST.get("Questions"):
         main_content[1]['save']  = ans2 = list_to_query(request.POST.getlist('choices[]'))
+        if ans2 == '':
+            main_content[1]['save'] =  list_to_query(main_content[1]['fields'])
         query = "Select distinct data_value_type from indicator_estimate where indicator_id in (select indicator_id from chronic_disease_indicator where name {}) order by data_value_type asc".format(temp_fill(ans2))
         query2 = "select distinct year_start from chronic_disease_indicator where name {} order by year_start ASC".format(temp_fill(ans2))        
         for i in main_content[2:3]:
@@ -72,18 +78,26 @@ def index(request):
 
     if request.method == 'POST' and request.POST.get("Indicator"):
         main_content[2]['save']  = ans3 = list_to_query(request.POST.getlist('choices[]'))
+        if ans3 == '':
+            main_content[2]['save'] =  list_to_query(main_content[2]['fields'])
         query = "select distinct year_start from chronic_disease_indicator where name {} order by year_start ASC".format(temp_fill(ans2))
         main_content[3]['fields'], main_content[3]['disabled'] = populate_form('YEAR_START', query)
         messages.success(request, query)
 
     if request.method == 'POST' and request.POST.get("Year"):
         main_content[3]['save']  = ans4 = list_to_query(request.POST.getlist('choices[]'))
+        if ans4 == '':
+            main_content[3]['save'] =  list_to_query(main_content[3]['fields'])
 
     if request.method == 'POST' and request.POST.get("Location"):
         main_content[4]['save']  = ans5 = list_to_query(request.POST.getlist('choices[]'))
+        if ans5 == '':
+            main_content[4]['save'] =  list_to_query(main_content[4]['fields'])
 
     if request.method == 'POST' and request.POST.get("Population"):
         main_content[5]['save']  = ans6 = list_to_query(request.POST.getlist('choices[]'))
+        if ans6 == '':
+            main_content[5]['save'] =  list_to_query(main_content[5]['fields'])
 
     btn_class = 'btn btn-success'
 

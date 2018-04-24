@@ -44,14 +44,19 @@ def export_csv_file(request, data):
 	return response
 
 
-def list_to_query(list):
+def list_to_query(lst):
 	temp=[]
 
-	if not list:
+	if not lst:
 		return ''
 	else:
-		for i in list:
-			temp.append("'"+i+"'")
+		for i in lst:
+			if i == 'all_selected':
+				return ''
+			if isinstance(i, str):
+				temp.append("'"+i+"'")
+			else:
+				temp.append("'"+str(i)+"'")
 		return ', '.join(temp)
 
 ## used for dynamic query
