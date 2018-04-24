@@ -4,6 +4,7 @@ from django.db import connection
 from django.contrib import messages
 import json
 import csv
+import re
 from django.conf import settings
 
 def populate_form(id, query):
@@ -62,6 +63,8 @@ def add_user_query(quer):
 	if not settings.USER: return 
  # if request.method == 'POST' and request.POST.get('submit'):
 	username = settings.USER_NAME
+	quer = re.sub(r"\s+", " ", quer)
+
 	query1 = ''' select max(query_id) from query where query_id is not null
 	'''
 	num = None
@@ -72,7 +75,7 @@ def add_user_query(quer):
 	if num:	
 	    # increment the max query_id by 1
 		query2 = '''insert into query(query_id, query) 
-				values({},'{}')
+				values({},q'['{}']')
 				'''.format(num[0]+1, quer)
 		query3 = '''insert into write(username, query_id, datetime) 
 					values('{}', {}, systimestamp)
@@ -80,12 +83,12 @@ def add_user_query(quer):
 
 	else:
 		query2 = '''insert into query(query_id, query) 
-				values(1,"{}")
+				values(1,q'['{}']')
 				'''.format(quer)
 
-		query3 = '''insert into write(username, query, datetime) 
-					values('{}', '{}', systimestamp)
-				'''.format(username, num[0])
+		query3 = '''insert into write(username, query_id, datetime) 
+					values(q'['{}']', 1, systimestamp)
+				'''.format(username)
 
 	print(query2)
 	print()
