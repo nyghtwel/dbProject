@@ -52,6 +52,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'home.context_processors.user_name',
+                'home.context_processors.user',
+                
             ],
         },
     },
@@ -113,6 +116,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+USER_NAME = "Fuck this project"
+USER = False
 try: 
     from dbProject.local_settings import *
 except:
