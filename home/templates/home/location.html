@@ -27,10 +27,16 @@
 </form>
 
 {% if ans %}
+<br>
+<form action='' method='post'>
+    {% csrf_token %}
+    <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
+</form>
 <div>
     <h1 align='center'>{{ title|remove_quotes }}</h1>
     <div class='container text-center'>
-        <table class='table table-striped' style='display: inline;'>
+        <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block;  height: 400px;
+        overflow-y: auto">
             <thead>
                 <tr>
                     {% for i in ans.0 %}

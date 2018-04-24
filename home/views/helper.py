@@ -45,8 +45,14 @@ def export_csv_file(request, data):
 
 def list_to_query(list):
 	temp=[]
-	for i in list:
-		temp.append("'"+i+"'")
 
-	return ', '.join(temp)
+	if not list:
+		return ''
+	else:
+		for i in list:
+			temp.append("'"+i+"'")
+		return ', '.join(temp)
 
+## used for dynamic query
+def temp_fill(answer):
+    return 'is not null' if answer == '' else 'in ({})'.format(answer)

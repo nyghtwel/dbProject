@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .helper import *
 
-def user(request):
+def users(request):
     # add_user()
     # get_user()
     # show_user()

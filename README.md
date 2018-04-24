@@ -52,9 +52,10 @@ TBD
     - [X] Graphs/Tables for National Avg query (AL)
     - [X] Graphs/Tables for Time query (AL)
     - [X] Graphs/Tables for Top 10 query (AL)
-    - [ ] Graphs/Tables for Indicator query (AL)
+    - [x] Graphs/Tables for Indicator query (AL)
     - [X] Graphs/Tables for Location query (AL)
     - [ ] Add titles
+    - [ ] limit the # of entries in graphs?
 
 - [x] Bugs
     - [x] Indicator query bug, year end query is not correct return all possible years
@@ -67,9 +68,12 @@ TBD
 
 - [ ] Homepage/Index
     - [x] Dynamic query set up
-    - [ ] create popup modals to show the options 
-    - [ ] UI design done 
-    - [x] Able to populate table
-    - [ ] Able to combine inputs but users (what is this?)
+    - [x] popup modals to show the options 
+    - [x] remove bug when for nothing selected (add select all)
+    - [ ] UI design done (scrollable table done - export to csv remained)
+    - [x] Able to populate table    
+    - [x] Able to combine inputs but users 
+    - [ ] merge 3 first selets (topic, question , indicator)
+    - [ ] update popup modal to fix signup issue    
     - [ ] Testing
 

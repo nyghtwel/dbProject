@@ -10,6 +10,7 @@ time_content = [
 ]
 
 ans1 = ans2 = ans3 = ans4 = ans5 = ""
+csv_data = []
 def time(request):
 	global time_content
 	global ans1
@@ -18,7 +19,7 @@ def time(request):
 	global ans4
 	global ans5
 	btn_class = 'btn btn-success disabled'
-
+	global csv_data
 	for i in time_content:
 		if i['fields']:
 			i['fields'].pop(0)
@@ -59,7 +60,7 @@ def time(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		time_content[2]['save'] = ans3 = request.POST.get("Indicator")
-		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 order by year_start ASC".format(ans2)
+		query = "select distinct year_start from chronic_disease_indicator where name = '{}' and year_start >= 2007 and year_start < (select max(year_start) from chronic_disease_indicator where name = '{}' and year_start >= 2007) order by year_start ASC".format(ans2,ans2)
 		for i in time_content[3:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		time_content[3]['fields'], time_content[3]['disabled'] = populate_form('YEAR_START', query)
@@ -116,9 +117,14 @@ def time(request):
 		with connection.cursor() as cursor:
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
+
+		csv_data = ans
 		messages.success(request, query_title)
 
 		time_content[0]['fields'], time_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
+
+	if request.method == 'POST' and request.POST.get('export'):
+		return export_csv_file(request, csv_data)
 
 	json_data = json.dumps(ans)
 	json_title = json.dumps(title)

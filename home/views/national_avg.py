@@ -120,7 +120,6 @@ def national_avg(request):
 			'NAME', "Select distinct name from health_domain")
 
 	if request.method == 'POST' and request.POST.get('export'):
-		print('in export')
 		return export_csv_file(request, csv_data)
 
 	for i in national_avg_content:

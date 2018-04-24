@@ -28,26 +28,17 @@
     {% csrf_token %}
     <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
 </form>
-<!-- 
-<table>
-    </tr>
-    {% for row in ans %}
-    <tr>
-        <td>{{ row}}</td>
-    </tr>
-    {% endfor %}
-</table>
 <br>
-{% if ans %} -->
-<!-- <div class="container-fluid text-center text-md-left">
-    <h3>States {{ans5}} the National Average of {{national_avg}} in {{ans4}} for {{ans3}} in {{ans2}} </h3>
-    <div class='container'>
-    </div>
-</div> -->
+{% if ans %}
+<form action='' method='post'>
+    {% csrf_token %}
+    <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
+</form>
 <div>
     <h1 align='center'>{{ title|remove_quotes }}</h1>
     <div class='container text-center'>
-        <table class='table table-striped' style='display: inline;'>
+        <table class='table table-fixed' style="height: 100%; width: 80%; display: inline-block;  height: 400px;
+        overflow-y: auto">
             <thead>
                 <tr>
                     {% for i in ans.0 %}
@@ -84,7 +75,8 @@
             data_first_value.push(point1);
             data_second_value.push(point2);
         }
-        
+        console.log(data_first_value)
+        console.log(data_second_value) 
         var chart = new CanvasJS.Chart("chartContainer", {
             animationEnabled: true,
             title: {

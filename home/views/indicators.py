@@ -9,8 +9,7 @@ indicators_content = [
    	{'title': 'Increase/Decrease', 'fields': [], 'disabled': 'disabled', 'save': ''}
 ]
 ans1 = ans2 = ans3 = ans4 = ""
-
-
+csv_data = []
 def indicators(request):
 	global indicators_content
 	global ans1
@@ -18,7 +17,7 @@ def indicators(request):
 	global ans3
 	global ans4
 	ans, query_title, query = [], "", ""
-
+	global csv_data
 	btn_class = 'btn btn-success disabled'
 	for i in indicators_content:
 		if i['fields']:
@@ -44,8 +43,12 @@ def indicators(request):
 
 	if request.method == 'POST' and request.POST.get("Indicator"):
 		indicators_content[1]['save'] = ans2 = request.POST.get("Indicator")
-		query = "select distinct year_start from indicator_estimate where data_value_type = '{}' and year_start >= 2007 and indicator_id in (select indicator_id from chronic_disease_indicator where domain_id in (select domain_id from health_domain where name = '{}')) order by year_start ASC".format(
-			ans2, ans1)
+		query = """select distinct year_start from indicator_estimate where data_value_type = '{}' and year_start >= 2007  and 
+		indicator_id in (select indicator_id from chronic_disease_indicator where domain_id in (select domain_id from health_domain where name = '{}')) 
+		and year_start < (select max(year_start) from indicator_estimate where data_value_type = '{}' and year_start >= 2007 
+		and indicator_id in (select indicator_id from chronic_disease_indicator where domain_id in (select domain_id from health_domain where name = '{}')))
+		order by year_start ASC""".format(ans2, ans1, ans2, ans1)
+
 		for i in indicators_content[2:]:
 			i['fields'], i['disabled'], i['save'] = [], "disabled", ""
 		indicators_content[2]['fields'], indicators_content[2]['disabled'] = populate_form(
@@ -132,6 +135,7 @@ def indicators(request):
 			ans = dictfetchall(cursor)
 			print(ans)
 
+		csv_data = ans
 		# for i in indicators_content:
 		# 	i['fields'], i['disabled'], i['save'] = [], "disabled", ''
 
@@ -140,6 +144,9 @@ def indicators(request):
 		indicators_content[0]['fields'], indicators_content[0]['disabled'] = populate_form(
 			'NAME', "Select distinct name from health_domain")
 		# ans1 = ans2 = asn3 = ans4 = ""
+
+	if request.method == 'POST' and request.POST.get('export'):
+		return export_csv_file(request, csv_data)
 
 	for i in indicators_content:
 		i['fields'].insert(0, i['save'])
