@@ -24,14 +24,14 @@
 {% endfor %}
 <form action="" method="post">
     {% csrf_token %}
-    <button type="submit" class="{{btn_class}}" name="submit" value="submit" onclick="form.submit()">Submit</button>
+    <button type="submit" class='btn btn-primary' style= "width:20%;" name="submit" value="submit" onclick="form.submit()">Submit</button>
 </form>
 <br>
 {% if ans %}
 <form action='' method='post'>
     {% csrf_token %}
-    <button type='submit' class='btn btn-primary' name='export' value='export' onclick='form.submit()'>Export csv file</button>
-</form>
+    <button type='submit' class='btn btn-primary' style= "width:20%;" name='export' value='export' onclick='form.submit()'>Export csv file</button>
+</form><br>
 <div>
     <div class="panel panel-default">
         <div class="panel-heading"><h1 align='center'>{{ title|remove_quotes }}</h1></div> 

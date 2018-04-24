@@ -102,7 +102,10 @@ def index(request):
             ans = dictfetchall(cursor)
         
         csv_data = ans
-        
+
+        for i in main_content:
+            i['fields'], i['disabled'], i['save'] = [], "disabled", ''
+
         messages.success(request, query_title)
         
     if request.method == 'POST' and request.POST.get('export'):

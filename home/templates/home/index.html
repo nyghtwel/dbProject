@@ -29,10 +29,9 @@
         <hr><h3 style="line-height: 200%;">Select your categories of interest and see all available data</h3>
 
         {% for row in main_content %}
-            <h4>
-                <button class="btn btn-default " data-toggle="modal" data-target="#{{row.title}}" style= "width:20%;"> Select {{row.title}} </button>
-                <label for="sel"> {{row.save}} </label>
-            </h4>
+
+            <button class="btn btn-default " data-toggle="modal" data-target="#{{row.title}}" style= "width:20%;"> Select {{row.title}} </button><br>
+            <label for="sel"> &nbsp;&nbsp; {{row.save}} </label><br>
             
             <div id="{{row.title}}" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -78,26 +77,24 @@
     
         <div class="panel panel-default">
             <div class="panel-heading"><h1 align='center'>All the available data for the selected query</h1></div> 
-            <div class="table table-responsive">
-                <table class="table" style="display: inline-block; width:auto; text-align: left;  height: 400px;  overflow-y: auto">
-                    <thead>
-                        <tr>
-                        {% for i in ans.0 %}
-                            <td >{{i}}</td>
+            <table class="table" style="display: inline-block; width:auto; text-align: left;  height: 400px;  overflow-y: auto">
+                <thead>
+                    <tr>
+                    {% for i in ans.0 %}
+                        <td >{{i}}</td>
+                    {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in ans %}
+                    <tr>
+                        {% for key, value in row.items %}
+                        <td>{{value}}</td>
                         {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for row in ans %}
-                        <tr>
-                            {% for key, value in row.items %}
-                            <td>{{value}}</td>
-                            {% endfor %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div> 
     </div>
     {% endif %}
