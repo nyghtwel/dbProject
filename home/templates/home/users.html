@@ -8,9 +8,9 @@
         <tbody>
             {% for row in user_history %}
             <tr>
-                
-                <td>{{row}}</td>
-                
+                {% for key,value in row.items %}
+                    <td>{{value}}</td>
+                {% endfor%}
             </tr>
             {% endfor %}
         </tbody>

@@ -45,7 +45,6 @@ def users(request):
 
                 if option == 'logout': 
                     settings.USER = False
-                    logout_user(request)
                     msg = 'Logged out'
                 
                 messages.success(request, msg)
