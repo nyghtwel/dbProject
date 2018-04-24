@@ -68,25 +68,28 @@ def add_user_query(quer):
 	with connection.cursor() as cursor:
 		cursor.execute(query1)
 		num = cursor.fetchone()
-	print(num)
+	print(num[0])
 	if num:	
 	    # increment the max query_id by 1
 		query2 = '''insert into query(query_id, query) 
 				values({},'{}')
-				'''.format(num+1, quer)
+				'''.format(num[0]+1, quer)
 		query3 = '''insert into write(username, query_id, datetime) 
 					values('{}', {}, systimestamp)
-				'''.format(username, num+1)
+				'''.format(username, num[0]+1)
 
 	else:
 		query2 = '''insert into query(query_id, query) 
-				values(1,'{}')
-				'''.format(num, quer)
+				values(1,"{}")
+				'''.format(quer)
 
 		query3 = '''insert into write(username, query, datetime) 
 					values('{}', '{}', systimestamp)
-				'''.format(username, num)
+				'''.format(username, num[0])
 
+	print(query2)
+	print()
+	print(query3)
 	with connection.cursor() as cursor:
 		cursor.execute(query2)
 		cursor.execute(query3)
