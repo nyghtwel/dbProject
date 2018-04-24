@@ -102,6 +102,7 @@ where ROWNUM < 11
 		for i in ans:
 			i['PERCENT_DIFFERENCE'] = str(abs(i['PERCENT_DIFFERENCE']))
 			
+		add_user_query(query_title)
 		csv_data = ans
 
 		location_content[0]['fields'], location_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")

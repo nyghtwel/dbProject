@@ -118,6 +118,7 @@ def time(request):
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 
+		add_user_query(query_title)
 		csv_data = ans
 		messages.success(request, query_title)
 

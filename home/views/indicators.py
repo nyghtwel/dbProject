@@ -135,7 +135,7 @@ def indicators(request):
 			cursor.execute(query_title)
 			ans = dictfetchall(cursor)
 			
-
+		add_user_query(query_title)
 		csv_data = ans
 		# for i in indicators_content:
 		# 	i['fields'], i['disabled'], i['save'] = [], "disabled", ''

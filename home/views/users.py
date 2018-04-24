@@ -45,7 +45,6 @@ def users(request):
 
                 if option == 'logout': 
                     settings.USER = False
-                    logout_user(request)
                     msg = 'Logged out'
                 
                 messages.success(request, msg)
@@ -96,12 +95,13 @@ def validate_login(username, password):
     if ans: return True
     else: return False     
      
-def show_user_history(show_list):
+def show_user_history(username):
     # if request.method == 'POST' and request.POST.get('submit'):
-    username = show_list[0]
+
     query = '''select write.username, write.datetime, query.query from query, write 
             where query.query_id = write.query_id and 
-            write.username ='{}' '''.format(username)
+            write.username ='{}' 
+            '''.format(username)
     
     ans = None
     with connection.cursor() as cursor:
