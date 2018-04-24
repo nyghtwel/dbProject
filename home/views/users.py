@@ -51,6 +51,7 @@ def users(request):
                 return HttpResponseRedirect(next)
         
     user_history = show_user_history(settings.USER_NAME)
+    
     print(user_history)
     context = {
         'user_history': user_history
@@ -98,7 +99,7 @@ def validate_login(username, password):
 def show_user_history(username):
     # if request.method == 'POST' and request.POST.get('submit'):
 
-    query = '''select write.username, write.datetime, query.query from query, write 
+    query = '''select write.datetime, query.query from query, write 
             where query.query_id = write.query_id and 
             write.username ='{}' 
             '''.format(username)
