@@ -90,6 +90,12 @@ def time(request):
 		time_content[5]['save'] = ans6 = request.POST.get("Increase/Decrease")
 		btn_class = 'btn btn-success'
 
+	" Title for table and graph "
+	title_temp = ''
+	if time_content[5]['save'] == 'increase' : title_temp = 'an Increase'
+	if time_content[5]['save'] == 'decrease' : title_temp = 'a Decrease'
+	title = 'States with {} in {} from {} to {} for {}'.format(title_temp, ans3, ans4, ans5, ans2)
+
 	if request.method == 'POST' and request.POST.get("submit"):
 		temp = "<" if time_content[5]['save'] == "increase" else ">"
 		query_title = """With temp_nat as (select * from indicator_estimate 
@@ -115,6 +121,8 @@ def time(request):
 		time_content[0]['fields'], time_content[0]['disabled'] = populate_form('NAME', "Select distinct name from health_domain")
 
 	json_data = json.dumps(ans)
+	json_title = json.dumps(title)
+
 	for i in time_content:
 		if i['fields']: i['fields'].insert(0, i['save'])
 
@@ -122,6 +130,7 @@ def time(request):
 		'time_content': time_content,
 		'ans': (ans if ans else ""),
 		'btn_class': btn_class,
-		'json_data': json_data
+		'json_data': json_data,
+		'title' : json_title
 	}
 	return render(request, 'home/time.html', context)

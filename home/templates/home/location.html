@@ -1,4 +1,4 @@
-{% extends 'home/layout.html' %} {% block content %}
+{% extends 'home/layout.html' %} {% block content %} {% load remove_quotes %}
 <div class="container">
     <h2 class="mt-5">Which years and locations had the highest increase/decrease in {indicator name} for {located in} from the previous year?</h3>
         <p class="lead">
@@ -28,6 +28,7 @@
 
 {% if ans %}
 <div>
+    <h1 align='center'>{{ title|remove_quotes }}</h1>
     <div class='container text-center'>
         <table class='table table-striped' style='display: inline;'>
             <thead>

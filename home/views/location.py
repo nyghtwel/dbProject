@@ -50,6 +50,10 @@ def location(request):
 	if request.method == 'POST' and request.POST.get("Increase/Decrease"):
 		location_content[3]['save'] = request.POST.get("Increase/Decrease")
 		btn_class = 'btn btn-success'
+
+	" Title for table and graph "
+	inc_or_dec = location_content[3]['save']
+	title = 'Locations and Years with the Largest {} in {} for {}'.format(inc_or_dec.capitalize(), ans3, ans2)
 	
 	if request.method == 'POST' and request.POST.get('submit'):
 		topic, question, indicator = ans1, ans2, ans3
@@ -106,7 +110,7 @@ where ROWNUM < 11
 		i['PERCENT_DIFFERENCE'] = str(abs(i['PERCENT_DIFFERENCE']))
 
 	json_data = json.dumps(ans)
-
+	json_title = json.dumps(title)
 		
 	
 	for i in location_content:
@@ -118,6 +122,7 @@ where ROWNUM < 11
 		'query_title' : query_title,
 		'query' : query,
 		'btn_class' : btn_class,
-		'json_data': json_data
+		'json_data': json_data,
+		'title' : json_title
 	}
 	return render(request, 'home/location.html', context)

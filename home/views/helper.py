@@ -49,3 +49,4 @@ def list_to_query(list):
 		temp.append("'"+i+"'")
 
 	return ', '.join(temp)
+

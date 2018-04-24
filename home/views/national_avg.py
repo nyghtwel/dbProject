@@ -88,6 +88,10 @@ def national_avg(request):
 		national_avg_content[4]['save'] = ans5 = request.POST.get("Above/Below")
 		btn_class = 'btn btn-success'
 
+	" Title for table and graph "
+	title_temp = ans5.capitalize()
+	title = 'States with a {} for {} in {} that is {} the National Average'.format(ans3, ans2, ans4, title_temp)
+
 	if request.method == 'POST' and request.POST.get("submit"):
 		temp = ">" if national_avg_content[4]['save'] == "above" else "<"
 		query_title = """with temp_nat as 
@@ -124,6 +128,7 @@ def national_avg(request):
 
 	
 	json_data = json.dumps(ans)
+	json_title = json.dumps(title)
 	# print(json_data)
 
 	# print(request.session.get('topic'))
@@ -137,7 +142,8 @@ def national_avg(request):
 		'ans5': (ans5 if ans5 else ""),
 		'json_data': json_data,
 		'btn_class': btn_class,
-		'national_avg': national_avg
+		'national_avg': national_avg,
+		'title' : json_title
 
 	}
 	return render(request, 'home/national_avg.html', context)
